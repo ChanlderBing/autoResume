@@ -25,14 +25,14 @@
       <Personal></Personal>
     </div>
     <div :class="focusIndex===index ? 'active':''" v-for="(item,index) in comList" :key="index" @mouseover="focusMoudle(index)" @mouseout="blurMoudel">
-      
+      <div class="control" v-show="focusIndex===index">
       <button @click="switchTabUp(index)">上</button>
-      <button @click="switchTabDown(index)">
-      下
-    </button>
+      <button @click="switchTabDown(index)">下</button>
     <button @click="tabDel(index)">
       删除
     </button>
+    </div>
+      
         <component :is="item"></component>
     </div>
 
@@ -68,8 +68,8 @@ const changeTheme = (theme:string)=>{
       window.document.getElementById('app')?.setAttribute('data-theme', theme)
 }
 let a = [Degree,Worked]
-let comList = ref(markRaw(a))
-// let comList = ref([markRaw(Degree), markRaw(Worked),markRaw(Skill), markRaw(Summary)])
+// let comList = ref(markRaw(a))
+let comList = ref([markRaw(Degree), markRaw(Worked),markRaw(Skill), markRaw(Summary)])
 let focusIndex = ref()
 const print = () => {
   printjs({

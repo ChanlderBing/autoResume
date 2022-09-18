@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
      <div class="main" id="dn">
     <el-select v-model="value" class="m-2" :placeholder="options[0].label">
     <el-option
@@ -31,4 +31,4 @@ import { ref } from 'vue'
     height: 60px;
     margin-bottom: 10px;
 }
-</style>
+</style> -->

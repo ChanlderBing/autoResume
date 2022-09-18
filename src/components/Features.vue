@@ -9,25 +9,22 @@
       :change="changeTheme(value)"
     />
   </el-select>
+  <el-select v-model="value1" class="m-2" placeholder="se">
+    <el-option
+      v-for="item in comList"
+      :key="item.name"
+      :label="item.name"
+      :value="item.name"
+      :change="changeTheme(value)"
+    />
+  </el-select>
     </div>
 </template>
 
 <script setup lang="ts">
-    import { ref } from 'vue'
-    const value = ref('light-theme')
-    const options = [
-  {
-    value: 'light-theme',
-    label: 'ligth',
-  },
-  {
-    value: 'dark-theme',
-    label: 'dark',
-  }
-]
-    const changeTheme = (theme:string)=>{
-        window.document.getElementById('app')?.setAttribute('data-theme', theme)
-    }
+    import store from '@/store';
+import { ref } from 'vue'
+    
 </script>
 <style scoped lang="scss">
 .main{

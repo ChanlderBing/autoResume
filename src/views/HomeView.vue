@@ -1,7 +1,6 @@
 <template>
   <div class="home">
     <div class="left">
-      
     </div>
     <div class="right">
       <div class="features">
@@ -14,35 +13,26 @@
   </div>
 </template>
 
-<script lang="ts">
-import { Options, Vue } from 'vue-class-component';
-import HelloWorld from '@/components/HelloWorld.vue';
-import Resume from '@/components/Resume/Resume.vue';
-import Features from '@/components/Features.vue'; // @ is an alias to /src
-@Options({
-  components: {
-    HelloWorld,
-    Resume,
-    Features
-  },
-})
-export default class HomeView extends Vue {
-}
+<script lang="ts" setup>
+import { Options, Vue } from 'vue-class-component'
+import HelloWorld from '@/components/HelloWorld.vue'
+import Resume from '@/components/Resume/Resume.vue'
+import Features from '@/components/Features.vue' // @ is an alias to /src
+
 </script>
 
 <style lang="scss">
-
 .home {
   display: flex;
   flex-direction: row;
   justify-content: center;
-  .left{
+  .left {
     width: 20%;
     height: 200px;
     margin: 0 40px;
     background-color: aqua;
   }
-  .right{
+  .right {
     width: 42%;
     display: flex;
     flex-direction: column;

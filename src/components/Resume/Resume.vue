@@ -9,7 +9,7 @@
       :change="changeTheme(value)"
     />
   </el-select>
-  <el-select v-model="value1" class="m-2" placeholder="se">
+  <!-- <el-select v-model="value1" class="m-2" placeholder="se">
     <el-option
       v-for="item in comList"
       :key="item.name"
@@ -17,24 +17,24 @@
       :value="item.name"
       :change="changeTheme(value)"
     />
-  </el-select>
+  </el-select> -->
     </div>
 
   <div class="main" id="printC">
     <div class="personal">
       <Personal></Personal>
     </div>
-    <div :class="focusIndex===index ? 'active':''" v-for="(item,index) in comList" :key="index" @mouseover="focusMoudle(index)" @mouseout="blurMoudel">
+    <!-- <div :class="focusIndex===index ? 'active':''" v-for="(item,index) in comList" :key="index" @mouseover="focusMoudle(index)" @mouseout="blurMoudel">
       <div class="control" v-show="focusIndex===index">
       <button @click="switchTabUp(index)">上</button>
       <button @click="switchTabDown(index)">下</button>
     <button @click="tabDel(index)">
       删除
     </button>
-    </div>
-      
-        <component :is="item"></component>
-    </div>
+    </div> -->
+        <!-- <component :is="item"></component> -->
+        <Degree :resumeMoudle="resumeMoudle"></Degree>
+    <!-- </div> -->
 
     <button @click="print()">打印</button>
   </div>
@@ -43,11 +43,12 @@
 <script lang="ts" setup>
 import Personal from '@/components/Resume/components/Personal.vue'
 import printjs from 'print-js'
-import { ref,markRaw } from 'vue'
+import { ref,markRaw, onMounted } from 'vue'
 import Degree from './components/Degree.vue'
 import Worked from './components/Worked.vue'
 import Skill from './components/Skill.vue'
 import Summary from './components/Summary.vue'
+import { stringify } from 'querystring'
 
 const style = '.main{margin:0;padding:0;}'
 
@@ -63,14 +64,43 @@ const value = ref('light-theme')
   }
 ]
 const value1 = ref('Degree')
-
 const changeTheme = (theme:string)=>{
       window.document.getElementById('app')?.setAttribute('data-theme', theme)
 }
-let a = [Degree,Worked]
-// let comList = ref(markRaw(a))
-let comList = ref([markRaw(Degree), markRaw(Worked),markRaw(Skill), markRaw(Summary)])
-let focusIndex = ref()
+let resumeMoudle = [{
+    title:'教育经历',
+    expand:true,
+    inputList:{
+        school:'',
+        major:'',
+        degree:'',
+        academy:'',
+        city:'',
+        Time:{
+            startTime:'',
+            endTime:''
+        },
+        
+        richText:''
+    }
+},
+{
+    title:'工作经历',
+    expand:true,
+    inputList:{
+        school:'',
+        major:'',
+        degree:'',
+        academy:'',
+        city:'',
+        startTime:'',
+        endTime:'',
+        richText:''
+    }
+}]
+onMounted:{
+    localStorage.setItem('resumeMoudle', JSON.stringify(resumeMoudle));
+}
 const print = () => {
   printjs({
     printable: 'printC',
@@ -79,29 +109,6 @@ const print = () => {
     style,
     header: null
   })
-}
-const switchTabUp = (index: number) => {
-  if (index === 0) {
-    
-  } else {
-    console.log(comList.value[0]);
-    comList.value[index] = comList.value.splice(index - 1, 1, comList.value[index])[0]
-  }
-}
-const switchTabDown = (index: any) => {
-  if (index >= comList.value.length - 1) {
-  } else {
-    comList.value[index] = comList.value.splice(index + 1, 1, comList.value[index])[0]
-  }
-}
-const tabDel = (index:any) =>{
-  comList.value.splice(index,1)
-}
-const focusMoudle = (index:number)=>{
-  focusIndex.value = index;
-}
-const blurMoudel = ()=>{
-  focusIndex.value = null
 }
 </script>
 

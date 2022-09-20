@@ -1,61 +1,62 @@
 <template>
+  <div class="topTab">
+    <button @click="back">回去</button>
+    <span class="title">{{renderList.title}}</span>
+    <el-button type="primary" @click="onSubmit">Create</el-button>
+  </div>
     <div class="skill">
-      <el-form :inline="true" :model="formInline[0].inputList" class="demo-form-inline">
-        <template v-for="(value,key) in resumeMoudle[0].inputList">
+      <el-form :inline="true" :model="renderList.inputList" class="demo-form-inline">
+        <template v-for="(value,key) in renderList.inputList">
           <el-form-item :label="key" v-if="moduleCheck(key) === 'normal'">
-      <el-input v-model="formInline[0].inputList[key]" />
-    </el-form-item>
-    <el-form-item label=" time" v-if="moduleCheck(key) === 'Time'">
-      <el-col :span="11">
-      <div class="block">
-      <span class="demonstration">Default</span>
-      <el-date-picker
-        v-model="formInline[0].inputList[key].startTime"
-        type="date"
-        placeholder="Pick a day"
-        format="YYYY/MM/DD"
-        value-format="YYYY-MM-DD"
-      />
-    </div>
-    <div class="block">
-      <span class="demonstration">Picker with quick options</span>
-      <el-date-picker
-        v-model="formInline[0].inputList[key].endTime"
-        type="date"
-        placeholder="Pick a day"
-        :disabled-date="disabledDate"
-        :shortcuts="shortcuts"
-        format="YYYY/MM/DD"
-        value-format="YYYY-MM-DD"
-      />
-    </div>
-  </el-col>
-    </el-form-item>
-    <el-form-item :label="key" v-if="moduleCheck(key) === 'Text'">
-      <!-- <el-select v-model="formInline[0].inputList[key]" placeholder="Activity zone">
-        <el-option label="Zone one" value="shanghai" />
-        <el-option label="Zone two" value="beijing" />
-      </el-select> -->
-      <QuillEditor theme="snow" />
-    </el-form-item>
-        </template>
-        <el-button type="primary" @click="onSubmit">Create</el-button>
+            <el-input v-model="renderList.inputList[key]" />
+          </el-form-item>
+      <el-form-item label="时间" v-if="moduleCheck(key) === 'Time'">
+        <el-col :span="11">
+        <el-date-picker
+          v-model="renderList.inputList[key].startTime"
+          type="date"
+          placeholder="开始时间"
+          format="YYYY/MM/DD"
+          value-format="YYYY-MM-DD"
+        />
+        </el-col>
+      <el-col :span="2" class="text-center">
+        <span class="text-gray-500">-</span>
+      </el-col>
+        <el-col :span="11">
+        <el-date-picker
+          v-model="renderList.inputList[key].endTime"
+          type="date"
+          placeholder="结束时间"
+          :disabled-date="disabledDate"
+          :shortcuts="shortcuts"
+          format="YYYY/MM/DD"
+          value-format="YYYY-MM-DD"
+        />
+      </el-col>
+      </el-form-item>
+      <template v-if="moduleCheck(key) === 'Text'">
+        <div>{{key}}</div>
+        <QuillEditor theme="snow"  v-model:content="renderList.inputList.richText" contentType="html" />
+      </template>
+        
+      </template>
+      
   </el-form>
     </div>
   </template>
   
   <script setup lang="ts">
-import { onMounted,ref } from 'vue';
+import { onMounted,ref, unref } from 'vue';
 import { QuillEditor } from '@vueup/vue-quill'
 import '@vueup/vue-quill/dist/vue-quill.snow.css'
+import store from '@/store';
 
+let index = store.state.editChosen
 let resumeMoudle = JSON.parse(localStorage.getItem('resumeMoudle'))
-let formInline = ref(resumeMoudle)
+let renderList = ref(resumeMoudle[index])
 
-onMounted(()=>{
-console.log(formInline)
 
-})
 const checkList = ['Text','Time']
 const moduleCheck =(key)=>{
  if (checkList.find((item)=>{
@@ -70,7 +71,11 @@ const moduleCheck =(key)=>{
   return 'normal'
 }
 const onSubmit = () => {
-  console.log(formInline)
+ resumeMoudle[store.state.editChosen] = unref(renderList)
+ localStorage.setItem('resumeMoudle',JSON.stringify(resumeMoudle))
+}
+const back = ()=>{
+  store.commit('switch',false)
 }
 const shortcuts = [
   {
@@ -101,6 +106,14 @@ const disabledDate = (time: Date) => {
   </script>
 
   <style scoped lang="scss">
+    .topTab{
+      height: 60px;
+      display: flex;
+      justify-content: space-between;
+    }
+    .title{
+      color: aqua;
+    }
     .personal{
         height: 200px;
         width: 100%;

@@ -24,33 +24,22 @@
     <div class="personal">
       <Personal></Personal>
     </div>
-    <!-- <div :class="focusIndex===index ? 'active':''" v-for="(item,index) in comList" :key="index" @mouseover="focusMoudle(index)" @mouseout="blurMoudel">
-      <div class="control" v-show="focusIndex===index">
-      <button @click="switchTabUp(index)">上</button>
-      <button @click="switchTabDown(index)">下</button>
-    <button @click="tabDel(index)">
-      删除
-    </button>
-    </div> -->
-        <!-- <component :is="item"></component> -->
-        <Degree :resumeMoudle="resumeMoudle"></Degree>
-    <!-- </div> -->
-
-    <button @click="print()">打印</button>
+    <Degree :resumeMoudle="resumeMoudle"></Degree>
+    <button @click="print()" class="a">打印</button>
+    <el-button type="primary" @click="print()">Create</el-button>
   </div>
 
 </template>
 <script lang="ts" setup>
 import Personal from '@/components/Resume/components/Personal.vue'
 import printjs from 'print-js'
-import { ref,markRaw, onMounted } from 'vue'
+import { ref,markRaw, onMounted, onUpdated } from 'vue'
 import Degree from './components/Degree.vue'
 import Worked from './components/Worked.vue'
 import Skill from './components/Skill.vue'
 import Summary from './components/Summary.vue'
-import { stringify } from 'querystring'
 
-const style = '.main{margin:0;padding:0;}'
+const style = '.main{margin:0;padding:0;} '
 
 const value = ref('light-theme')
     const options = [
@@ -65,9 +54,9 @@ const value = ref('light-theme')
 ]
 const value1 = ref('Degree')
 const changeTheme = (theme:string)=>{
-      window.document.getElementById('app')?.setAttribute('data-theme', theme)
+    window.document.getElementById('app')?.setAttribute('data-theme', theme)
 }
-let resumeMoudle = [{
+let resumeMoudle1 = [{
     title:'教育经历',
     expand:true,
     inputList:{
@@ -80,7 +69,6 @@ let resumeMoudle = [{
             startTime:'',
             endTime:''
         },
-        
         richText:''
     }
 },
@@ -92,14 +80,20 @@ let resumeMoudle = [{
         major:'',
         degree:'',
         academy:'',
-        city:'',
+        Text:'',
         startTime:'',
         endTime:'',
         richText:''
     }
 }]
+let resumeMoudle = ref(JSON.parse(localStorage.getItem('resumeMoudle')))
 onMounted:{
-    localStorage.setItem('resumeMoudle', JSON.stringify(resumeMoudle));
+    if (!localStorage.getItem('resumeMoudle')) {
+        localStorage.setItem('resumeMoudle', JSON.stringify(resumeMoudle1));
+    }
+}
+onUpdated:{
+    console.log(1111);
 }
 const print = () => {
   printjs({
@@ -119,6 +113,9 @@ const print = () => {
   @include base-color();
   @include base-background();
   font-size: $font-size;
+  .a{
+    color: aqua;
+  }
   .personal {
     height: 100px;
   }

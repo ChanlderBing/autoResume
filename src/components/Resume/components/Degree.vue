@@ -1,14 +1,16 @@
 <template>
-    <div class="information" v-for="(item,index) in resumeMoudle" :key="index" @click="editInformation()">
+    <div class="information" v-for="(item,index) in resumeMoudle" :key="index">
       <div class="title"> {{item.title}}</div>
       <div class="control">
       <button @click="switchTabUp(index)">上</button>
       <button @click="switchTabDown(index)">下</button>
       <button @click="tabDel(index)">删除</button>
     </div>
-    <div class="inputList">
-      <div class="list" v-for="(value,key,index) in item.inputList[0]" :key="index">
-     {{value}}
+    <div class="inputList"  @click="editInformation(index)">
+      <div class="list" v-for="(value,key,index) in item.inputList" :key="index">
+        <div class="top">
+          {{key}} --- {{value}}
+        </div>
       </div>
     </div>
     </div>
@@ -16,11 +18,10 @@
 
 <script lang="ts" setup>
   import store from "@/store";
-import { ref } from "vue";
+  import { ref } from "vue";
   const props = defineProps({
     resumeMoudle:Object
   })
-
   let resumeMoudle = ref(props.resumeMoudle)
   let focusIndex = ref(0)
   
@@ -45,11 +46,12 @@ const focusMoudle = (index:number)=>{
 const blurMoudel = ()=>{
   focusIndex.value = null
 }
-const editInformation = ()=>
+const editInformation = (index)=>
 {
+  store.commit('chosenOne',index)
   store.commit('switch',true)
-  
 }
+let renderStruct 
 </script>
   <style scoped lang="scss">
     .inputList{

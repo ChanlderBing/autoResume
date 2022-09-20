@@ -35,11 +35,7 @@ import Personal from '@/components/Resume/components/Personal.vue'
 import printjs from 'print-js'
 import { ref,markRaw, onMounted, onUpdated } from 'vue'
 import Degree from './components/Degree.vue'
-import Worked from './components/Worked.vue'
-import Skill from './components/Skill.vue'
-import Summary from './components/Summary.vue'
 
-const style = '.main{margin:0;padding:0;} '
 
 const value = ref('light-theme')
     const options = [
@@ -92,15 +88,11 @@ onMounted:{
         localStorage.setItem('resumeMoudle', JSON.stringify(resumeMoudle1));
     }
 }
-onUpdated:{
-    console.log(1111);
-}
 const print = () => {
   printjs({
     printable: 'printC',
     type: 'html',
     targetStyles: ['*'],
-    style,
     header: null
   })
 }

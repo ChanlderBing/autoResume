@@ -1,13 +1,13 @@
 <template>
-    <div class="information" v-for="(item,index) in resumeMoudle" :key="index">
+    <div :class="focusIndex == index ? 'active':''" v-for="(item,index) in resumeMoudle" :key="index">
       <div class="title"> {{item.title}}</div>
       <div class="control">
       <button @click="switchTabUp(index)">上</button>
       <button @click="switchTabDown(index)">下</button>
       <button @click="tabDel(index)">删除</button>
     </div>
-    <div class="inputList"  @click="editInformation(index)">
-      <div class="list" v-for="(value,key,index) in item.inputList" :key="index">
+    <div class="inputList"  @click="editInformation(index)" @mouseover="focusMoudel(index)" @mouseleave="blurMoudel()">
+      <div class v-for="(value,key,index) in item.inputList" :key="index">
         <div class="top">
           {{key}} --- {{value}}
         </div>
@@ -18,12 +18,13 @@
 
 <script lang="ts" setup>
   import store from "@/store";
+import { TIMEOUT } from "dns";
   import { ref } from "vue";
   const props = defineProps({
     resumeMoudle:Object
   })
   let resumeMoudle = ref(props.resumeMoudle)
-  let focusIndex = ref(0)
+  let focusIndex = ref()
   
   const switchTabUp = (index: any) => {
   if (index === 0) {
@@ -40,16 +41,22 @@ const switchTabDown = (index: any) => {
 const tabDel = (index:any) =>{
   resumeMoudle.value.splice(index,1)
 }
-const focusMoudle = (index:number)=>{
-  focusIndex.value = index;
+const focusMoudel = (index:any)=>{
+  focusIndex.value = index-0;
 }
 const blurMoudel = ()=>{
   focusIndex.value = null
 }
 const editInformation = (index)=>
 {
-  store.commit('chosenOne',index)
-  store.commit('switch',true)
+  if (store.state.isEdit) {
+    store.commit('switch',false)
+  }
+  setTimeout(() => {
+    store.commit('chosenOne',index)
+    store.commit('switch',true)
+    }, 100);
+  
 }
 let renderStruct 
 </script>
@@ -59,4 +66,8 @@ let renderStruct
         width: 100%;
         background-color: bisque;
     }
+    .active{
+    background-color: darkgray;
+    opacity: 0.4;
+  }
   </style>

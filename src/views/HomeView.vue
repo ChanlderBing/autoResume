@@ -12,7 +12,14 @@
     </div>
     <div class="right">
       <div class="resumeContent">
-        <Resume></Resume>
+        <Transition name="resume" mode="out-in">
+        <div  v-if="store.state.isEdit" >
+          <Resume></Resume>
+        </div>
+        <div v-else>
+          <Resume></Resume>
+        </div>
+      </Transition>
       </div>
     </div>
   </div>
@@ -21,7 +28,6 @@
 <script lang="ts" setup>
 import { Options, Vue} from 'vue-class-component'
 import Resume from '@/components/Resume/Resume.vue'
-import Features from '@/components/Features.vue' // @ is an alias to /src
 import store from '@/store';
 import { ref,reactive } from "vue";
 import Skill from '@/components/Resume/components/Skill.vue';
@@ -65,10 +71,22 @@ const back = ()=>{
     }
     .fade-enter-active,
     .fade-leave-active {
-        transition: all 1.2s ease;
+        transition: all 0.6s ease;
     }
 
     .fade-enter-to {
         transform: translateY(1%)
     }
+    .resume-leave-to {
+      opacity: 0;
+      transform: translateX(8%);
+    }
+    .resume-enter-active,
+    .resume-leave-active {
+        transition: all 0.6s ease;
+    }
+    .resume-enter-to {
+        transform: translateX(-1%)
+    }
+    
 </style>

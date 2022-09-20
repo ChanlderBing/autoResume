@@ -52,9 +52,9 @@ import { QuillEditor } from '@vueup/vue-quill'
 import '@vueup/vue-quill/dist/vue-quill.snow.css'
 import store from '@/store';
 
-let index = store.state.editChosen
+ 
 let resumeMoudle = JSON.parse(localStorage.getItem('resumeMoudle'))
-let renderList = ref(resumeMoudle[index])
+let renderList = ref(resumeMoudle[store.state.editChosen])
 
 
 const checkList = ['Text','Time']
@@ -111,9 +111,7 @@ const disabledDate = (time: Date) => {
       display: flex;
       justify-content: space-between;
     }
-    .title{
-      color: aqua;
-    }
+    
     .personal{
         height: 200px;
         width: 100%;

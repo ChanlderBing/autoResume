@@ -24,8 +24,7 @@
     <div class="personal">
       <Personal></Personal>
     </div>
-    <Degree :resumeMoudle="resumeMoudle"></Degree>
-    <button @click="print()" class="a">打印</button>
+    <ShowList :resumeMoudle="resumeMoudle"></ShowList>
     <el-button type="primary" @click="print()">Create</el-button>
   </div>
 
@@ -34,7 +33,7 @@
 import Personal from '@/components/Resume/components/Personal.vue'
 import printjs from 'print-js'
 import { ref,markRaw, onMounted, onUpdated } from 'vue'
-import Degree from './components/Degree.vue'
+import ShowList from './components/ShowList.vue';
 
 
 const value = ref('light-theme')
@@ -76,9 +75,10 @@ let resumeMoudle1 = [{
         major:'',
         degree:'',
         academy:'',
-        Text:'',
-        startTime:'',
-        endTime:'',
+        Time:{
+            startTime:'',
+            endTime:''
+        },
         richText:''
     }
 }]
@@ -105,9 +105,6 @@ const print = () => {
   @include base-color();
   @include base-background();
   font-size: $font-size;
-  .a{
-    color: aqua;
-  }
   .personal {
     height: 100px;
   }

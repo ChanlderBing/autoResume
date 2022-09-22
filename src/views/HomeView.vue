@@ -3,7 +3,7 @@
     <div class="left">
       <Transition name="fade" mode="out-in">
         <div class="edit" v-if="store.state.isEdit" >
-          <Skill></Skill>
+          <EditForm></EditForm>
         </div>
         <div class="test" v-else>
           <Summary></Summary> 
@@ -13,7 +13,7 @@
     <div class="right">
       <div class="resumeContent">
         <Transition name="resume" mode="out-in">
-        <div  v-if="store.state.isEdit" >
+        <div v-if="store.state.isEdit" >
           <Resume></Resume>
         </div>
         <div v-else>
@@ -26,12 +26,10 @@
 </template>
 
 <script lang="ts" setup>
-import { Options, Vue} from 'vue-class-component'
 import Resume from '@/components/Resume/Resume.vue'
 import store from '@/store';
-import { ref,reactive } from "vue";
-import Skill from '@/components/Resume/components/Skill.vue';
 import Summary from '@/components/Resume/components/Summary.vue';
+import EditForm from '@/components/Resume/components/EditForm.vue';
 
 const back = ()=>{
   store.commit('switch',false)

@@ -7,18 +7,23 @@
       <button @click="tabDel(index)">删除</button>
     </div>
     <div class="inputList"  @click="editInformation(index)" @mouseover="focusMoudel(index)" @mouseleave="blurMoudel()">
-      <div class v-for="(value,key,index) in item.inputList" :key="index">
-        <div class="top">
-          {{key}} --- {{value}}
+        <div class="menu-title">
+          <div class="title-left">{{item.inputList.school}}</div>
+          <div class="title-right">{{item.inputList.Time.startTime}} -- {{item.inputList.Time.endTime}}</div>
         </div>
-      </div>
+        <div class="menu-title">
+          <div class="title-left">{{item.inputList.school}}</div>
+          <div class="title-right">{{item.inputList.Time.startTime}} -- {{item.inputList.Time.endTime}}</div>
+        </div>
+        <div class="text">
+          <div class="textH5" v-html="item.inputList.richText"></div>
+        </div>
     </div>
-    </div>
+  </div>
   </template>
 
 <script lang="ts" setup>
   import store from "@/store";
-import { TIMEOUT } from "dns";
   import { ref } from "vue";
   const props = defineProps({
     resumeMoudle:Object
@@ -56,9 +61,8 @@ const editInformation = (index)=>
     store.commit('chosenOne',index)
     store.commit('switch',true)
     }, 100);
-  
 }
-let renderStruct 
+
 </script>
   <style scoped lang="scss">
     .inputList{
@@ -69,5 +73,11 @@ let renderStruct
     .active{
     background-color: darkgray;
     opacity: 0.4;
+  }
+  .menu-title{
+    height: 30px;
+  }
+  .text{
+
   }
   </style>

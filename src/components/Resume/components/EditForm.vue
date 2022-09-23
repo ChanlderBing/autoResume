@@ -37,7 +37,17 @@
       </el-form-item>
       <template v-if="moduleCheck(key) === 'Text'">
         <div>{{key}}</div>
-        <QuillEditor theme="snow"  v-model:content="renderList.inputList.richText" contentType="html" />
+        <Toolbar
+        style="border-bottom: 1px solid #ccc"
+        :editor="editorRef"
+        :defaultConfig="toolbarConfig"
+      />
+      <Editor
+        style="height: 500px; overflow-y: hidden;"
+        v-model="renderList.inputList.richText"
+        :defaultConfig="editorConfig"
+        @onCreated="handleCreated"
+      />
       </template>
         
       </template>
@@ -46,10 +56,10 @@
   </template>
   
   <script setup lang="ts">
-  import { onMounted,ref, unref } from 'vue';
-  import { QuillEditor } from '@vueup/vue-quill'
-  import '@vueup/vue-quill/dist/vue-quill.snow.css'
   import store from '@/store';
+  import '@wangeditor/editor/dist/css/style.css' // 引入 css
+  import { onBeforeUnmount,unref, ref, shallowRef, onMounted } from 'vue'
+  import { Editor, Toolbar } from '@wangeditor/editor-for-vue'
 
   
   let resumeMoudle = JSON.parse(localStorage.getItem('resumeMoudle'))
@@ -75,6 +85,7 @@
   const back = ()=>{
     store.commit('switch',false)
   }
+  //datePicker
   const shortcuts = [
     {
       text: 'Today',
@@ -101,6 +112,22 @@
   const disabledDate = (time: Date) => {
     return time.getTime() > Date.now()
   }
+  //richText
+  const editorRef = shallowRef()
+
+    const toolbarConfig = {}
+    const editorConfig = { placeholder: '请输入内容...' }
+
+    // 组件销毁时，也及时销毁编辑器
+    onBeforeUnmount(() => {
+        const editor = editorRef.value
+        if (editor == null) return
+        editor.destroy()
+    })
+
+    const handleCreated = (editor) => {
+      editorRef.value = editor // 记录 editor 实例，重要！
+    }
 </script>
 
   <style scoped lang="scss">
@@ -115,4 +142,5 @@
         width: 100%;
         background-color: pink;
     }
+   
   </style>

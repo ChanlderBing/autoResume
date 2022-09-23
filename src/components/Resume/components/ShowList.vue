@@ -1,22 +1,25 @@
 <template>
-    <div :class="focusIndex == index ? 'active':''" v-for="(item,index) in resumeMoudle" :key="index">
-      <div class="title"> {{item.title}}</div>
-      <div class="control">
-      <button @click="switchTabUp(index)">上</button>
-      <button @click="switchTabDown(index)">下</button>
-      <button @click="tabDel(index)">删除</button>
+    <div :class="focusIndex == index ? 'active':''" v-for="(item,index) in resumeMoudle" :key="index"  @click="editInformation(index)" @mouseover="focusMoudel(index)" @mouseleave="blurMoudel()">
+      <div class="title">
+        <div class="titleName"> {{item.title}}</div>
+        <div class="control" v-if="focusIndex == index">
+      <button @click.stop="switchTabUp(index)">上</button>
+      <button @click.stop="switchTabDown(index)">下</button>
+      <button @click.stop="tabDel(index)">删除</button>
+      </div>
     </div>
-    <div class="inputList"  @click="editInformation(index)" @mouseover="focusMoudel(index)" @mouseleave="blurMoudel()">
+    <div class="inputList" >
         <div class="menu-title">
           <div class="title-left">{{item.inputList.school}}</div>
           <div class="title-right">{{item.inputList.Time.startTime}} -- {{item.inputList.Time.endTime}}</div>
         </div>
         <div class="menu-title">
-          <div class="title-left">{{item.inputList.school}}</div>
+          <div class="title-left">{{item.inputList.academy}} {{item.inputList.city}}</div>
           <div class="title-right">{{item.inputList.Time.startTime}} -- {{item.inputList.Time.endTime}}</div>
         </div>
         <div class="text">
-          <div class="textH5" v-html="item.inputList.richText"></div>
+          <div class="textH5" v-html="item.inputList.richText">
+          </div>
         </div>
     </div>
   </div>
@@ -73,11 +76,17 @@ const editInformation = (index)=>
     .active{
     background-color: darkgray;
     opacity: 0.4;
-  }
+    }
+    .title{
+      height: 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      .titleName{
+        width: 70px;
+      }
+    }
   .menu-title{
     height: 30px;
-  }
-  .text{
-
   }
   </style>

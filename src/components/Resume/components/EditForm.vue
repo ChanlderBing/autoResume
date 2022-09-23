@@ -1,8 +1,12 @@
 <template>
   <div class="topTab">
-    <button @click="back">回去</button>
-    <span class="title">{{renderList.title}}</span>
-    <el-button type="primary" @click="onSubmit">Create</el-button>
+    <el-page-header @back="back">
+    <template #content>
+      <span class="text-large font-600 mr-3"> {{renderList.title}} </span>
+      <el-button type="primary" class="ml-2" @click="onSubmit">完成编辑</el-button>
+    </template>
+    
+  </el-page-header>
   </div>
     <div class="skill">
       <el-form :inline="true" :model="renderList.inputList" class="demo-form-inline">

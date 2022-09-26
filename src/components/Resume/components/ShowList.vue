@@ -71,7 +71,6 @@ const editInformation = (index)=>
     .inputList{
         height: 200px;
         width: 100%;
-        background-color: bisque;
     }
     .active{
     background-color: darkgray;

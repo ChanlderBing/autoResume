@@ -1,15 +1,16 @@
 <template>
+  <el-card>
     <div class="personal">
       <div class="information">
-        111111111
+        
     </div>
     </div>
+  </el-card>
   </template>
 
   <style scoped lang="scss">
     .personal{
         height: 200px;
         width: 100%;
-        background-color: greenyellow;
     }
   </style>

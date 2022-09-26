@@ -47,13 +47,11 @@ const back = ()=>{
     width: 700px;
     height: 800px;
     margin: 0 40px;
-    background-color: aqua;
     }
     .test{
     width: 500px;
     height: 600px;
     margin: 0 40px;
-    background-color: pink;
     }
   }
   .right {

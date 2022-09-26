@@ -1,12 +1,9 @@
 <template>
+  <el-card class="box-card">
   <div class="topTab">
-    <el-page-header @back="back">
-    <template #content>
+      <div @click="back">Back</div>
       <span class="text-large font-600 mr-3"> {{renderList.title}} </span>
       <el-button type="primary" class="ml-2" @click="onSubmit">完成编辑</el-button>
-    </template>
-    
-  </el-page-header>
   </div>
     <div class="skill">
       <el-form :inline="true" :model="renderList.inputList" class="demo-form-inline">
@@ -53,10 +50,10 @@
         @onCreated="handleCreated"
       />
       </template>
-        
       </template>
   </el-form>
     </div>
+  </el-card>
   </template>
   
   <script setup lang="ts">
@@ -64,6 +61,7 @@
   import '@wangeditor/editor/dist/css/style.css' // 引入 css
   import { onBeforeUnmount,unref, ref, shallowRef, onMounted } from 'vue'
   import { Editor, Toolbar } from '@wangeditor/editor-for-vue'
+import { ElMessage } from 'element-plus';
 
   
   let resumeMoudle = JSON.parse(localStorage.getItem('resumeMoudle'))
@@ -83,8 +81,10 @@
     return 'normal'
   }
   const onSubmit = () => {
-  resumeMoudle[store.state.editChosen] = unref(renderList)
-  localStorage.setItem('resumeMoudle',JSON.stringify(resumeMoudle))
+    resumeMoudle[store.state.editChosen] = unref(renderList)
+    localStorage.setItem('resumeMoudle',JSON.stringify(resumeMoudle))
+    ElMessage.success('修改成功')
+    back()
   }
   const back = ()=>{
     store.commit('switch',false)

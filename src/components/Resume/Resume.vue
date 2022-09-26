@@ -1,4 +1,5 @@
 <template>
+  <el-card>
      <div class="features" id="dn">
     <el-select v-model="value" class="m-2" :placeholder="options[0].label">
     <el-option
@@ -19,7 +20,8 @@
     />
   </el-select> -->
     </div>
-
+  </el-card>
+<el-card style="width:780px;">
   <div class="main" id="printC">
     <div class="personal">
       <Personal></Personal>
@@ -27,7 +29,7 @@
     <ShowList :resumeMoudle="resumeMoudle"></ShowList>
     <el-button type="primary" @click="print()">Create</el-button>
   </div>
-
+</el-card>
 </template>
 <script lang="ts" setup>
 import Personal from '@/components/Resume/components/Personal.vue'
@@ -114,8 +116,8 @@ const print = () => {
   }
 }
 .features{
-    height: 60px;
-    margin-bottom: 10px;
+    height: 40px;
+    margin-bottom: 60px;
 }
 .v-enter,
 			.v-leave-to{
@@ -127,5 +129,8 @@ const print = () => {
 				opacity: 1;
 				// transition: all 0.2s ease; 
       }
-
+  :deep .el-card__body {
+    padding: 0;
+    width: 780px;
+  }
 </style>

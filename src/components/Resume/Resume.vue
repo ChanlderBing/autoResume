@@ -1,5 +1,5 @@
 <template>
-  <el-card>
+  <el-card style="width:780px;height: 50px;margin-bottom:20px;">
      <div class="features" id="dn">
     <el-select v-model="value" class="m-2" :placeholder="options[0].label">
     <el-option
@@ -27,7 +27,6 @@
       <Personal></Personal>
     </div>
     <ShowList :resumeMoudle="resumeMoudle"></ShowList>
-    <el-button type="primary" @click="print()">Create</el-button>
   </div>
 </el-card>
 </template>
@@ -105,10 +104,10 @@ const print = () => {
   width: 780px;
   height: 1106px;
   @include base-color();
-  @include base-background();
+  // @include base-background();
   font-size: $font-size;
   .personal {
-    height: 100px;
+    margin-bottom: 20px;
   }
   .active{
     background-color: darkgray;

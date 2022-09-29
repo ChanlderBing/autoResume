@@ -2,8 +2,8 @@
   <div class="personal">
     <div class="information">
     <!-- <div class="name"></div> -->
-    <p><h2>joe</h2></p>
-    <p>dgut</p>
+    <p><h2>GearLessJOE</h2></p>
+    <p>东莞理工学院</p>
     <p>983270722@qq.com</p>
     <!-- <div class="edu"></div>
     <div class="email">983270722@qq.com</div> -->
@@ -20,6 +20,7 @@
     width: 60%;
     p{
       text-align: start;
+      margin: 8px 20px;
     }
   }
   .avatar{

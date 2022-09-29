@@ -2,9 +2,10 @@
     <div :class="focusIndex == index ? 'active':''" v-for="(item,index) in resumeMoudle" :key="index"  @click="editInformation(index)" @mouseover="focusMoudel(index)" @mouseleave="blurMoudel()">
       <div class="title">
         <div class="titleName"> {{item.title}}</div>
+        <div class="line"></div>
         <div class="control" v-if="focusIndex == index">
-      <button @click.stop="switchTabUp(index)">上</button>
-      <button @click.stop="switchTabDown(index)">下</button>
+        <el-button type="primary" :icon="Top" @click.stop="switchTabUp(index)" circle />
+        <el-button type="primary" :icon="Bottom" @click.stop="switchTabDown(index)" circle />
       <button @click.stop="tabDel(index)">删除</button>
       </div>
     </div>
@@ -28,6 +29,7 @@
 <script lang="ts" setup>
   import store from "@/store";
   import { ref } from "vue";
+  import {Top,Bottom} from '@element-plus/icons-vue'
   const props = defineProps({
     resumeMoudle:Object
   })
@@ -71,18 +73,28 @@ const editInformation = (index)=>
     .inputList{
         height: 200px;
         width: 100%;
+        margin: 0 20px;
     }
     .active{
-    background-color: darkgray;
-    opacity: 0.4;
+    background-color: #F0F2F5;
     }
     .title{
       height: 30px;
       display: flex;
+      margin: 0 20px;
       justify-content: space-between;
-      align-items: flex-end;
+      align-items: center;
       .titleName{
-        width: 70px;
+        font-size: large;
+        font-weight: bold;
+        color: #409EFF;
+        margin:0 5px;
+      }
+      .line{
+        flex-grow: 1;
+        height: 1px;
+        margin:0 5px;
+        background-color: #409EFF;
       }
     }
   .menu-title{

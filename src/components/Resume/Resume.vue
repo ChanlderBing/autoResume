@@ -1,7 +1,7 @@
 <template>
   <el-card style="width:780px;height: 50px;margin-bottom:20px;">
-     <div class="features" id="dn">
-    <el-select v-model="value" class="m-2" :placeholder="options[0].label">
+     <div class="features">
+        <el-select v-model="value" class="m-2" :placeholder="options[0].label">
     <el-option
       v-for="item in options"
       :key="item.value"
@@ -10,6 +10,7 @@
       :change="changeTheme(value)"
     />
   </el-select>
+    
   <!-- <el-select v-model="value1" class="m-2" placeholder="se">
     <el-option
       v-for="item in comList"
@@ -46,6 +47,11 @@ const value = ref('light-theme')
   {
     value: 'dark-theme',
     label: 'dark',
+  }
+  ,
+  {
+    value: 'blue-theme',
+    label: 'blue',
   }
 ]
 const value1 = ref('Degree')
@@ -103,7 +109,7 @@ const print = () => {
 .main {
   width: 780px;
   height: 1106px;
-  @include base-color();
+  // @include base-color();
   // @include base-background();
   font-size: $font-size;
   .personal {
@@ -115,8 +121,13 @@ const print = () => {
   }
 }
 .features{
-    height: 40px;
-    margin-bottom: 60px;
+    height: 50px;
+    width: 100%;
+    display: flex;
+    .el_select{
+      justify-content: center;
+    }
+    
 }
 .v-enter,
 			.v-leave-to{

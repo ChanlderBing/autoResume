@@ -10,10 +10,31 @@ $dark-theme: (
         background-color: #000
 );
 
+$green-theme:(
+  base-color: #67C23A,
+   background-color:#67C23A
+);
+$blue-theme:(
+  base-color: #409EFF,
+   background-color:#409EFF
+);
+$org-theme:(
+  base-color: #E6A23C,
+   background-color:#E6A23C
+);
+$red-theme:(
+  base-color: #F56C6C,
+   background-color:#F56C6C
+);
+
 //定义映射集合
 $themes: (
         light-theme: $light-theme,
-        dark-theme: $dark-theme
+        dark-theme: $dark-theme,
+        green-theme: $green-theme,
+        blue-theme: $blue-theme,
+        org-theme: $org-theme,
+        red-theme: $red-theme,
 );
 
 

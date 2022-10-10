@@ -9,7 +9,7 @@
       <button @click.stop="tabDel(index)">删除</button>
       </div>
     </div>
-    <div class="inputList" >
+    <div class="inputList">
         <div class="menu-title">
           <div class="title-left">{{item.inputList.school}}</div>
           <div class="title-right">{{item.inputList.Time.startTime}} -- {{item.inputList.Time.endTime}}</div>
@@ -87,14 +87,16 @@ const editInformation = (index)=>
       .titleName{
         font-size: large;
         font-weight: bold;
-        color: #409EFF;
+        // color: #409EFF;
+        @include base-color();
         margin:0 5px;
       }
       .line{
         flex-grow: 1;
         height: 1px;
         margin:0 5px;
-        background-color: #409EFF;
+        // background-color: #409EFF;
+        @include base-background();
       }
     }
   .menu-title{

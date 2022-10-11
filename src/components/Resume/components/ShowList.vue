@@ -10,13 +10,12 @@
       </div>
     </div>
     <div class="inputList">
-        <div class="menu-title">
+        <div class="menu-title"> 
           <div class="title-left">{{item.inputList.school}}</div>
           <div class="title-right">{{item.inputList.Time.startTime}} -- {{item.inputList.Time.endTime}}</div>
         </div>
-        <div class="menu-title">
-          <div class="title-left">{{item.inputList.academy}} {{item.inputList.city}}</div>
-          <div class="title-right">{{item.inputList.Time.startTime}} -- {{item.inputList.Time.endTime}}</div>
+        <div class="sec-title">
+          <div class="title-left">{{item.inputList.academy}} {{item.inputList.degree}} {{item.inputList.city}}</div>
         </div>
         <div class="text">
           <div class="textH5" v-html="item.inputList.richText">
@@ -74,6 +73,34 @@ const editInformation = (index)=>
         height: 200px;
         width: 100%;
         margin: 0 20px;
+        font-size: 12px;
+        text-align: left;
+        .menu-title{
+          height: 24px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          font-size: 14px;
+          margin:0 15px;
+        .title-left{
+          font-weight: bold;
+          width: 100px;
+          text-align: left;
+        }
+        .title-right{
+          width: 240px;
+        }
+      }
+      .sec-title{
+        height: 24px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin:0 15px;
+      }
+      .text{
+        margin:0 15px;
+      }
     }
     .active{
     background-color: #F0F2F5;
@@ -99,7 +126,5 @@ const editInformation = (index)=>
         @include base-background();
       }
     }
-  .menu-title{
-    height: 30px;
-  }
+  
   </style>

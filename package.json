@@ -10,7 +10,7 @@
     "@element-plus/icons-vue": "^2.0.9",
     "@tinymce/tinymce-vue": "^4.0.7",
     "@vueup/vue-quill": "^1.0.0-alpha.40",
-    "@wangeditor/editor": "^5.1.18",
+    "@wangeditor/editor": "^5.1.21",
     "@wangeditor/editor-for-vue": "^5.1.12",
     "core-js": "^3.8.3",
     "element-plus": "^2.2.16",

@@ -38,20 +38,26 @@ import { ref,markRaw, onMounted, onUpdated } from 'vue'
 import ShowList from './components/ShowList.vue';
 
 
-const value = ref('light-theme')
+const value = ref('red-theme')
     const options = [
   {
-    value: 'light-theme',
-    label: 'ligth',
-  },
+    value: 'red-theme',
+    label: 'red',
+  }
+  ,
   {
-    value: 'dark-theme',
-    label: 'dark',
+    value: 'green-theme',
+    label: 'green',
   }
   ,
   {
     value: 'blue-theme',
     label: 'blue',
+  }
+  ,
+  {
+    value: 'org-theme',
+    label: 'org',
   }
 ]
 const value1 = ref('Degree')

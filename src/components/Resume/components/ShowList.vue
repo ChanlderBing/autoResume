@@ -12,10 +12,10 @@
     <div class="inputList">
         <div class="menu-title"> 
           <div class="title-left">{{item.inputList.school}}</div>
-          <div class="title-right">{{item.inputList.Time.startTime}} -- {{item.inputList.Time.endTime}}</div>
+          <div class="title-right" v-if="item.inputList.Time.startTime">{{item.inputList.Time.startTime}}至{{item.inputList.Time.endTime}} </div>
         </div>
         <div class="sec-title">
-          <div class="title-left">{{item.inputList.academy}} {{item.inputList.degree}} {{item.inputList.city}}</div>
+          <div class="title-left"><span>{{item.inputList.academy}}</span> <span>{{item.inputList.degree}}</span> <span>{{item.inputList.city}}</span></div>
         </div>
         <div class="text">
           <div class="textH5" v-html="item.inputList.richText">
@@ -70,36 +70,41 @@ const editInformation = (index)=>
 </script>
   <style scoped lang="scss">
     .inputList{
-        height: 200px;
+        // height: 200px;
         width: 100%;
-        margin: 0 20px;
+        padding: 0 23px 0 32px;
         font-size: 12px;
         text-align: left;
+        box-sizing: border-box;
         .menu-title{
           height: 24px;
           display: flex;
           justify-content: space-between;
           align-items: center;
           font-size: 14px;
-          margin:0 15px;
+         
         .title-left{
           font-weight: bold;
           width: 100px;
           text-align: left;
         }
         .title-right{
-          width: 240px;
+          // width: 240px;
+          // margin-right: 20px;
+          width: 200px;
+          text-align: end;
+          font-size: 12px;
         }
       }
       .sec-title{
         height: 24px;
+        width: 125px;
         display: flex;
         justify-content: space-between;
-        align-items: center;
-        margin:0 15px;
+        align-items: center; 
       }
-      .text{
-        margin:0 15px;
+      .textH5{
+        
       }
     }
     .active{
@@ -108,7 +113,7 @@ const editInformation = (index)=>
     .title{
       height: 30px;
       display: flex;
-      margin: 0 20px;
+      margin: 13px 20px 0;
       justify-content: space-between;
       align-items: center;
       .titleName{

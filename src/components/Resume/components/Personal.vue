@@ -8,7 +8,9 @@
     <!-- <div class="edu"></div>
     <div class="email">983270722@qq.com</div> -->
   </div>
-  <div class="avatar"><img src="@/assets/img/wyk.jpg" alt="Ikun!"></div> 
+
+  
+  <div class="avatar"><img src="@/assets/img/wyk.jpg" alt="Ikun!" blue></div> 
   </div>
 </template>
 

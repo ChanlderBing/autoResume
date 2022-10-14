@@ -8,7 +8,7 @@
     <div class="skill">
       <el-form :inline="true" :model="renderList.inputList" class="demo-form-inline">
         <template v-for="(value,key) in renderList.inputList">
-          <el-form-item :label="key" v-if="moduleCheck(key) === 'normal'">
+          <el-form-item :label="realationship[key]" v-if="moduleCheck(key) === 'normal'">
             <el-input v-model="renderList.inputList[key]" />
           </el-form-item>
       <el-form-item label="时间" v-if="moduleCheck(key) === 'Time'">
@@ -37,7 +37,7 @@
       </el-col>
       </el-form-item>
       <template v-if="moduleCheck(key) === 'Text'">
-        <div>{{key}}</div>
+        <div>具体描述</div>
         <Toolbar
         style="border-bottom: 1px solid #ccc"
         :editor="editorRef"
@@ -61,7 +61,7 @@
   import '@wangeditor/editor/dist/css/style.css' // 引入 css
   import { onBeforeUnmount,unref, ref, shallowRef, onMounted } from 'vue'
   import { Editor, Toolbar } from '@wangeditor/editor-for-vue'
-import { ElMessage } from 'element-plus';
+  import { ElMessage } from 'element-plus';
 
   
   let resumeMoudle = JSON.parse(localStorage.getItem('resumeMoudle'))
@@ -132,6 +132,13 @@ import { ElMessage } from 'element-plus';
     const handleCreated = (editor) => {
       editorRef.value = editor // 记录 editor 实例，重要！
     }
+    //对应关系
+    const realationship = {
+        'school':'学校',
+        'academy':'学时',
+        'degree':'学历',
+        'major':'专业'
+  }
 </script>
 
   <style scoped lang="scss">

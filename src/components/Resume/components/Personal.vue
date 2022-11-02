@@ -10,9 +10,23 @@
   </div>
 
   
-  <div class="avatar"><img src="@/assets/img/wyk.jpg" alt="Ikun!" blue></div> 
+  <div class="avatar">
+    <img src="@/assets/img/wyk.jpg" alt="Ikun!" blue @click="upload">
+      </div> 
+      <input type="file" name="logo" style="display: none" ref="inputFile">
+      <input type="submit" value="提交" hidden>
   </div>
 </template>
+
+<script lang="ts" setup>
+import { onMounted, ref } from "vue";
+
+const inputFile = ref(null)
+  const upload = ()=>{
+    inputFile.value.click()
+  }
+
+</script>
 
 <style scoped lang="scss">
 .personal{

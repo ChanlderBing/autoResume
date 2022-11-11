@@ -15,7 +15,7 @@
           <div class="title-right" v-if="item.inputList.Time.startTime">{{item.inputList.Time.startTime}}至{{item.inputList.Time.endTime}} </div>
         </div>
         <div class="sec-title">
-          <div class="title-left"><span>{{item.inputList.academy}}</span> <span>{{item.inputList.degree}}</span> <span>{{item.inputList.city}}</span></div>
+          <div class="title-left">{{item.inputList.academy}} {{item.inputList.degree}} {{item.inputList.city}}</div>
         </div>
         <div class="text">
           <div class="textH5" v-html="item.inputList.richText">
@@ -85,7 +85,7 @@ const editInformation = (index)=>
          
         .title-left{
           font-weight: bold;
-          width: 100px;
+          width: 300px;
           text-align: left;
         }
         .title-right{
@@ -97,14 +97,12 @@ const editInformation = (index)=>
         }
       }
       .sec-title{
-        height: 24px;
-        width: 125px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center; 
-      }
-      .textH5{
         
+        .title-left{
+         
+          height: 24px;
+          
+        }
       }
     }
     .active{

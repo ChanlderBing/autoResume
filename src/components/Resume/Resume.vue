@@ -106,7 +106,8 @@ const print = () => {
     printable: 'printC',
     type: 'html',
     targetStyles: ['*'],
-    header: null
+    header: null,
+    scanStyles:false
   })
 }
 </script>

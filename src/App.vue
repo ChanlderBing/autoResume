@@ -18,7 +18,7 @@
   text-align: center;
   color: #2c3e50;
 }
-html,body,p{
+html,body,p,ol{
   padding: 0;
   margin: 0;
 }

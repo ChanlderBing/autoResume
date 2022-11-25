@@ -1,13 +1,17 @@
 //浅色主题
 $light-theme: (
-        base-color: #000,
-        background-color: #000
+        base-color: #353944,
+        background-color: #f5f5f7,
 );
 
 //深色主题
 $dark-theme: (
         base-color: #fff,
-        background-color: #000
+        background-color: #353944
+);
+$backgroundThemes: (
+        light-theme: $light-theme,
+        dark-theme: $dark-theme,
 );
 
 $green-theme:(
@@ -20,7 +24,7 @@ $blue-theme:(
 );
 $org-theme:(
   base-color: #E6A23C,
-   background-color:#E6A23C
+  background-color:#E6A23C
 );
 $red-theme:(
   base-color: #F56C6C,
@@ -29,8 +33,6 @@ $red-theme:(
 
 //定义映射集合
 $themes: (
-        light-theme: $light-theme,
-        dark-theme: $dark-theme,
         green-theme: $green-theme,
         blue-theme: $blue-theme,
         org-theme: $org-theme,
@@ -57,5 +59,22 @@ $themes: (
   }
 }
 
+//home字体颜色
+@mixin home-color() {
+  @each $theme-name, $theme in $backgroundThemes{
+    [data-theme1 = '#{$theme-name}'] & {
+      color: map-get($map: $theme, $key: base-color);
+    }
+  }
+}
+
+//home背景色
+@mixin home-background() {
+  @each $theme-name, $theme in $backgroundThemes {
+    [data-theme1 = '#{$theme-name}'] & {
+      background: map-get($map: $theme, $key: background-color);
+    }
+  }
+}
 $font-size: 14px;
 

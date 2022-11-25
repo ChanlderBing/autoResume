@@ -1,6 +1,6 @@
 <template>
     <div :class="focusIndex == index ? 'active':''" v-for="(item,index) in resumeMoudle" :key="index"  @click="editInformation(index)" @mouseover="focusMoudel(index)" @mouseleave="blurMoudel()">
-      <div class="title">
+      <div :class="focusIndex == index ? ['activeTitle','title']:'title'">
         <div class="titleName"> {{item.title}}</div>
         <div class="line"></div>
         <div class="control" v-if="focusIndex == index">
@@ -29,6 +29,7 @@
   import store from "@/store";
   import { ref } from "vue";
   import {Top,Bottom} from '@element-plus/icons-vue'
+
   const props = defineProps({
     resumeMoudle:Object
   })
@@ -70,7 +71,6 @@ const editInformation = (index)=>
 </script>
   <style scoped lang="scss">
     .inputList{
-        // height: 200px;
         width: 100%;
         padding: 0 23px 0 32px;
         font-size: 12px;
@@ -82,31 +82,29 @@ const editInformation = (index)=>
           justify-content: space-between;
           align-items: center;
           font-size: 14px;
-         
         .title-left{
           font-weight: bold;
           width: 300px;
           text-align: left;
         }
         .title-right{
-          // width: 240px;
-          // margin-right: 20px;
           width: 200px;
           text-align: end;
           font-size: 12px;
         }
       }
       .sec-title{
-        
         .title-left{
-         
-          height: 24px;
-          
+          height: 24px;       
         }
       }
     }
     .active{
-    background-color: #F0F2F5;
+      background-color: #F0F2F5;
+    }
+    .activeTitle{
+      @include base-background();
+      opacity: 0.2;
     }
     .title{
       height: 30px;
@@ -125,7 +123,6 @@ const editInformation = (index)=>
         flex-grow: 1;
         height: 1px;
         margin:0 5px;
-        // background-color: #409EFF;
         @include base-background();
       }
     }

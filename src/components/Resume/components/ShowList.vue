@@ -103,8 +103,7 @@ const editInformation = (index)=>
       background-color: #F0F2F5;
     }
     .activeTitle{
-      @include base-background();
-      opacity: 0.2;
+     @include color-white();
     }
     .title{
       height: 30px;

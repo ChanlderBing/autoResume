@@ -33,12 +33,13 @@
 </template>
 <script lang="ts" setup>
 import Personal from '@/components/Resume/components/Personal.vue'
+import store from '@/store';
 import printjs from 'print-js'
 import { ref,markRaw, onMounted, onUpdated } from 'vue'
 import ShowList from './components/ShowList.vue';
 
 
-const value = ref('red-theme')
+const value = ref(store.state.color_theme)
     const options = [
   {
     value: 'red-theme',
@@ -63,6 +64,7 @@ const value = ref('red-theme')
 const value1 = ref('Degree')
 const changeTheme = (theme:string)=>{
     window.document.getElementById('app')?.setAttribute('data-theme', theme)
+    store.commit('switchThemeColor',theme)
 }
 let resumeMoudle1 = [{
     title:'教育经历',
@@ -96,11 +98,7 @@ let resumeMoudle1 = [{
     }
 }]
 let resumeMoudle = ref(JSON.parse(localStorage.getItem('resumeMoudle')))
-onMounted:{
-    if (!localStorage.getItem('resumeMoudle')) {
-        localStorage.setItem('resumeMoudle', JSON.stringify(resumeMoudle1));
-    }
-}
+
 const print = () => {
   printjs({
     printable: 'printC',
@@ -110,6 +108,12 @@ const print = () => {
     scanStyles:false
   })
 }
+onMounted:{
+    if (!localStorage.getItem('resumeMoudle')) {
+        localStorage.setItem('resumeMoudle', JSON.stringify(resumeMoudle1));
+    }
+}
+
 </script>
 
 <style scoped lang="scss">
@@ -139,12 +143,10 @@ const print = () => {
 .v-enter,
 			.v-leave-to{
 				opacity: 0;
-				// transform: translateY(150px);
 			}
 			.v-enter-active,
 			.v-leave-active{
 				opacity: 1;
-				// transition: all 0.2s ease; 
       }
   :deep .el-card__body {
     padding: 0;

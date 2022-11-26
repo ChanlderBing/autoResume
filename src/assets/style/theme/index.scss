@@ -15,22 +15,25 @@ $backgroundThemes: (
 );
 
 $green-theme:(
-  base-color: #67C23A,
-   background-color:#67C23A
+   base-color: #67C23A,
+   background-color:#67C23A,
+   color-white:#67c23a13,
 );
 $blue-theme:(
   base-color: #409EFF,
-   background-color:#409EFF
+   background-color:#409EFF,
+   color-white:#40a0ff13,
 );
 $org-theme:(
   base-color: #E6A23C,
-  background-color:#E6A23C
+  background-color:#E6A23C,
+  color-white:#e6a23c13,
 );
 $red-theme:(
-  base-color: #F56C6C,
-   background-color:#F56C6C
+    base-color: #F56C6C,
+   background-color:#F56C6C,
+   color-white:#f56c6c13,
 );
-
 //定义映射集合
 $themes: (
         green-theme: $green-theme,
@@ -55,6 +58,14 @@ $themes: (
   @each $theme-name, $theme in $themes {
     [data-theme = '#{$theme-name}'] & {
       background: map-get($map: $theme, $key: background-color);
+    }
+  }
+}
+
+@mixin color-white() {
+  @each $theme-name, $theme in $themes {
+    [data-theme = '#{$theme-name}'] & {
+      background: map-get($map: $theme, $key: color-white);
     }
   }
 }

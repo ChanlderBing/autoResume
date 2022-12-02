@@ -4,9 +4,31 @@
         <div class="titleName"> {{item.title}}</div>
         <div class="line"></div>
         <div class="control" v-if="focusIndex == index">
-        <el-button type="primary" :icon="Top" @click.stop="switchTabUp(index)" circle />
-        <el-button type="primary" :icon="Bottom" @click.stop="switchTabDown(index)" circle />
-      <button @click.stop="tabDel(index)">删除</button>
+          <el-tooltip
+        class="box-item"
+        effect="dark"
+        content="向上"
+        placement="top"
+      >
+      <img src="../../../assets/Up.png"  style="width: 24px;height: 24px; opacity: 0.8;" @click.stop="switchTabUp(index)">  
+      </el-tooltip>
+      <el-tooltip
+        class="box-item"
+        effect="dark"
+        content="向下"
+        placement="top"
+      >
+      <img src="../../../assets/Down.png" id="dowm" style="width: 24px;height: 24px;margin-right: 2px;opacity: 0.8;"  @click.stop="switchTabDown(index)">
+      </el-tooltip>
+      <el-tooltip
+        class="box-item"
+        effect="dark"
+        content="删除"
+        placement="top"
+      >
+      <img src="../../../assets/del.png" alt="删除" style="width: 24px;height: 24px;opacity: 0.7;"  @click.stop="tabDel(index)">
+      </el-tooltip>
+
       </div>
     </div>
     <div class="inputList">
@@ -28,7 +50,6 @@
 <script lang="ts" setup>
   import store from "@/store";
   import { ref } from "vue";
-  import {Top,Bottom} from '@element-plus/icons-vue'
 
   const props = defineProps({
     resumeMoudle:Object
@@ -70,7 +91,10 @@ const editInformation = (index)=>
 
 </script>
   <style scoped lang="scss">
-    .inputList{
+#dowm:hover #dowm{
+  width: 50px;
+}
+.inputList{
         width: 100%;
         padding: 0 23px 0 32px;
         font-size: 12px;

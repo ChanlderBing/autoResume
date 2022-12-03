@@ -119,25 +119,25 @@
   //richText
   const editorRef = shallowRef()
 
-    const toolbarConfig = {}
-    const editorConfig = { placeholder: '请输入内容...' }
+  const toolbarConfig = {}
+  const editorConfig = { placeholder: '请输入内容...' }
 
-    // 组件销毁时，也及时销毁编辑器
-    onBeforeUnmount(() => {
-        const editor = editorRef.value
-        if (editor == null) return
-        editor.destroy()
-    })
+  // 组件销毁时，也及时销毁编辑器
+  onBeforeUnmount(() => {
+      const editor = editorRef.value
+      if (editor == null) return
+      editor.destroy()
+  })
 
-    const handleCreated = (editor) => {
-      editorRef.value = editor // 记录 editor 实例，重要！
-    }
-    //对应关系
-    const realationship = {
-        'school':'学校',
-        'academy':'学时',
-        'degree':'学历',
-        'major':'专业'
+  const handleCreated = (editor) => {
+    editorRef.value = editor // 记录 editor 实例，重要！
+  }
+  //对应关系
+  const realationship = {
+      'school':'学校',
+      'academy':'学时',
+      'degree':'学历',
+      'major':'专业'
   }
 </script>
 

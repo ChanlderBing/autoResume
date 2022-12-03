@@ -7,10 +7,18 @@
           <el-tooltip
         class="box-item"
         effect="dark"
+        content="添加"
+        placement="top"
+      >
+      <img src="../../../assets/add.png"  v-if="item.title == '工作经历'">  
+      </el-tooltip>
+          <el-tooltip
+        class="box-item"
+        effect="dark"
         content="向上"
         placement="top"
       >
-      <img src="../../../assets/Up.png"  style="width: 24px;height: 24px; opacity: 0.8;" @click.stop="switchTabUp(index)">  
+      <img src="../../../assets/Up.png" :class="index == '0'? 'abandon':''" style="margin-left: 4px;" @click.stop="switchTabUp(index)">  
       </el-tooltip>
       <el-tooltip
         class="box-item"
@@ -18,7 +26,7 @@
         content="向下"
         placement="top"
       >
-      <img src="../../../assets/Down.png" id="dowm" style="width: 24px;height: 24px;margin-right: 2px;opacity: 0.8;"  @click.stop="switchTabDown(index)">
+      <img src="../../../assets/Down.png" :class="index == (resumeMoudle.length - 1).toString()? 'abandon':''" style="margin-right: 4px;"  @click.stop="switchTabDown(index)">
       </el-tooltip>
       <el-tooltip
         class="box-item"
@@ -26,9 +34,8 @@
         content="删除"
         placement="top"
       >
-      <img src="../../../assets/del.png" alt="删除" style="width: 24px;height: 24px;opacity: 0.7;"  @click.stop="tabDel(index)">
+      <img src="../../../assets/del.png" alt="删除"  @click.stop="tabDel(index)">
       </el-tooltip>
-
       </div>
     </div>
     <div class="inputList">
@@ -91,8 +98,19 @@ const editInformation = (index)=>
 
 </script>
   <style scoped lang="scss">
-#dowm:hover #dowm{
-  width: 50px;
+.control{
+  img{
+    width: 24px;
+    height: 24px;
+    opacity: 0.8;
+  }
+  img:hover{
+    opacity: 0.4;
+  }
+  .abandon{
+    opacity: 0.2;
+    cursor:not-allowed;
+  }
 }
 .inputList{
         width: 100%;

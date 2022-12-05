@@ -69,7 +69,7 @@ import ShowList from './components/ShowList.vue';
   let resumeMoudle1 = [{
       title:'教育经历',
       expand:true,
-      inputList:{
+      inputList:[{
           school:'',
           major:'',
           degree:'',
@@ -80,12 +80,8 @@ import ShowList from './components/ShowList.vue';
               endTime:''
           },
           richText:''
-      }
-  },
-  {
-      title:'工作经历',
-      expand:true,
-      inputList:{
+      },
+      {
           school:'',
           major:'',
           degree:'',
@@ -95,7 +91,22 @@ import ShowList from './components/ShowList.vue';
               endTime:''
           },
           richText:''
-      }
+      }]
+  },
+  {
+      title:'工作经历',
+      expand:true,
+      inputList:[{
+          school:'',
+          major:'',
+          degree:'',
+          academy:'',
+          Time:{
+              startTime:'',
+              endTime:''
+          },
+          richText:''
+      }]
   }]
   let resumeMoudle = ref(JSON.parse(localStorage.getItem('resumeMoudle')))
 

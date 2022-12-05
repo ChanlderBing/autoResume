@@ -38,6 +38,9 @@
         <div class="edit" v-if="store.state.isEdit" >
           <EditForm></EditForm>
         </div>
+        <div class="test" v-else-if="store.state.isAdd">
+          <AddForm></AddForm>
+        </div>
         <div class="test" v-else>
           <Summary></Summary> 
         </div>
@@ -91,9 +94,9 @@ import Resume from '@/components/Resume/Resume.vue'
 import store from '@/store';
 import Summary from '@/components/Resume/components/Summary.vue';
 import EditForm from '@/components/Resume/components/EditForm.vue';
+import AddForm from '@/components/Resume/components/AddForm.vue';
 import printjs from 'print-js'
 import { ref } from 'vue';
-
 
 const formLabelAlign =  ref({
   Name:'',

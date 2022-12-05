@@ -1,5 +1,5 @@
 <template>
-    <div :class="focusIndex == index ? 'active':''" v-for="(item,index) in resumeMoudle" :key="index"  @click="editInformation(index)" @mouseover="focusMoudel(index)" @mouseleave="blurMoudel()">
+    <div :class="focusIndex == index ? 'active':''" v-for="(item,index) in resumeMoudle" :key="index"  @mouseover="focusMoudel(index)" @mouseleave="blurMoudel()">
       <div :class="focusIndex == index ? ['activeTitle','title']:'title'">
         <div class="titleName"> {{item.title}}</div>
         <div class="line"></div>
@@ -10,7 +10,7 @@
         content="添加"
         placement="top"
       >
-      <img src="../../../assets/add.png"  v-if="item.title == '工作经历'">  
+      <img src="../../../assets/add.png" v-if="item.title == '工作经历'">  
       </el-tooltip>
           <el-tooltip
         class="box-item"
@@ -38,16 +38,16 @@
       </el-tooltip>
       </div>
     </div>
-    <div class="inputList">
+    <div class="inputList" v-for="(list,index1) in item.inputList"  @click="editInformation(index,index1,item.expand)">
         <div class="menu-title"> 
-          <div class="title-left">{{item.inputList.school}}</div>
-          <div class="title-right" v-if="item.inputList.Time.startTime">{{item.inputList.Time.startTime}}至{{item.inputList.Time.endTime}} </div>
+          <div class="title-left">{{list.school}}</div>
+          <div class="title-right" v-if="list.Time.startTime">{{list.Time.startTime}}至{{list.Time.endTime}} </div>
         </div>
         <div class="sec-title">
-          <div class="title-left">{{item.inputList.academy}} {{item.inputList.degree}} {{item.inputList.city}}</div>
+          <div class="title-left">{{list.academy}} {{list.degree}} {{list.city}}</div>
         </div>
         <div class="text">
-          <div class="textH5" v-html="item.inputList.richText">
+          <div class="textH5" v-html="list.richText">
           </div>
         </div>
     </div>
@@ -65,10 +65,10 @@
   let focusIndex = ref()
   
   const switchTabUp = (index: any) => {
-  if (index === 0) {
-  } else {
-    resumeMoudle.value[index] = resumeMoudle.value.splice(index - 1, 1, resumeMoudle.value[index])[0]
-  }
+    if (index === 0) {
+      } else {
+        resumeMoudle.value[index] = resumeMoudle.value.splice(index - 1, 1, resumeMoudle.value[index])[0]
+    }
   }
 const switchTabDown = (index: any) => {
   if (index >= resumeMoudle.value.length - 1) {
@@ -85,19 +85,24 @@ const focusMoudel = (index:any)=>{
 const blurMoudel = ()=>{
   focusIndex.value = null
 }
-const editInformation = (index)=>
+const editInformation = (index,index1,isExpand:boolean)=>
 {
   if (store.state.isEdit) {
     store.commit('switch',false)
   }
   setTimeout(() => {
     store.commit('chosenOne',index)
+    if (isExpand) {
+      store.commit('chosenDetail',index1)
+    }else{
+      store.commit('chosenDetail', 0)
+    }
     store.commit('switch',true)
     }, 100);
 }
 
 </script>
-  <style scoped lang="scss">
+<style scoped lang="scss">
 .control{
   img{
     width: 24px;

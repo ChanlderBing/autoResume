@@ -70,7 +70,6 @@
 
   onMounted(()=>{
     console.log(renderListDetail);
-    
   })
   
   const checkList = ['Text','Time']

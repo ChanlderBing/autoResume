@@ -80,7 +80,7 @@ const tabDel = (index:any) =>{
   resumeMoudle.value.splice(index,1)
 }
 const focusMoudel = (index:any)=>{
-  focusIndex.value = index-0;
+  focusIndex.value = index - 0;
 }
 const blurMoudel = ()=>{
   focusIndex.value = null
@@ -117,12 +117,13 @@ const editInformation = (index,index1,isExpand:boolean)=>
     cursor:not-allowed;
   }
 }
+.inputList:hover{
+          background-color: #E4E7ED;
+}
 .inputList{
-        width: 100%;
-        padding: 0 23px 0 32px;
+        margin: 0 23px 0 32px;
         font-size: 12px;
         text-align: left;
-        box-sizing: border-box;
         .menu-title{
           height: 24px;
           display: flex;

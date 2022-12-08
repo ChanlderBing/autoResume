@@ -52,6 +52,9 @@
         <div v-if="store.state.isEdit" >
           <Resume></Resume>
         </div>
+        <div v-else-if="store.state.isAdd">
+          <Resume></Resume>
+        </div>
         <div v-else>
           <Resume></Resume>
         </div>

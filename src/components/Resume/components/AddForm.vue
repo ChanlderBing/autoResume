@@ -6,15 +6,15 @@
       <el-button type="primary" class="ml-2" @click="onSubmit">完成</el-button>
   </div>
     <div class="skill">
-      <el-form :inline="true" :model="renderList.inputList" class="demo-form-inline">
-        <template v-for="(value,key) in renderList.inputList">
+      <el-form :inline="true" :model="renderListDetail" class="demo-form-inline">
+        <template v-for="(value,key) in renderListDetail">
           <el-form-item :label="realationship[key]" v-if="moduleCheck(key) === 'normal'">
-            <el-input v-model="renderList.inputList[key]" />
+            <el-input v-model="renderListDetail[key]" />
           </el-form-item>
       <el-form-item label="时间" v-if="moduleCheck(key) === 'Time'">
         <el-col :span="11">
         <el-date-picker
-          v-model="renderList.inputList[key].startTime"
+          v-model="renderListDetail[key].startTime"
           type="date"
           placeholder="开始时间"
           format="YYYY/MM/DD"
@@ -26,7 +26,7 @@
       </el-col>
         <el-col :span="11">
         <el-date-picker
-          v-model="renderList.inputList[key].endTime"
+          v-model="renderListDetail[key].endTime"
           type="date"
           placeholder="结束时间"
           :disabled-date="disabledDate"
@@ -45,7 +45,7 @@
       />
       <Editor
         style="height: 500px; overflow-y: hidden;"
-        v-model="renderList.inputList.richText"
+        v-model="renderListDetail.richText"
         :defaultConfig="editorConfig"
         @onCreated="handleCreated"
       />
@@ -66,16 +66,21 @@
   
   let resumeMoudle = JSON.parse(localStorage.getItem('resumeMoudle'))
   let renderList = ref(resumeMoudle[store.state.editChosen])
+  let renderListDetail = ref(renderList.value.inputList[store.state.editChosenDetail])
 
+  onMounted(()=>{
+    console.log(renderListDetail);
+  })
+  
   const checkList = ['Text','Time']
   const moduleCheck =(key)=>{
-  if (checkList.find((item)=>{
-  return key.includes(item)
-  }) === 'Text') {
-    return 'Text'
-  }else if(checkList.find((item)=>{
-  return key.includes(item)
-  }) === 'Time'){
+    if (checkList.find((item)=>{
+      return key.includes(item)
+    }) === 'Text') {
+      return 'Text'
+    }else if(checkList.find((item)=>{
+        return key.includes(item)
+    }) === 'Time') {
     return 'Time'
   }
     return 'normal'

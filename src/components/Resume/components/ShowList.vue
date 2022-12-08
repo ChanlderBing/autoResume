@@ -10,7 +10,7 @@
         content="添加"
         placement="top"
       >
-      <img src="../../../assets/add.png" v-if="item.title == '工作经历'">  
+      <img src="../../../assets/add.png" v-if="item.title == '工作经历'" @click.stop="addInformation(index)">  
       </el-tooltip>
           <el-tooltip
         class="box-item"
@@ -70,36 +70,45 @@
         resumeMoudle.value[index] = resumeMoudle.value.splice(index - 1, 1, resumeMoudle.value[index])[0]
     }
   }
-const switchTabDown = (index: any) => {
-  if (index >= resumeMoudle.value.length - 1) {
-  } else {
-    resumeMoudle.value[index] = resumeMoudle.value.splice(index + 1, 1, resumeMoudle.value[index])[0]
-  }
-}
-const tabDel = (index:any) =>{
-  resumeMoudle.value.splice(index,1)
-}
-const focusMoudel = (index:any)=>{
-  focusIndex.value = index - 0;
-}
-const blurMoudel = ()=>{
-  focusIndex.value = null
-}
-const editInformation = (index,index1,isExpand:boolean)=>
-{
-  if (store.state.isEdit) {
-    store.commit('switch',false)
-  }
-  setTimeout(() => {
-    store.commit('chosenOne',index)
-    if (isExpand) {
-      store.commit('chosenDetail',index1)
-    }else{
-      store.commit('chosenDetail', 0)
+  const switchTabDown = (index: any) => {
+    if (index >= resumeMoudle.value.length - 1) {
+    } else {
+      resumeMoudle.value[index] = resumeMoudle.value.splice(index + 1, 1, resumeMoudle.value[index])[0]
     }
-    store.commit('switch',true)
-    }, 100);
-}
+  }
+  const tabDel = (index:any) =>{
+    resumeMoudle.value.splice(index,1)
+  }
+  const focusMoudel = (index:any)=>{
+    focusIndex.value = index - 0;
+  }
+  const blurMoudel = ()=>{
+    focusIndex.value = null
+  }
+  const editInformation = (index,index1,isExpand:boolean)=>
+  {
+    if (store.state.isEdit) {
+      store.commit('switch',false)
+    }
+    setTimeout(() => {
+      store.commit('chosenOne',index)
+      if (isExpand) {
+        store.commit('chosenDetail',index1)
+      }else{
+        store.commit('chosenDetail', 0)
+      }
+      store.commit('switch',true)
+      }, 100);
+  }
+  const addInformation = (index)=>{
+    if (store.state.isEdit) {
+      store.commit('switch',false)
+    }
+    setTimeout(() => {
+      store.commit('chosenOne',index)
+      store.commit('switchAdd',true)
+      }, 100);
+  }
 
 </script>
 <style scoped lang="scss">
@@ -118,7 +127,7 @@ const editInformation = (index,index1,isExpand:boolean)=>
   }
 }
 .inputList:hover{
-          background-color: #E4E7ED;
+          background-color: #EBEDF0
 }
 .inputList{
         margin: 0 23px 0 32px;

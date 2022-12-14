@@ -64,6 +64,7 @@
   let resumeMoudle = ref(props.resumeMoudle)
   let focusIndex = ref()
   
+  
   const switchTabUp = (index: any) => {
     if (index === 0) {
       } else {
@@ -103,13 +104,32 @@
   const addInformation = (index)=>{
     if (store.state.isEdit) {
       store.commit('switch',false)
+      store.commit('addStructInit',deepClear(resumeMoudle.value[index].inputList[0]))
     }
+    console.log(store.state.addStruct);
+    
     setTimeout(() => {
       store.commit('chosenOne',index)
       store.commit('switchAdd',true)
       }, 100);
   }
 
+  const deepClear =  (target)=> {
+    if (typeof target === 'object' && target) {
+        let cloneObj = {}
+        for (const key in target) { // 遍历
+            const val = target[key]
+            if (typeof val === 'object' && val) {
+                cloneObj[key] = deepClear(val) // 是对象就再次调用该函数递归
+            } else {
+                cloneObj[key] = '' // 基本类型的话直接复制值
+            }
+        }
+        return cloneObj
+    } else {
+        return target;
+    }
+  }
 </script>
 <style scoped lang="scss">
 .control{

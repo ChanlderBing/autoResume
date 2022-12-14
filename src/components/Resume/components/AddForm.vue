@@ -62,16 +62,16 @@
   import { onBeforeUnmount,unref, ref, shallowRef, onMounted } from 'vue'
   import { Editor, Toolbar } from '@wangeditor/editor-for-vue'
   import { ElMessage } from 'element-plus';
-
   
   let resumeMoudle = JSON.parse(localStorage.getItem('resumeMoudle'))
   let renderList = ref(resumeMoudle[store.state.editChosen])
-  let renderListDetail = ref(renderList.value.inputList[store.state.editChosenDetail])
+  let renderListDetail= ref(store.state.addStruct)
 
   onMounted(()=>{
-    console.log(renderListDetail);
+    console.log(store.state.addStruct);
+    
   })
-  
+
   const checkList = ['Text','Time']
   const moduleCheck =(key)=>{
     if (checkList.find((item)=>{
@@ -86,13 +86,14 @@
     return 'normal'
   }
   const onSubmit = () => {
+   // renderListDetail.value.push(renderListDetail);
     resumeMoudle[store.state.editChosen] = unref(renderList)
     localStorage.setItem('resumeMoudle',JSON.stringify(resumeMoudle))
     ElMessage.success('修改成功')
     back()
   }
   const back = ()=>{
-    store.commit('switch',false)
+    store.commit('switchAdd',false)
   }
   //datePicker
   const shortcuts = [

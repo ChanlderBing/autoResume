@@ -67,10 +67,6 @@
   let resumeMoudle = JSON.parse(localStorage.getItem('resumeMoudle'))
   let renderList = ref(resumeMoudle[store.state.editChosen])
   let renderListDetail = ref(renderList.value.inputList[store.state.editChosenDetail])
-
-  onMounted(()=>{
-    console.log(renderListDetail);
-  })
   
   const checkList = ['Text','Time']
   const moduleCheck =(key)=>{

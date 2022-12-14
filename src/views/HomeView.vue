@@ -38,7 +38,7 @@
         <div class="edit" v-if="store.state.isEdit" >
           <EditForm></EditForm>
         </div>
-        <div class="test" v-else-if="store.state.isAdd">
+        <div class="edit" v-else-if="store.state.isAdd">
           <AddForm></AddForm>
         </div>
         <div class="test" v-else>

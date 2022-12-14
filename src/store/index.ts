@@ -6,7 +6,8 @@ export default createStore({
     editChosen: 0,
     editChosenDetail: 0,
     isAdd:false,
-    color_theme: 'red-theme'
+    color_theme: 'red-theme',
+    addStruct:{}
   },
   getters: {
     
@@ -26,6 +27,9 @@ export default createStore({
     },
     switchThemeColor(state,color_theme){
       state.color_theme = color_theme
+    },
+    addStructInit(state,Struct){
+      state.addStruct = Struct
     }
   },
   actions: {

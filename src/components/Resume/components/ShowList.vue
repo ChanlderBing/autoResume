@@ -18,7 +18,7 @@
             </el-tooltip>
         </div>
       </div>
-      <div class="inputList" v-for="(list,index1) in item.inputList"  @click="editInformation(index,index1,item.expand)">
+      <div class="inputList" v-for="(list,index1) in item.inputList"  @click="editInformation(index,index1,item.expand)" @mouseover="focusDetailMoudel(index1)" @mouseleave="blurDetailMoudel()"> 
           <div class="menu-title"> 
             <div class="title-left">{{list.school}}</div>
             <div class="title-right" v-if="list.Time.startTime">{{list.Time.startTime}}至{{list.Time.endTime}} </div>
@@ -30,7 +30,7 @@
             <div class="textH5" v-html="list.richText">
             </div>
           </div>
-          <div class="control" v-if="focusIndex == index1">
+          <div class="control" v-if="focusDetailIndex == index1 && focusIndex == index">
             <el-tooltip class="box-item" effect="dark" content="向上" placement="top">
               <img src="../../../assets/Up.png" :class="index == '0'? 'abandon':''" style="margin-left: 4px;" @click.stop="switchTabUp(index)">  
             </el-tooltip>
@@ -77,6 +77,12 @@
   }
   const blurMoudel = ()=>{
     focusIndex.value = null
+  }
+  const focusDetailMoudel = (index:any)=>{
+    focusDetailIndex.value = index - 0;
+  }
+  const blurDetailMoudel = ()=>{
+    focusDetailIndex.value = null
   }
   const editInformation = (index,index1,isExpand:boolean)=>
   {

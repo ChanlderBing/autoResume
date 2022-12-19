@@ -30,16 +30,18 @@
             <div class="textH5" v-html="list.richText">
             </div>
           </div>
-          <div class="control" v-if="focusDetailIndex == index1 && focusIndex == index">
-            <el-tooltip class="box-item" effect="dark" content="向上" placement="top">
-              <img src="../../../assets/Up.png" :class="index == '0'? 'abandon':''" style="margin-left: 4px;" @click.stop="switchTabUp(index)">  
-            </el-tooltip>
-            <el-tooltip class="box-item" effect="dark" content="向下" placement="top">
-              <img src="../../../assets/Down.png" :class="index == (resumeMoudle.length - 1).toString()? 'abandon':''" style="margin-right: 4px;"  @click.stop="switchTabDown(index)">
-            </el-tooltip>
-            <el-tooltip class="box-item" effect="dark" content="删除" placement="top">
-              <img src="../../../assets/del.png" alt="删除"  @click.stop="tabDel(index)">
-            </el-tooltip>
+          <div class="control">
+            <div class="position">
+              <el-tooltip class="box-item" effect="dark" content="向上" placement="top">
+                <img src="../../../assets/Up.png" :class="index == '0'? 'abandon':''" style="margin-left: 4px;" @click.stop="switchTabUp(index)">  
+              </el-tooltip>
+              <el-tooltip class="box-item" effect="dark" content="向下" placement="top">
+                <img src="../../../assets/Down.png" :class="index == (resumeMoudle.length - 1).toString()? 'abandon':''" style="margin-right: 4px;"  @click.stop="switchTabDown(index)">
+              </el-tooltip>
+              <el-tooltip class="box-item" effect="dark" content="删除" placement="top">
+                <img src="../../../assets/del.png" alt="删除"  @click.stop="tabDel(index)">
+              </el-tooltip>
+            </div>
           </div>
       </div>
   </div>
@@ -129,6 +131,12 @@
 </script>
 <style scoped lang="scss">
 .control{
+    position: absolute;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    transform: translateY(-50%);
+    right: 0;
+
   img{
     width: 24px;
     height: 24px;
@@ -143,35 +151,36 @@
   }
 }
 .inputList:hover{
-          background-color: #EBEDF0
+  background-color: #EBEDF0
 }
 .inputList{
-        margin: 0 23px 0 32px;
-        font-size: 12px;
-        text-align: left;
-        .menu-title{
-          height: 24px;
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          font-size: 14px;
-        .title-left{
-          font-weight: bold;
-          width: 300px;
-          text-align: left;
-        }
-        .title-right{
-          width: 200px;
-          text-align: end;
-          font-size: 12px;
-        }
-      }
-      .sec-title{
-        .title-left{
-          height: 24px;       
-        }
-      }
+  margin: 0 23px 0 32px;
+  font-size: 12px;
+  text-align: left;
+  position: relative;
+  .menu-title{
+    height: 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+  .title-left{
+    font-weight: bold;
+    width: 300px;
+    text-align: left;
+  }
+  .title-right{
+    width: 200px;
+    text-align: end;
+    font-size: 12px;
+  }
+}
+  .sec-title{
+    .title-left{
+      height: 24px;       
     }
+  }
+}
     .active{
       background-color: #F0F2F5;
     }

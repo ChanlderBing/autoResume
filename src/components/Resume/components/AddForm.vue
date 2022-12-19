@@ -65,11 +65,9 @@
   
   let resumeMoudle = JSON.parse(localStorage.getItem('resumeMoudle'))
   let renderList = ref(resumeMoudle[store.state.editChosen])
-  let renderListDetail= ref(store.state.addStruct)
+  let renderListDetail = ref(store.state.addStruct)
 
   onMounted(()=>{
-    console.log(store.state.addStruct);
-    
   })
 
   const checkList = ['Text','Time']
@@ -86,7 +84,7 @@
     return 'normal'
   }
   const onSubmit = () => {
-   // renderListDetail.value.push(renderListDetail);
+    renderList.value.inputList.push(unref(renderListDetail))
     resumeMoudle[store.state.editChosen] = unref(renderList)
     localStorage.setItem('resumeMoudle',JSON.stringify(resumeMoudle))
     ElMessage.success('修改成功')

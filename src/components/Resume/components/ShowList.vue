@@ -4,53 +4,44 @@
         <div class="titleName"> {{item.title}}</div>
         <div class="line"></div>
         <div class="control" v-if="focusIndex == index">
-          <el-tooltip
-        class="box-item"
-        effect="dark"
-        content="添加"
-        placement="top"
-      >
-      <img src="../../../assets/add.png" v-if="item.title == '工作经历'" @click.stop="addInformation(index)">  
-      </el-tooltip>
-          <el-tooltip
-        class="box-item"
-        effect="dark"
-        content="向上"
-        placement="top"
-      >
-      <img src="../../../assets/Up.png" :class="index == '0'? 'abandon':''" style="margin-left: 4px;" @click.stop="switchTabUp(index)">  
-      </el-tooltip>
-      <el-tooltip
-        class="box-item"
-        effect="dark"
-        content="向下"
-        placement="top"
-      >
-      <img src="../../../assets/Down.png" :class="index == (resumeMoudle.length - 1).toString()? 'abandon':''" style="margin-right: 4px;"  @click.stop="switchTabDown(index)">
-      </el-tooltip>
-      <el-tooltip
-        class="box-item"
-        effect="dark"
-        content="删除"
-        placement="top"
-      >
-      <img src="../../../assets/del.png" alt="删除"  @click.stop="tabDel(index)">
-      </el-tooltip>
+            <el-tooltip class="box-item" effect="dark" content="添加" placement="top">
+              <img src="../../../assets/add.png" v-if="item.title == '工作经历'" @click.stop="addInformation(index)">  
+            </el-tooltip>
+            <el-tooltip class="box-item" effect="dark" content="向上" placement="top">
+              <img src="../../../assets/Up.png" :class="index == '0'? 'abandon':''" style="margin-left: 4px;" @click.stop="switchTabUp(index)">  
+            </el-tooltip>
+            <el-tooltip class="box-item" effect="dark" content="向下" placement="top">
+              <img src="../../../assets/Down.png" :class="index == (resumeMoudle.length - 1).toString()? 'abandon':''" style="margin-right: 4px;"  @click.stop="switchTabDown(index)">
+            </el-tooltip>
+            <el-tooltip class="box-item" effect="dark" content="删除" placement="top">
+              <img src="../../../assets/del.png" alt="删除"  @click.stop="tabDel(index)">
+            </el-tooltip>
+        </div>
       </div>
-    </div>
-    <div class="inputList" v-for="(list,index1) in item.inputList"  @click="editInformation(index,index1,item.expand)">
-        <div class="menu-title"> 
-          <div class="title-left">{{list.school}}</div>
-          <div class="title-right" v-if="list.Time.startTime">{{list.Time.startTime}}至{{list.Time.endTime}} </div>
-        </div>
-        <div class="sec-title">
-          <div class="title-left">{{list.academy}} {{list.degree}} {{list.city}}</div>
-        </div>
-        <div class="text">
-          <div class="textH5" v-html="list.richText">
+      <div class="inputList" v-for="(list,index1) in item.inputList"  @click="editInformation(index,index1,item.expand)">
+          <div class="menu-title"> 
+            <div class="title-left">{{list.school}}</div>
+            <div class="title-right" v-if="list.Time.startTime">{{list.Time.startTime}}至{{list.Time.endTime}} </div>
           </div>
-        </div>
-    </div>
+          <div class="sec-title">
+            <div class="title-left">{{list.academy}} {{list.degree}} {{list.city}}</div>
+          </div>
+          <div class="text">
+            <div class="textH5" v-html="list.richText">
+            </div>
+          </div>
+          <div class="control" v-if="focusIndex == index1">
+            <el-tooltip class="box-item" effect="dark" content="向上" placement="top">
+              <img src="../../../assets/Up.png" :class="index == '0'? 'abandon':''" style="margin-left: 4px;" @click.stop="switchTabUp(index)">  
+            </el-tooltip>
+            <el-tooltip class="box-item" effect="dark" content="向下" placement="top">
+              <img src="../../../assets/Down.png" :class="index == (resumeMoudle.length - 1).toString()? 'abandon':''" style="margin-right: 4px;"  @click.stop="switchTabDown(index)">
+            </el-tooltip>
+            <el-tooltip class="box-item" effect="dark" content="删除" placement="top">
+              <img src="../../../assets/del.png" alt="删除"  @click.stop="tabDel(index)">
+            </el-tooltip>
+          </div>
+      </div>
   </div>
   </template>
 
@@ -63,6 +54,7 @@
   })
   let resumeMoudle = ref(props.resumeMoudle)
   let focusIndex = ref()
+  let focusDetailIndex = ref()
   
   
   const switchTabUp = (index: any) => {
@@ -104,10 +96,8 @@
   const addInformation = (index)=>{
     if (store.state.isEdit) {
       store.commit('switch',false)
-      store.commit('addStructInit',deepClear(resumeMoudle.value[index].inputList[0]))
-    }
-    console.log(store.state.addStruct);
-    
+    } 
+    store.commit('addStructInit',deepClear(resumeMoudle.value[index].inputList[0]))
     setTimeout(() => {
       store.commit('chosenOne',index)
       store.commit('switchAdd',true)

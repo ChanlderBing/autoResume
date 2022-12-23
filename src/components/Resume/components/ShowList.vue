@@ -8,7 +8,7 @@
               <img src="../../../assets/add.png" v-if="item.title == '工作经历'" @click.stop="addInformation(index)">  
             </el-tooltip>
             <el-tooltip class="box-item" effect="dark" content="向上" placement="top">
-              <img src="../../../assets/Up.png" :class="index == '0'? 'abandon':''" style="margin-left: 4px;" @click.stop="switchTabUp(index)">  
+              <img src="../../../assets/Up.png" :class="index == '0'? 'abandon':''" style="margin-left: 4px;" @click.stop="switchTabUp(index)" >  
             </el-tooltip>
             <el-tooltip class="box-item" effect="dark" content="向下" placement="top">
               <img src="../../../assets/Down.png" :class="index == (resumeMoudle.length - 1).toString()? 'abandon':''" style="margin-right: 4px;"  @click.stop="switchTabDown(index)">
@@ -18,7 +18,7 @@
             </el-tooltip>
         </div>
       </div>
-      <div class="inputList" v-for="(list,index1) in item.inputList"  @click="editInformation(index,index1,item.expand)" @mouseover="focusDetailMoudel(index1)" @mouseleave="blurDetailMoudel()"> 
+      <div class="inputList" v-for="(list,index1) in item.inputList" :key="index1" @click="editInformation(index,index1,item.expand)" @mouseover="focusDetailMoudel(index1)" @mouseleave="blurDetailMoudel()"> 
           <div class="menu-title"> 
             <div class="title-left">{{list.school}}</div>
             <div class="title-right" v-if="list.Time.startTime">{{list.Time.startTime}}至{{list.Time.endTime}} </div>
@@ -30,18 +30,17 @@
             <div class="textH5" v-html="list.richText">
             </div>
           </div>
-          <div class="control">
-            <div class="position">
-              <el-tooltip class="box-item" effect="dark" content="向上" placement="top">
-                <img src="../../../assets/Up.png" :class="index == '0'? 'abandon':''" style="margin-left: 4px;" @click.stop="switchTabUp(index)">  
+          <div class="control" v-if ="focusIndex == index && focusDetailIndex == index1">
+              <!-- <el-tooltip class="box-item" effect="dark" content="向上" placement="top">
+                <img src="../../../assets/Up.png" :class="index1 == 0? 'abandon':''" style="margin-left: 4px;" @click.stop="switchTabUp(index1)">  
               </el-tooltip>
               <el-tooltip class="box-item" effect="dark" content="向下" placement="top">
-                <img src="../../../assets/Down.png" :class="index == (resumeMoudle.length - 1).toString()? 'abandon':''" style="margin-right: 4px;"  @click.stop="switchTabDown(index)">
+                <img src="../../../assets/Down.png" :class="index1 == item.inputList.length - 1 ? 'abandon':''" style="margin-right: 4px;"  @click.stop="switchTabDown(index1)">
               </el-tooltip>
               <el-tooltip class="box-item" effect="dark" content="删除" placement="top">
                 <img src="../../../assets/del.png" alt="删除"  @click.stop="tabDel(index)">
-              </el-tooltip>
-            </div>
+              </el-tooltip> -->
+              <Contrl @mytest="switchTabUp"></Contrl>
           </div>
       </div>
   </div>
@@ -49,7 +48,8 @@
 
 <script lang="ts" setup>
   import store from "@/store";
-  import { ref } from "vue";
+  import { ref,nextTick } from "vue";
+  import Contrl from '@/components/Resume/components/Contrl.vue';
 
   const props = defineProps({
     resumeMoudle:Object
@@ -86,12 +86,12 @@
   const blurDetailMoudel = ()=>{
     focusDetailIndex.value = null
   }
-  const editInformation = (index,index1,isExpand:boolean)=>
+  const editInformation = (index:any,index1:any,isExpand:boolean)=>
   {
     if (store.state.isEdit) {
       store.commit('switch',false)
     }
-    setTimeout(() => {
+    nextTick(()=>{
       store.commit('chosenOne',index)
       if (isExpand) {
         store.commit('chosenDetail',index1)
@@ -99,7 +99,7 @@
         store.commit('chosenDetail', 0)
       }
       store.commit('switch',true)
-      }, 100);
+    })
   }
   const addInformation = (index)=>{
     if (store.state.isEdit) {
@@ -130,58 +130,59 @@
   }
 </script>
 <style scoped lang="scss">
-.control{
+  .control{
+    img{
+      width: 24px;
+      height: 24px;
+      opacity: 0.8;
+    }
+    img:hover{
+      opacity: 0.4;
+    }
+    .abandon{
+      opacity: 0.2;
+      cursor:not-allowed;
+    }
+  }
+  .inputList:hover{
+    background-color: #EBEDF0
+  }
+  .inputList{
+    margin: 0 23px 0 32px;
+    font-size: 12px;
+    text-align: left;
+    position: relative;
+  .control{
     position: absolute;
     top: 50%;
     -webkit-transform: translateY(-50%);
     transform: translateY(-50%);
     right: 0;
-
-  img{
-    width: 24px;
-    height: 24px;
-    opacity: 0.8;
   }
-  img:hover{
-    opacity: 0.4;
-  }
-  .abandon{
-    opacity: 0.2;
-    cursor:not-allowed;
-  }
-}
-.inputList:hover{
-  background-color: #EBEDF0
-}
-.inputList{
-  margin: 0 23px 0 32px;
-  font-size: 12px;
-  text-align: left;
-  position: relative;
   .menu-title{
     height: 24px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     font-size: 14px;
-  .title-left{
-    font-weight: bold;
-    width: 300px;
-    text-align: left;
+    .title-left{
+      font-weight: bold;
+      width: 300px;
+      text-align: left;
+    }
+    .title-right{
+      width: 200px;
+      text-align: end;
+      font-size: 12px;
+    }
   }
-  .title-right{
-    width: 200px;
-    text-align: end;
-    font-size: 12px;
-  }
-}
   .sec-title{
     .title-left{
       height: 24px;       
     }
   }
-}
-    .active{
+  }
+  .active{
       background-color: #F0F2F5;
     }
     .activeTitle{

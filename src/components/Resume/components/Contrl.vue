@@ -1,33 +1,39 @@
 <template>
-  <el-tooltip class="box-item" effect="dark" content="添加" placement="top">
-    <img src="../../../assets/add.png" @click="handClick()">  
+  <el-tooltip class="box-item" effect="dark" content="添加" placement="top" v-if="addHidden">
+    <img src="../../../assets/add.png" @click=addClick()>  
   </el-tooltip>
   <el-tooltip class="box-item" effect="dark" content="向上" placement="top">
-      <img src="../../../assets/Up.png" :class="index1 == 0? 'abandon':''" style="margin-left: 4px;">  
+      <img src="../../../assets/Up.png" :class="upBan? 'abandon':''" style="margin-left: 4px;" @click="upClick()">  
   </el-tooltip>
   <el-tooltip class="box-item" effect="dark" content="向下" placement="top">
-      <img src="../../../assets/Down.png">
+      <img src="../../../assets/Down.png" :class="downBan? 'abandon':''" style="margin-left: 4px;" @click=dowmClick()>
   </el-tooltip>
   <el-tooltip class="box-item" effect="dark" content="删除" placement="top">
-      <img src="../../../assets/del.png" alt="删除" >
+      <img src="../../../assets/del.png" alt="删除" @click=delClick()>
   </el-tooltip>
 </template>
 
 
 <script lang="ts" setup>
-  import store from "@/store";
-  import { ref } from "vue";
-
   const props = defineProps({
-    index: Number,
-    index1: Number
+    flag: Number,
+    addHidden:Boolean,
+    upBan:Boolean,
+    downBan:Boolean,
   })
-  let focusIndex = ref()
-  let focusDetailIndex = ref()
 
-  const emit = defineEmits(["mytest"]);
-  const handClick = ()=>{
-    emit("mytest","牛的") 
+  const emit = defineEmits(["up","dowm","del","add"]);
+  const upClick = ()=>{
+    emit("up",props.flag) 
+  }
+  const dowmClick = ()=>{
+    emit("dowm",props.flag) 
+  }
+  const delClick = ()=>{
+    emit("del",props.flag) 
+  }
+  const addClick = ()=>{
+    emit("add") 
   }
 </script>
 

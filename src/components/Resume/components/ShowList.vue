@@ -1,24 +1,23 @@
 <template>
-    <div :class="focusIndex == index ? 'active':''" v-for="(item,index) in resumeMoudle" :key="index"  @mouseover="focusMoudel(index)" @mouseleave="blurMoudel()">
+    <div :class="focusIndex == index ? 'active':''" v-for="(item,index) in resumeMoudle" :key="'id'+ index"  @mouseover="focusMoudel(index)" @mouseleave="blurMoudel()">
       <div :class="focusIndex == index ? ['activeTitle','title']:'title'">
         <div class="titleName"> {{item.title}}</div>
         <div class="line"></div>
         <div class="control" v-if="focusIndex == index">
-            <el-tooltip class="box-item" effect="dark" content="添加" placement="top">
-              <img src="../../../assets/add.png" v-if="item.title == '工作经历'" @click.stop="addInformation(index)">  
-            </el-tooltip>
-            <el-tooltip class="box-item" effect="dark" content="向上" placement="top">
-              <img src="../../../assets/Up.png" :class="index == '0'? 'abandon':''" style="margin-left: 4px;" @click.stop="switchTabUp(index)" >  
-            </el-tooltip>
-            <el-tooltip class="box-item" effect="dark" content="向下" placement="top">
-              <img src="../../../assets/Down.png" :class="index == (resumeMoudle.length - 1).toString()? 'abandon':''" style="margin-right: 4px;"  @click.stop="switchTabDown(index)">
-            </el-tooltip>
-            <el-tooltip class="box-item" effect="dark" content="删除" placement="top">
-              <img src="../../../assets/del.png" alt="删除"  @click.stop="tabDel(index)">
-            </el-tooltip>
-        </div>
+            <Contrl 
+            @up = "switchTabUp"
+            @dowm="switchTabDown"
+            @del="tabDel"
+            @add="addInformation"
+            :flag = 0
+            :addHidden= "item.expand"
+            :upBan = "index == '0'"
+            :downBan = "index == (resumeMoudle.length - 1).toString()"
+            >
+            </Contrl>
+         </div>
       </div>
-      <div class="inputList" v-for="(list,index1) in item.inputList" :key="index1" @click="editInformation(index,index1,item.expand)" @mouseover="focusDetailMoudel(index1)" @mouseleave="blurDetailMoudel()"> 
+      <div class="inputList" v-for="(list,index1) in item.inputList" :key="'Id'+ index1" @click="editInformation(index,index1,item.expand)" @mouseover="focusDetailMoudel(index1)" @mouseleave="blurDetailMoudel()"> 
           <div class="menu-title"> 
             <div class="title-left">{{list.school}}</div>
             <div class="title-right" v-if="list.Time.startTime">{{list.Time.startTime}}至{{list.Time.endTime}} </div>
@@ -30,17 +29,17 @@
             <div class="textH5" v-html="list.richText">
             </div>
           </div>
-          <div class="control" v-if ="focusIndex == index && focusDetailIndex == index1">
-              <!-- <el-tooltip class="box-item" effect="dark" content="向上" placement="top">
-                <img src="../../../assets/Up.png" :class="index1 == 0? 'abandon':''" style="margin-left: 4px;" @click.stop="switchTabUp(index1)">  
-              </el-tooltip>
-              <el-tooltip class="box-item" effect="dark" content="向下" placement="top">
-                <img src="../../../assets/Down.png" :class="index1 == item.inputList.length - 1 ? 'abandon':''" style="margin-right: 4px;"  @click.stop="switchTabDown(index1)">
-              </el-tooltip>
-              <el-tooltip class="box-item" effect="dark" content="删除" placement="top">
-                <img src="../../../assets/del.png" alt="删除"  @click.stop="tabDel(index)">
-              </el-tooltip> -->
-              <Contrl @mytest="switchTabUp"></Contrl>
+          <div class="control" v-if ="focusIndex == index && focusDetailIndex == index1" @click.stop>
+              <Contrl 
+              @up="switchTabUp"
+              @dowm="switchTabDown"
+              @del="tabDel"
+              :flag = 1
+              :addHidden = false
+              :upBan = "index1 == 0"
+              :downBan = "index1 == item.inputList.length - 1"
+              >
+            </Contrl>
           </div>
       </div>
   </div>
@@ -58,21 +57,39 @@
   let focusIndex = ref()
   let focusDetailIndex = ref()
   
-  
-  const switchTabUp = (index: any) => {
-    if (index === 0) {
-      } else {
-        resumeMoudle.value[index] = resumeMoudle.value.splice(index - 1, 1, resumeMoudle.value[index])[0]
+  const switchTabUp = (flag) => {
+    let index = focusIndex.value
+    let detailIndex = focusDetailIndex.value
+    if (detailIndex && detailIndex !== 0 && flag == 1) 
+    {
+      resumeMoudle.value[index].inputList[detailIndex] = resumeMoudle.value[index].inputList.splice(detailIndex - 1, 1, resumeMoudle.value[index].inputList[detailIndex])[0]
+    }else if (index && index!==0 && flag == 0)
+    {
+      resumeMoudle.value[index] = resumeMoudle.value.splice(index - 1, 1, resumeMoudle.value[index])[0]
     }
   }
-  const switchTabDown = (index: any) => {
-    if (index >= resumeMoudle.value.length - 1) {
-    } else {
+  const switchTabDown = (flag) => {
+    let index = focusIndex.value
+    let detailIndex = focusDetailIndex.value
+    if (detailIndex <= resumeMoudle.value.length - 1 && flag == 1) 
+    {
+      resumeMoudle.value[index].inputList[detailIndex] = resumeMoudle.value[index].inputList.splice(detailIndex + 1, 1, resumeMoudle.value[index].inputList[detailIndex])[0]
+    }else if (detailIndex <= resumeMoudle.value.length - 1 && flag == 0)
+    {
       resumeMoudle.value[index] = resumeMoudle.value.splice(index + 1, 1, resumeMoudle.value[index])[0]
     }
   }
-  const tabDel = (index:any) =>{
-    resumeMoudle.value.splice(index,1)
+
+  const tabDel = (flag:Number) =>{
+    let index = focusIndex.value
+    let detailIndex = focusDetailIndex.value
+    if (flag == 1) 
+    {
+      resumeMoudle.value[index].inputList.splice(detailIndex,1)
+    }else if (flag == 0) 
+    {
+      resumeMoudle.value.splice(index,1)
+    }
   }
   const focusMoudel = (index:any)=>{
     focusIndex.value = index - 0;
@@ -101,7 +118,8 @@
       store.commit('switch',true)
     })
   }
-  const addInformation = (index)=>{
+  const addInformation = ()=>{
+    let index = focusIndex.value
     if (store.state.isEdit) {
       store.commit('switch',false)
     } 

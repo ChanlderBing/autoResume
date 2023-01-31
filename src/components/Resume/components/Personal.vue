@@ -17,13 +17,14 @@
     <span>删除</span>
     </div>
     </div> 
-      <input type="file" name="logo" style="display: none" ref="inputFile" @change="updateFile">
+      <input type="file" name="logo" style="display: none" ref="inputFile" @change="updateFile" accept=".jpge,.png,.jpg">
       <input type="submit" value="提交" hidden>
   </div>
 </template>
 
 <script lang="ts" setup>
 import { onMounted, ref } from "vue";
+import { ElMessage } from 'element-plus';
 
 const inputFile = ref(null)
 const imgSrc  =  ref(require('@/assets/img/wyk.jpg'))
@@ -34,10 +35,20 @@ const upload = ()=>{
 }
 const updateFile =(e)=>{
   const file = e.target.files[0]
-  let img = new FileReader()
-  img.readAsDataURL(e.target.files[0])
-  img.onload = ({target})=>{
-    imgSrc.value = target.result as string
+  let arr = file.name.split('.')
+  let name = arr[1]
+  console.log(name.toLowerCase());
+  
+  if (name.toLowerCase()== 'jpge'||'png' || 'jpg') {
+    let img = new FileReader()
+    img.readAsDataURL(e.target.files[0])
+    img.onload = ({target})=>{
+      imgSrc.value = target.result as string
+    }
+    ElMessage.success("上传成功")
+  } else
+  {
+    ElMessage.error("文件格式错误")
   }
 }
 

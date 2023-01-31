@@ -38,15 +38,15 @@
 </script>
 
 <style scoped>
-img{
-      width: 24px;
-      height: 24px;
-      opacity: 0.8;
+  img{
+    width: 24px;
+    height: 24px;
+    opacity: 0.8;
     }
-    img:hover{
+  img:hover{
       opacity: 0.4;
     }
-    .abandon{
+  .abandon{
       opacity: 0.2;
       cursor:not-allowed;
     }

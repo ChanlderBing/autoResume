@@ -120,6 +120,8 @@ import ShowList from './components/ShowList.vue';
     })
   }
   onMounted:{
+    console.log(localStorage.getItem('resumeMoudle'));
+    
       if (!localStorage.getItem('resumeMoudle')) {
           localStorage.setItem('resumeMoudle', JSON.stringify(resumeMoudle1));
       }

@@ -5,14 +5,14 @@
         <div class="line"></div>
         <div class="control" v-if="focusIndex == index">
             <Contrl 
-            @up = "switchTabUp"
-            @dowm="switchTabDown"
-            @del="tabDel"
-            @add="addInformation"
-            :flag = 0
-            :addHidden= "item.expand"
-            :upBan = "index == '0'"
-            :downBan = "index == (resumeMoudle.length - 1).toString()"
+              @up = "switchTabUp"
+              @dowm="switchTabDown"
+              @del="tabDel"
+              @add="addInformation"
+              :flag = 0
+              :addHidden= "item.expand"
+              :upBan = "index == '0'"
+              :downBan = "index == (resumeMoudle.length - 1).toString()"
             >
             </Contrl>
          </div>
@@ -23,7 +23,7 @@
             <div class="title-right" v-if="list.Time.startTime">{{list.Time.startTime}}至{{list.Time.endTime}} </div>
           </div>
           <div class="sec-title">
-            <div class="title-left">{{list.academy}} {{list.degree}} {{list.city}}</div>
+            <div class="title-left">{{list.major}}{{list.academy}} {{list.degree}} {{list.city}}</div>
           </div>
           <div class="text">
             <div class="textH5" v-html="list.richText">
@@ -31,13 +31,13 @@
           </div>
           <div class="control" v-if ="focusIndex == index && focusDetailIndex == index1" @click.stop>
               <Contrl 
-              @up="switchTabUp"
-              @dowm="switchTabDown"
-              @del="tabDel"
-              :flag = 1
-              :addHidden = false
-              :upBan = "index1 == 0"
-              :downBan = "index1 == item.inputList.length - 1"
+                @up="switchTabUp"
+                @dowm="switchTabDown"
+                @del="tabDel"
+                :flag = 1
+                :addHidden = false
+                :upBan = "index1 == 0"
+                :downBan = "index1 == item.inputList.length - 1"
               >
             </Contrl>
           </div>
@@ -47,7 +47,7 @@
 
 <script lang="ts" setup>
   import store from "@/store";
-  import { ref,nextTick } from "vue";
+  import { ref,nextTick, onMounted } from "vue";
   import Contrl from '@/components/Resume/components/Contrl.vue';
 
   const props = defineProps({
@@ -145,6 +145,7 @@
     } else {
         return target;
     }
+  
   }
 </script>
 <style scoped lang="scss">

@@ -1,48 +1,51 @@
 <template>
     <div :class="focusIndex == index ? 'active':''" v-for="(item,index) in resumeMoudle" :key="'id'+ index"  @mouseover="focusMoudel(index)" @mouseleave="blurMoudel()">
-      <div :class="focusIndex == index ? ['activeTitle','title']:'title'">
-        <div class="titleName"> {{item.title}}</div>
-        <div class="line"></div>
-        <div class="control" v-if="focusIndex == index">
-            <Contrl 
-              @up = "switchTabUp"
-              @dowm="switchTabDown"
-              @del="tabDel"
-              @add="addInformation"
-              :flag = 0
-              :addHidden= "item.expand"
-              :upBan = "index == '0'"
-              :downBan = "index == (resumeMoudle.length - 1).toString()"
-            >
-            </Contrl>
-         </div>
-      </div>
-      <div class="inputList" v-for="(list,index1) in item.inputList" :key="'Id'+ index1" @click="editInformation(index,index1,item.expand)" @mouseover="focusDetailMoudel(index1)" @mouseleave="blurDetailMoudel()"> 
-          <div class="menu-title"> 
-            <div class="title-left">{{list.school}}</div>
-            <div class="title-right" v-if="list.Time.startTime">{{list.Time.startTime}}至{{list.Time.endTime}} </div>
-          </div>
-          <div class="sec-title">
-            <div class="title-left">{{list.major}}{{list.academy}} {{list.degree}} {{list.city}}</div>
-          </div>
-          <div class="text">
-            <div class="textH5" v-html="list.richText">
-            </div>
-          </div>
-          <div class="control" v-if ="focusIndex == index && focusDetailIndex == index1" @click.stop>
+      <div class="piece">
+        <div :class="focusIndex == index ? ['activeTitle','title']:'title'">
+          <div class="colorDiv"></div>
+          <div class="titleName"> {{item.title}}</div>
+          <div class="line"></div>
+          <div class="control" v-if="focusIndex == index">
               <Contrl 
-                @up="switchTabUp"
+                @up = "switchTabUp"
                 @dowm="switchTabDown"
                 @del="tabDel"
-                :flag = 1
-                :addHidden = false
-                :upBan = "index1 == 0"
-                :downBan = "index1 == item.inputList.length - 1"
+                @add="addInformation"
+                :flag = 0
+                :addHidden= "item.expand"
+                :upBan = "index == '0'"
+                :downBan = "index == (resumeMoudle.length - 1).toString()"
               >
-            </Contrl>
+              </Contrl>
           </div>
+        </div>
+        <div class="inputList" v-for="(list,index1) in item.inputList" :key="'Id'+ index1" @click="editInformation(index,index1,item.expand)" @mouseover="focusDetailMoudel(index1)" @mouseleave="blurDetailMoudel()"> 
+            <div class="menu-title"> 
+              <div class="title-left">{{list.school}}</div>
+              <div class="title-right" v-if="list.Time.startTime">{{list.Time.startTime}}至{{list.Time.endTime}} </div>
+            </div>
+            <div class="sec-title">
+              <div class="title-left">{{list.major}}{{list.academy}} {{list.degree}} {{list.city}}</div>
+            </div>
+            <div class="text">
+              <div class="textH5" v-html="list.richText">
+              </div>
+            </div>
+            <div class="control" v-if ="focusIndex == index && focusDetailIndex == index1" @click.stop>
+                <Contrl 
+                  @up="switchTabUp"
+                  @dowm="switchTabDown"
+                  @del="tabDel"
+                  :flag = 1
+                  :addHidden = false
+                  :upBan = "index1 == 0"
+                  :downBan = "index1 == item.inputList.length - 1"
+                >
+              </Contrl>
+            </div>
+        </div>
       </div>
-  </div>
+    </div>
   </template>
 
 <script lang="ts" setup>
@@ -107,9 +110,10 @@
   {
     if (store.state.isEdit) {
       store.commit('switch',false)
+      store.commit('switchEditPersonal',false)
     }
     nextTick(()=>{
-      store.commit('chosenOne',index)
+      store.commit('switch',false)
       if (isExpand) {
         store.commit('chosenDetail',index1)
       }else{
@@ -122,6 +126,7 @@
     let index = focusIndex.value
     if (store.state.isEdit) {
       store.commit('switch',false)
+      store.commit('switchEditPersonal',false)
     } 
     store.commit('addStructInit',deepClear(resumeMoudle.value[index].inputList[0]))
     setTimeout(() => {
@@ -167,7 +172,7 @@
     background-color: #EBEDF0
   }
   .inputList{
-    margin: 0 23px 0 32px;
+    margin: 0 23px 0 21px;
     font-size: 12px;
     text-align: left;
     position: relative;
@@ -207,25 +212,32 @@
     .activeTitle{
      @include color-white();
     }
-    .title{
-      height: 30px;
-      display: flex;
-      margin: 13px 20px 0;
-      justify-content: space-between;
-      align-items: center;
-      .titleName{
-        font-size: large;
-        font-weight: bold;
-        // color: #409EFF;
-        @include base-color();
-        margin:0 5px;
-      }
-      .line{
-        flex-grow: 1;
-        height: 1px;
-        margin:0 5px;
-        @include base-background();
+    .piece{
+      margin: 0 16px;
+      .title{
+        height: 30px;
+        display: flex;
+        margin: 13px 20px 0;
+        justify-content: space-between;
+        align-items: center;
+        .colorDiv{
+          height: 28px;
+          width: 5px;
+          @include base-background();
+        }
+        .titleName{
+          font-size: 16px;
+          font-weight: bold;
+          // color: #409EFF;
+          @include base-color();
+          margin:0 5px 0 13px;
+        }
+        .line{
+          flex-grow: 1;
+          height: 1px;
+          margin:0 5px;
+          @include base-background();
+        }
       }
     }
-  
   </style>

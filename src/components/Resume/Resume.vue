@@ -37,7 +37,7 @@ import store from '@/store';
 import printjs from 'print-js'
 import { ref,markRaw, onMounted, onUpdated } from 'vue'
 import ShowList from './components/ShowList.vue';
-
+import resumeMoudleMock from '@/utils/mock.js'
 
   const value = ref(store.state.color_theme)
       const options = [
@@ -66,48 +66,6 @@ import ShowList from './components/ShowList.vue';
       window.document.getElementById('app')?.setAttribute('data-theme', theme)
       store.commit('switchThemeColor',theme)
   }
-  let resumeMoudle1 = [{
-      title:'教育经历',
-      expand:true,
-      inputList:[{
-          school:'',
-          major:'',
-          degree:'',
-          academy:'',
-          city:'',
-          Time:{
-              startTime:'',
-              endTime:''
-          },
-          richText:''
-      },
-      {
-          school:'',
-          major:'',
-          degree:'',
-          academy:'',
-          Time:{
-              startTime:'',
-              endTime:''
-          },
-          richText:''
-      }]
-  },
-  {
-      title:'工作经历',
-      expand:true,
-      inputList:[{
-          school:'',
-          major:'',
-          degree:'',
-          academy:'',
-          Time:{
-              startTime:'',
-              endTime:''
-          },
-          richText:''
-      }]
-  }]
   let resumeMoudle = ref(JSON.parse(localStorage.getItem('resumeMoudle')))
 
   const print = () => {
@@ -120,10 +78,8 @@ import ShowList from './components/ShowList.vue';
     })
   }
   onMounted:{
-    console.log(localStorage.getItem('resumeMoudle'));
-    
       if (!localStorage.getItem('resumeMoudle')) {
-          localStorage.setItem('resumeMoudle', JSON.stringify(resumeMoudle1));
+          localStorage.setItem('resumeMoudle', JSON.stringify(resumeMoudleMock));
       }
   }
 

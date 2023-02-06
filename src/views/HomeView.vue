@@ -18,7 +18,6 @@
     :change="changeTheme(dayNightSwitch)"
     class="ml-2"
     style="--el-switch-on-color: #80C8EA; --el-switch-off-color: #1D2C61;margin: auto 0;"
-    
     />
       <div class="moon2" >
         <transition name ="svg">
@@ -35,8 +34,11 @@
   <div class="home">
     <div class="left">
       <Transition name="fade" mode="out-in">
-        <div class="edit" v-if="store.state.isEdit" >
+        <div class="edit" v-if="store.state.isEdit&&!store.state.editPersonal" >
           <EditForm></EditForm>
+        </div>
+        <div class="edit" v-else-if="store.state.isEdit&&store.state.editPersonal" >
+          <PersonEditForm></PersonEditForm>
         </div>
         <div class="edit" v-else-if="store.state.isAdd">
           <AddForm></AddForm>
@@ -49,10 +51,7 @@
     <div class="right">
       <div class="resumeContent">
         <Transition name="resume" mode="out-in">
-        <div v-if="store.state.isEdit" >
-          <Resume></Resume>
-        </div>
-        <div v-else-if="store.state.isAdd">
+        <div v-if="store.state.isEdit ||store.state.isAdd" >
           <Resume></Resume>
         </div>
         <div v-else>
@@ -100,6 +99,7 @@ import EditForm from '@/components/Resume/components/EditForm.vue';
 import AddForm from '@/components/Resume/components/AddForm.vue';
 import printjs from 'print-js'
 import { ref } from 'vue';
+import PersonEditForm from '@/components/Resume/components/PersonEditForm.vue';
 
 const formLabelAlign =  ref({
   Name:'',
@@ -127,9 +127,6 @@ const changeTheme = (value)=>{
   .menu{
     //margin-bottom: 10px;
     width: 100%;
-    .el-menu-demo{
-      //position: fixed;
-    }
     .flex-grow{
       flex-grow: 1;
     }

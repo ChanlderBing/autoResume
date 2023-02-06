@@ -1,5 +1,5 @@
 <template>
-  <div class="personal">
+  <div class="personal" @click="editInformation()">
     <div class="information">
     <!-- <div class="name"></div> -->
     <p><h2>GearLessJOE</h2></p>
@@ -23,8 +23,10 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref } from "vue";
+import { nextTick, onMounted, ref } from "vue";
 import { ElMessage } from 'element-plus';
+import store from "@/store";
+
 
 const inputFile = ref(null)
 const imgSrc  =  ref(require('@/assets/img/wyk.jpg'))
@@ -33,6 +35,16 @@ const isShow = ref(false)
 const upload = ()=>{
    const a = inputFile.value.click()
 }
+const editInformation = ()=>
+  {
+    if (store.state.isEdit) {
+      store.commit('switch',false)
+    }
+    nextTick(()=>{
+      store.commit('switchEditPersonal',true)
+      store.commit('switch',true)
+    })
+  }
 const updateFile =(e)=>{
   const file = e.target.files[0]
   let arr = file.name.split('.')
@@ -57,12 +69,11 @@ const updateFile =(e)=>{
 <style scoped lang="scss">
 .personal{
   display: flex;
-  justify-content: space-around;
   .information{
     width: 60%;
+    margin: 0 89px 0 36px;
     p{
       text-align: start;
-      margin: 8px 20px;
     }
   }
   .avatar{

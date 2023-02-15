@@ -109,14 +109,16 @@ const dialogVisible = ref(false)
 const loginToGet = ()=>{
   dialogVisible.value = false
 }
-const print = () => {
+
+const style1 =  '.text{padding:30px} ';
+const print = () => 
   printjs({
     printable: 'printC',
     type: 'html',
     targetStyles: ['*'],
-    header: null
+    header: null,
+    style:style1,
   })
-}
 const dayNightSwitch = ref(true)
 const changeTheme = (value)=>{
     window.document.getElementById('app')?.setAttribute('data-theme1', dayNightSwitch.value  ? 'light-theme':'dark-theme')

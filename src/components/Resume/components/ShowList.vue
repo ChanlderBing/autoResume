@@ -18,7 +18,7 @@
               >
               </Contrl>
           </div>
-        </div>
+        </div>      
         <div class="inputList" v-for="(list,index1) in item.inputList" :key="'Id'+ index1" @click="editInformation(index,index1,item.expand)" @mouseover="focusDetailMoudel(index1)" @mouseleave="blurDetailMoudel()"> 
             <div class="menu-title"> 
               <div class="title-left">{{list.school}}</div>
@@ -154,6 +154,7 @@
   }
 </script>
 <style scoped lang="scss">
+
   .control{
     img{
       width: 24px;
@@ -176,6 +177,9 @@
     font-size: 12px;
     text-align: left;
     position: relative;
+    .text{
+      font-size: 16px;
+    }
   .control{
     position: absolute;
     top: 50%;
@@ -228,7 +232,6 @@
         .titleName{
           font-size: 16px;
           font-weight: bold;
-          // color: #409EFF;
           @include base-color();
           margin:0 5px 0 13px;
         }

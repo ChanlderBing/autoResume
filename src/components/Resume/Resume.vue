@@ -11,15 +11,6 @@
     />
   </el-select>
     
-  <!-- <el-select v-model="value1" class="m-2" placeholder="se">
-    <el-option
-      v-for="item in comList"
-      :key="item.name"
-      :label="item.name"
-      :value="item.name"
-      :change="changeTheme(value)"
-    />
-  </el-select> -->
     </div>
   </el-card>
 <el-card style="width:780px;">
@@ -34,8 +25,7 @@
 <script lang="ts" setup>
 import Personal from '@/components/Resume/components/Personal.vue'
 import store from '@/store';
-import printjs from 'print-js'
-import { ref,markRaw, onMounted, onUpdated } from 'vue'
+import { ref} from 'vue'
 import ShowList from './components/ShowList.vue';
 import resumeMoudleMock from '@/utils/mock.js'
 
@@ -68,15 +58,6 @@ import resumeMoudleMock from '@/utils/mock.js'
   }
   let resumeMoudle = ref(JSON.parse(localStorage.getItem('resumeMoudle')))
 
-  const print = () => {
-    printjs({
-      printable: 'printC',
-      type: 'html',
-      targetStyles: ['*'],
-      header: null,
-      scanStyles:false
-    })
-  }
   onMounted:{
       if (!localStorage.getItem('resumeMoudle')) {
           localStorage.setItem('resumeMoudle', JSON.stringify(resumeMoudleMock));
@@ -89,8 +70,6 @@ import resumeMoudleMock from '@/utils/mock.js'
 .main {
   width: 780px;
   height: 1106px;
-  // @include base-color();
-  // @include base-background();
   font-size: $font-size;
   .personal {
     margin-bottom: 20px;
@@ -103,22 +82,6 @@ import resumeMoudleMock from '@/utils/mock.js'
 .features{
     height: 50px;
     width: 100%;
-    display: flex;
-    .el_select{
-      justify-content: center;
-    }
-    
 }
-.v-enter,
-			.v-leave-to{
-				opacity: 0;
-			}
-			.v-enter-active,
-			.v-leave-active{
-				opacity: 1;
-      }
-  :deep .el-card__body {
-    padding: 0;
-    width: 780px;
-  }
+ 
 </style>

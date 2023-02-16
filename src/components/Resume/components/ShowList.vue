@@ -114,11 +114,8 @@
     }
     nextTick(()=>{
       store.commit('switch',false)
-      if (isExpand) {
-        store.commit('chosenDetail',index1)
-      }else{
-        store.commit('chosenDetail', 0)
-      }
+      store.commit('chosenOne',index)
+      store.commit('chosenDetail',index1)
       store.commit('switch',true)
     })
   }
@@ -150,7 +147,6 @@
     } else {
         return target;
     }
-  
   }
 </script>
 <style scoped lang="scss">

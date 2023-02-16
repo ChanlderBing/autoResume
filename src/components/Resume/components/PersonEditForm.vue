@@ -9,7 +9,7 @@
       <el-form :inline="true" :model="personalMoudle[0].inputList" class="demo-form-inline">
         <div class="skillTitle"> 基本信息 </div>
         <el-form-item label="姓名" >
-            <el-input v-model="personalMoudle[0].username" />
+            <el-input v-model="personalMoudle[0].userName" />
           </el-form-item>
         <template v-for="(value,key) in personalMoudle[0].inputList[0]">
           <el-form-item :label="realationshipMap[key]" >
@@ -37,7 +37,7 @@
   let personalMoudle = ref(JSON.parse(localStorage.getItem('personalMoudle')))
 
   const onSubmit = () => {
-     localStorage.setItem('personalMoudle',JSON.stringify(personalMoudle))
+    console.log(personalMoudle);
     ElMessage.success('修改成功')
     back()
   }

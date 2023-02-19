@@ -1,26 +1,45 @@
 <template>
-  <el-card style="width:780px;height: 50px;margin-bottom:20px;">
+  <el-card style="width:780px;height:50px;margin-bottom:20px;">
      <div class="features">
-        <el-select v-model="value" class="m-2" :placeholder="options[0].label">
-    <el-option
-      v-for="item in options"
-      :key="item.value"
-      :label="item.label"
-      :value="item.value"
-      :change="changeTheme(value)"
-    />
-  </el-select>
-    
+        <div class="colorPick">
+          <el-select v-model="value" class="m-2" :placeholder="options[0].label">
+            <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+              :change="changeTheme(value)"
+            >
+              <div :style="{'backgroundColor':item.color,'width':'20px','height':'20px','margin-top':'6px'}"></div>
+            </el-option>
+          </el-select>
+        </div>
+        <div class="modelAdd">
+          <el-select model-value="添加模块" class="m-2" placeholder="添加模块">
+            <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+              :change="changeTheme(value)"
+            >
+              
+            </el-option>
+          </el-select>
+        </div>
+        <div class="colorPick">
+          
+        </div>
+      </div>
+  </el-card>
+  <el-card style="width:780px;">
+    <div class="main" id="printC">
+      <div class="personal">
+        <Personal></Personal>
+      </div>
+      <ShowList :resumeMoudle="resumeMoudle"></ShowList>
     </div>
   </el-card>
-<el-card style="width:780px;">
-  <div class="main" id="printC">
-    <div class="personal">
-      <Personal></Personal>
-    </div>
-    <ShowList :resumeMoudle="resumeMoudle"></ShowList>
-  </div>
-</el-card>
 </template>
 <script lang="ts" setup>
 import Personal from '@/components/Resume/components/Personal.vue'
@@ -30,28 +49,32 @@ import ShowList from './components/ShowList.vue';
 import resumeMoudleMock from '@/utils/mock.js'
 
   const value = ref(store.state.color_theme)
-      const options = [
+  const options = [
     {
       value: 'red-theme',
-      label: 'red',
+      label: '红色',
+      color: '#F56C6C',
     }
     ,
     {
       value: 'green-theme',
-      label: 'green',
+      label: '绿色',
+      color: '#67C23A',
     }
     ,
     {
       value: 'blue-theme',
-      label: 'blue',
+      label: '蓝色',
+      color: '#409EFF',
     }
     ,
     {
       value: 'org-theme',
-      label: 'org',
+      label: '橙色',
+      color: '#E6A23C',
     }
   ]
-  const value1 = ref('Degree')
+
   const changeTheme = (theme:string)=>{
       window.document.getElementById('app')?.setAttribute('data-theme', theme)
       store.commit('switchThemeColor',theme)
@@ -82,6 +105,25 @@ import resumeMoudleMock from '@/utils/mock.js'
 .features{
     height: 50px;
     width: 100%;
+    display:flex;
+    justify-content:flex-start;
+    align-items: center;
+    .colorPick{
+      ::v-deep .el-select .el-input__inner{
+      width: 30px;
+      }
+    }
+    .modelAdd{
+      ::v-deep .el-select .el-input__inner{
+      width: 80px;
+      }
+    }
 }
- 
+
+::v-deep .el-select-dropdown__item {
+       height: 80px;
+    }
+::v-deep .el-card__body {
+padding: 0px !important;
+}
 </style>

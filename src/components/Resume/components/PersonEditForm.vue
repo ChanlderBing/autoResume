@@ -6,22 +6,22 @@
         <el-button type="primary" class="ml-2" @click="onSubmit">完成</el-button>
     </div>
     <div class="skill">
-      <el-form :inline="true" :model="personalMoudle[0].inputList" class="demo-form-inline">
+      <el-form :inline="true" class="demo-form-inline">
         <div class="skillTitle"> 基本信息 </div>
         <el-form-item label="姓名" >
             <el-input v-model="personalMoudle[0].userName" />
-          </el-form-item>
+        </el-form-item>
         <template v-for="(value,key) in personalMoudle[0].inputList[0]">
           <el-form-item :label="realationshipMap[key]" >
-            <el-input v-model="value[key]" />
+            <el-input v-model="personalMoudle[0].inputList[0][key]" />
           </el-form-item>
         </template>
         <div class="skillTitle"> 就职意向 </div>
-        <template v-for="(value,key) in personalMoudle[0].inputList[1]">
-          <el-form-item :label="realationshipMap[key]" >
-            <el-input v-model="value[key]" />
-          </el-form-item>
-        </template>
+          <template v-for="(value,key) in personalMoudle[0].inputList[1]">
+            <el-form-item :label="realationshipMap[key]" >
+              <el-input v-model="personalMoudle[0].inputList[1][key]" />
+            </el-form-item>
+          </template>
         </el-form>
     </div>
   </el-card>
@@ -31,13 +31,13 @@
   import store from '@/store';
   import '@wangeditor/editor/dist/css/style.css' // 引入 css
   import { onBeforeUnmount,unref, ref, shallowRef, onMounted } from 'vue'
-  import { Editor, Toolbar } from '@wangeditor/editor-for-vue'
   import { ElMessage } from 'element-plus';
 
   let personalMoudle = ref(JSON.parse(localStorage.getItem('personalMoudle')))
 
   const onSubmit = () => {
-    console.log(personalMoudle);
+    personalMoudle = unref(personalMoudle)
+    localStorage.setItem('personalMoudle',JSON.stringify(personalMoudle))
     ElMessage.success('修改成功')
     back()
   }
@@ -57,7 +57,7 @@
   
 </script>
 
-  <style scoped lang="scss">
+<style scoped lang="scss">
     .topTab{
       height: 60px;
       display: flex;
@@ -70,7 +70,6 @@
         margin: 0 0 20px;
       }
       }
-    
     .personal{
         height: 200px;
         width: 100%;

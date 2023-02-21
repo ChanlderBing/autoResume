@@ -1,14 +1,7 @@
 const { defineConfig } = require('@vue/cli-service')
 const fs = require("fs");
 const webpack = require("webpack");
-// const themeFiles = fs.readdirSync("./src/style/theme");
 let ThemesArr = [];
-// themeFiles.forEach(function (item, index) {
-//   let stat = fs.lstatSync("./src/style/theme/" + item);
-//   if (stat.isDirectory() === true) {
-//     ThemesArr.push(item);
-//   }
-// });
 
 module.exports = defineConfig({
   transpileDependencies: true,

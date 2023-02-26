@@ -1,5 +1,5 @@
 const baseUrl = {
-    test:"",
+    test:"localhost:3000",
     pro:""
 }
 

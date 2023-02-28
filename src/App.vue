@@ -1,13 +1,13 @@
 <template>
-  <!-- <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </nav> -->
-  <router-view />
+  <router-view  v-slot="{ Component }">
+  <transition name="routeChange">
+      <component :is="Component"></component>
+  </transition>
+</router-view>
+
 </template>
 
 <script setup lang="ts">
-  import { onMounted } from 'vue';
   
 </script>
 <style lang="scss">
@@ -21,4 +21,19 @@ html,body,p,ol{
   padding: 0;
   margin: 0;
 }
+
+.routeChange-leave-to {
+      opacity: 0;
+      transform: translateY(8%);
+    }
+  .routeChange-leave-active {
+    transition: all 1s ease;
+  }
+  .routeChange-enter-active {
+    transition: all 1s ease;
+  }
+  .routeChange-enter-from {
+    opacity: 0;
+    transform: translateY(-8%)
+  }
 </style>

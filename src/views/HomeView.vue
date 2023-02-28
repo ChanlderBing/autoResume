@@ -26,7 +26,7 @@
       </div>
 
   <el-menu-item index="1"
-    @click="dialogVisible=true">登录</el-menu-item>
+    @click="goToLogin()">登录</el-menu-item>
     <el-menu-item index="2"
     @click="print()">打印</el-menu-item>
   </el-menu>
@@ -100,6 +100,7 @@ import AddForm from '@/components/Resume/components/AddForm.vue';
 import printjs from 'print-js'
 import { ref } from 'vue';
 import PersonEditForm from '@/components/Resume/components/PersonEditForm.vue';
+import {  useRouter } from 'vue-router';
 
 const formLabelAlign =  ref({
   Name:'',
@@ -108,6 +109,11 @@ const formLabelAlign =  ref({
 const dialogVisible = ref(false)
 const loginToGet = ()=>{
   dialogVisible.value = false
+}
+
+const router = useRouter()
+const goToLogin = ()=>{
+  router.push({name:"login",})
 }
 
 const style1 =  '.text{padding:30px} ';

@@ -1,29 +1,44 @@
 <template>
- <div class="container right-panel-active">
+ <div :class="value1 == 1 ?['container', 'right-panel-active'] : 'container'">
     <!-- Sign Up -->
     <div class="container__form container--signup">
-      <form action="#" class="form" id="form1">
+      <div  class="form" id="form1">
         <h2 class="form__title">Sign Up</h2>
-        <input type="text" placeholder="User" class="input" />
-        <input type="email" placeholder="Email" class="input" />
-        <input type="password" placeholder="Password" class="input" />
-        <button class="btn">Sign Up</button>
-      </form>
+        <el-form :model="signUpData" label-width="60px" :rules="rules" ref="signUpRuleForms">
+          <el-form-item label="账号"  prop="userName">
+            <el-input type="text" placeholder="User" class="input" v-model="signUpData.userName"   />
+          </el-form-item>
+          <el-form-item label="密码"  prop="password">
+            <el-input type="password" placeholder="Password" class="input" v-model="signUpData.password"   />
+          </el-form-item>
+          <el-form-item >
+            <button class="btn" @click="signUp()">Sign Up</button>
+          </el-form-item>
+        </el-form>
+        
+      </div>
     </div>
 
     <!-- Sign In -->
     <div class="container__form container--signin">
-      <form action="#" class="form" id="form2">
+      <div  class="form" id="form1">
         <h2 class="form__title">Sign In</h2>
-        <input type="email" placeholder="Email" class="input" />
-        <input type="password" placeholder="Password" class="input" />
-        <a href="#" class="link">Forgot your password?</a>
-        <button class="btn">Sign In</button>
-      </form>
+        <el-form :model="signInData" label-width="80px" ref="signInRuleForms" :rules="rules" >
+          <el-form-item label="账号"  prop="userName1">
+            <el-input type="text" placeholder="User" class="input" v-model="signInData.userName"  />
+          </el-form-item>
+          <el-form-item label="密码"   prop="password1">
+            <el-input type="password" placeholder="Password" class="input" v-model="signInData.password"   />
+          </el-form-item>
+          <el-form-item label="密码确认"  prop="repassword">
+            <el-input type="password" placeholder="repassword" class="input" v-model="signInData.repassword"   />
+          </el-form-item>
+        </el-form>
+        <button class="btn" @click="signIn()">Sign In</button>
+      </div>
     </div>
 
     <!-- Overlay -->
-    <Transition>
       <div class="container__overlay">
         <div class="overlay">
           <div class="overlay__panel overlay--left">
@@ -34,38 +49,98 @@
           </div>
         </div>
       </div>
-    </Transition>
-   
-  </div>
-  <div class="container right-panel-active">
-    <Transition name="fade">
-      <div class="container__overlay">
-        <div class="overlay">
-          <div class="overlay__panel overlay--left">
-            <button class="btn" id="signIn" @click="signInClick()">Sign In</button>
-          </div>
-          <div class="overlay__panel overlay--right">
-            <button class="btn" id="signUp" @click="signUpClick()">Sign Up</button>
-          </div>
-        </div>
-      </div>
-    
-    </Transition>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue';
+import router from '@/router';
+import { ElMessage } from 'element-plus';
+import { reactive, ref } from 'vue';
+import  Instance  from '../api/http';
 
+//动画切换
 const value1 = ref(1)
 const signInClick = ()=>{
 value1.value = 2
-console.log(11);
-
 }
 const signUpClick =()=>{
   value1.value = 1
-  console.log(112);
+}
+
+const signUpRuleForms = ref(null);
+const signInRuleForms = ref(null);
+const signUpData = reactive({
+ userName:'',
+ password:''
+})
+const signUp = ()=>{
+  signUpRuleForms.value.validate((valid)=>{
+  if (valid) {
+    Instance.post('login',{...signUpData}).then(res=>{
+      if (res?.data?.data.code === 200) {   
+        localStorage.setItem("token",res.data.data.data.token)
+        router.push({name:"home"})
+      }
+    }).catch(error=>{
+      console.log(error);
+  })
+  } else {
+    ElMessage.error("输入数据格式不对")
+  }
+}) 
+}
+
+
+const valiRepassword = (rule: any, value: any, callback: any) => {
+  if (value === '') {
+         callback(new Error('请再次输入密码'))
+         // password 是表单上绑定的字段
+      } else if (value !== signInData.password) {
+         callback(new Error('两次输入密码不一致!'))
+      } else {
+       	 callback()
+
+      }
+  }
+const rules = reactive({
+    userName: [
+            { required: true, message: "请输入昵称", trigger: 'blur'},
+            { message: '请输入昵称', trigger: 'change' }
+          ],
+    password: [       
+            { required: true, message: "请输入密码", trigger: "blur" },
+            { min: 6, max: 12, message: '长度在 6 到 12 个字符', trigger: 'change' }
+          ],
+    repassword:[
+            { required: true, message: "确认密码", trigger: "blur" },
+            { validator: valiRepassword, message: '两次密码不对应', trigger: 'change' }
+          ]
+})
+
+const signInData = reactive({
+ userName:'',
+ password:'',
+ repassword:''
+})
+
+const signIn = ()=>{
+  signInRuleForms.value.validate((valid)=>{
+  if (valid) {
+    Instance.post('register',{...signInData}).then(res=>{
+      if (res?.data?.data.code === 200) {   
+       ElMessage.success("注册成功！")
+       signInRuleForms.value.resetFields()
+       value1.value = 1;
+      }else{
+        ElMessage.error(res?.data?.data.msg)
+      }
+    }).catch(error=>{
+      console.log(error);
+  })
+  } else {
+    ElMessage.error("输入数据格式不对")
+  }
+}) 
 }
 
 </script>
@@ -73,28 +148,6 @@ const signUpClick =()=>{
 
 <style lang="scss" scoped>
 
-    // body {
-    //   align-items: center;
-    //   background-color: $white;
-    //   background: url("https://res.cloudinary.com/dbhnlktrv/image/upload/v1599997626/background_oeuhe7.jpg");
-    //   /* 决定背景图像的位置是在视口内固定，或者随着包含它的区块滚动。 */
-    //   /* https://developer.mozilla.org/zh-CN/docs/Web/CSS/background-attachment */
-    //   background-attachment: fixed;
-    //   background-position: center;
-    //   background-repeat: no-repeat;
-    //   background-size: cover;
-    //   display: grid;
-    //   height: 100vh;
-    //   place-items: center;
-    // }
-
-    .fade-leave-active {
-  transition: opacity 0.5s ease;
-}
-.fade-leave-to {
-  transform: translateX(-100%);
-  opacity: 1;
-}
     .form__title {
       font-weight: 300;
       margin: 0;
@@ -117,6 +170,7 @@ const signUpClick =()=>{
       overflow: hidden;
       position: relative;
       width: 100%;
+      margin: 226px auto;
     }
 
     .container__form {
@@ -256,8 +310,6 @@ const signUpClick =()=>{
     .input {
       background-color: #fff;
       border: none;
-      padding: 0.9rem 0.9rem;
-      margin: 0.5rem 0;
       width: 100%;
     }
 
@@ -275,4 +327,7 @@ const signUpClick =()=>{
         z-index: 5;
       }
     }
+    .el-form-item__error {
+    display: block !important;
+  }
 </style>

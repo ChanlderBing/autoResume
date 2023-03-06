@@ -1,4 +1,5 @@
 <template>
+  <div class="div">
   <div class="menu" >
     <el-menu
     class="el-menu-demo"
@@ -61,7 +62,7 @@
       </div>
     </div>
   </div>
-
+</div>
   <el-dialog
     v-model="dialogVisible"
     title="登录获取存档"
@@ -89,6 +90,7 @@
       </span>
     </template>
   </el-dialog>
+
 </template>
 
 <script lang="ts" setup>

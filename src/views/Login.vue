@@ -6,10 +6,10 @@
         <h2 class="form__title">Sign Up</h2>
         <el-form :model="signUpData" label-width="60px" :rules="rules" ref="signUpRuleForms">
           <el-form-item label="账号"  prop="userName">
-            <el-input type="text" placeholder="User" class="input" v-model="signUpData.userName"   />
+            <el-input type="text" placeholder="请输入账号" class="input" v-model="signUpData.userName"   />
           </el-form-item>
           <el-form-item label="密码"  prop="password">
-            <el-input type="password" placeholder="Password" class="input" v-model="signUpData.password"   />
+            <el-input type="password" placeholder="输入密码" class="input" v-model="signUpData.password"   />
           </el-form-item>
           <el-form-item >
             <button class="btn" @click="signUp()">Sign Up</button>
@@ -24,14 +24,14 @@
       <div  class="form" id="form1">
         <h2 class="form__title">Sign In</h2>
         <el-form :model="signInData" label-width="80px" ref="signInRuleForms" :rules="rules" >
-          <el-form-item label="账号"  prop="userName1">
-            <el-input type="text" placeholder="User" class="input" v-model="signInData.userName"  />
+          <el-form-item label="账号"  prop="userName">
+            <el-input type="text" placeholder="请输入账号" class="input" v-model="signInData.userName"  />
           </el-form-item>
-          <el-form-item label="密码"   prop="password1">
-            <el-input type="password" placeholder="Password" class="input" v-model="signInData.password"   />
+          <el-form-item label="密码"  prop="password">
+            <el-input type="password" placeholder="请输入密码" class="input" v-model="signInData.password"   />
           </el-form-item>
           <el-form-item label="密码确认"  prop="repassword">
-            <el-input type="password" placeholder="repassword" class="input" v-model="signInData.repassword"   />
+            <el-input type="password" placeholder="密码确认" class="input" v-model="signInData.repassword"   />
           </el-form-item>
         </el-form>
         <button class="btn" @click="signIn()">Sign In</button>
@@ -68,7 +68,6 @@ const signUpClick =()=>{
 }
 
 const signUpRuleForms = ref(null);
-const signInRuleForms = ref(null);
 const signUpData = reactive({
  userName:'',
  password:''
@@ -123,6 +122,7 @@ const signInData = reactive({
  repassword:''
 })
 
+const signInRuleForms = ref(null);
 const signIn = ()=>{
   signInRuleForms.value.validate((valid)=>{
   if (valid) {

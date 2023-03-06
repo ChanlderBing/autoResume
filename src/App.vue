@@ -1,10 +1,11 @@
 <template>
-  <router-view  v-slot="{ Component }">
-  <transition name="routeChange">
+  <router-view  v-slot="{ Component,route }">
+  <transition name="routeChange" mode="out-in">
+    <div :key="route.name">
       <component :is="Component"></component>
+    </div>
   </transition>
 </router-view>
-
 </template>
 
 <script setup lang="ts">

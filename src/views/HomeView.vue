@@ -173,7 +173,7 @@ const changeTheme = (value)=>{
       margin: 0 40px;
       }
       .test{
-      width: 500px;
+      width: 470px;
       height: 600px;
       margin: 0 40px;
       }

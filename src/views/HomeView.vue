@@ -176,6 +176,9 @@ const changeTheme = (value)=>{
       width: 470px;
       height: 600px;
       margin: 0 40px;
+      .el-card__body{
+          @include home-background();
+        }
       }
     }
     .right {

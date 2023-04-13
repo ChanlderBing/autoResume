@@ -16,10 +16,10 @@
                 <div class="pic"><img src="../../../assets/img/wyk.jpg"/> </div>
                 <div class="resumeDetail">
                   <div class="top">
-                    <span  class="resumeName">11</span>
-                    <span  class="editBtn">12</span>
+                    <span  class="resumeName">陈炫华</span>
+                    <span  class="editBtn"><img src="../../../assets/more.png" style="width: 32px;height: 32px;position: absolute;left: -40px;top: -5px;"></span>
                   </div>         
-                <div class="editTime">13</div>
+                <div class="editTime">最后编辑于12-08</div>
               </div>
             </div>
             </div>
@@ -36,7 +36,7 @@ import { Plus } from '@element-plus/icons-vue'
   <style scoped lang="scss">
  
     .personal{
-        // height: 200px;
+      
         width: 100%;
         .plusBtn{
           margin-bottom: 16px;
@@ -54,13 +54,14 @@ import { Plus } from '@element-plus/icons-vue'
           }
         }
       }
-        
+      
         .resumeList{
           .resume:hover{
             box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.12);
           }
           .resume{
             border: 1px solid #ececec;
+            border-radius: 4px;
             margin-top: 16px;
             .content{
             display: flex;
@@ -73,6 +74,17 @@ import { Plus } from '@element-plus/icons-vue'
               .top{
                 display: flex;
                 justify-content: space-between;
+                .editBtn{
+                  position: relative;
+                  cursor: pointer;
+                }
+              }
+              .editTime{
+                font-size: 14px;
+                font-weight: 400;
+                color: #9c9c9c;
+                text-align: end;
+                padding: 0 10px 0 0
               }
             }
           }

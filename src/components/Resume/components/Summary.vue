@@ -2,7 +2,7 @@
   <el-card>
     <div class="personal">
       <div class="information">
-        <div class="plusBtn"><el-button class="btn" type="primary"><span>+</span>新建简历</el-button></div>
+        <div class="plusBtn"><el-button class="btn" type="primary-light-9"><span>+</span>新建简历</el-button></div>
         <el-menu
           class="el-menu-demo"
           mode="horizontal"
@@ -40,12 +40,17 @@ import { Plus } from '@element-plus/icons-vue'
         width: 100%;
         .plusBtn{
           margin-bottom: 16px;
+          .btn:hover{
+
+          }
         .btn{
           width: 170px;
           height: 50px;
           border-radius: 10px;
           font-size: 16px;
           color:#ffffff;
+          // @include button-background();
+          // @include button-border();
           span{
             height:34px;
             width: 20px;
@@ -54,13 +59,21 @@ import { Plus } from '@element-plus/icons-vue'
           }
         }
       }
-      
+      .el-menu{
+        @include left-background();
+        @include border-background();
+        
+      }
+      .el-menu-item{
+        @include home-color();
+      }
         .resumeList{
           .resume:hover{
             box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.12);
           }
           .resume{
-            border: 1px solid #ececec;
+            border:1px solid;
+            @include border-background();
             border-radius: 4px;
             margin-top: 16px;
             .content{

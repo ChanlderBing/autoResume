@@ -1,17 +1,23 @@
 //浅色主题
 $light-theme: (
-        base-color: #353944,
-        background-color: #f5f5f7,
+  base-color: #353944,
+  background-color: #f5f5f7,
+  border-color:#ececec,
+  left-color: #ffffff,
+  button-color: #459ffc
 );
 
 //深色主题
 $dark-theme: (
-        base-color: #fff,
-        background-color: #353944
+  base-color: #CFD3DC,
+  background-color: #353944,
+  border-color:#4C4D4F,
+  left-color:#1d1e1f,
+  button-color: #626aef
 );
 $backgroundThemes: (
-        light-theme: $light-theme,
-        dark-theme: $dark-theme,
+  light-theme: $light-theme,
+  dark-theme: $dark-theme,
 );
 
 $green-theme:(
@@ -21,8 +27,8 @@ $green-theme:(
 );
 $blue-theme:(
   base-color: #409EFF,
-   background-color:#409EFF,
-   color-white:#40a0ff13,
+  background-color:#409EFF,
+  color-white:#40a0ff13,
 );
 $org-theme:(
   base-color: #E6A23C,
@@ -41,10 +47,10 @@ $white:#e9e9e9;
 
 //定义映射集合
 $themes: (
-        green-theme: $green-theme,
-        blue-theme: $blue-theme,
-        org-theme: $org-theme,
-        red-theme: $red-theme,
+  green-theme: $green-theme,
+  blue-theme: $blue-theme,
+  org-theme: $org-theme,
+  red-theme: $red-theme,
 );
 
 
@@ -89,6 +95,38 @@ $themes: (
   @each $theme-name, $theme in $backgroundThemes {
     [data-theme1 = '#{$theme-name}'] & {
       background: map-get($map: $theme, $key: background-color);
+    }
+  }
+}
+//侧栏背景色
+@mixin left-background() {
+  @each $theme-name, $theme in $backgroundThemes {
+    [data-theme1 = '#{$theme-name}'] & {
+      background: map-get($map: $theme, $key: left-color);
+    }
+  }
+}
+//边框背景色
+@mixin border-background() {
+  @each $theme-name, $theme in $backgroundThemes {
+    [data-theme1 = '#{$theme-name}'] & {
+      border-color: map-get($map: $theme, $key: border-color);
+    }
+  }
+}
+//按钮背景色
+@mixin button-background() {
+  @each $theme-name, $theme in $backgroundThemes {
+    [data-theme1 = '#{$theme-name}'] & {
+      background: map-get($map: $theme, $key: button-color);
+    }
+  }
+}
+//按钮背景色
+@mixin button-border() {
+  @each $theme-name, $theme in $backgroundThemes {
+    [data-theme1 = '#{$theme-name}'] & {
+      border-color: map-get($map: $theme, $key: button-color);
     }
   }
 }

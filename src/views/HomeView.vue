@@ -1,5 +1,5 @@
 <template>
-  <div class="div">
+  <div>
   <div class="menu" >
     <el-menu
     class="el-menu-demo"
@@ -15,10 +15,10 @@
       </div>
   
     <el-switch
-    v-model="dayNightSwitch"
-    :change="changeTheme(dayNightSwitch)"
-    class="ml-2"
-    style="--el-switch-on-color: #80C8EA; --el-switch-off-color: #1D2C61;margin: auto 0;"
+      v-model="dayNightSwitch"
+      :change="changeTheme(dayNightSwitch)"
+      class="ml-2"
+      style="--el-switch-on-color: #80C8EA; --el-switch-off-color: #626aef;margin: auto 0;"
     />
       <div class="moon2" >
         <transition name ="svg">
@@ -135,7 +135,13 @@ const changeTheme = (value)=>{
 
 <style lang="scss">
   .menu{
-    //margin-bottom: 10px;
+    .el-menu {
+    @include left-background();
+    @include border-background();
+    .el-menu-item{
+        @include home-color();
+      }
+    }
     width: 100%;
     .flex-grow{
       flex-grow: 1;
@@ -176,12 +182,14 @@ const changeTheme = (value)=>{
       width: 470px;
       height: 600px;
       margin: 0 40px;
+      --el-color-primary:#626aef;
+      --el-color-primary-light-3:#969bf3;
+      --el-color-primary-dark-2:#5a61eb;
       .el-card {
         @include border-background();
       }
       .el-card__body{
-          @include left-background();
-          
+        @include left-background();
         }
       }
     }

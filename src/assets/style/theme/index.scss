@@ -13,7 +13,7 @@ $dark-theme: (
   background-color: #353944,
   border-color:#4C4D4F,
   left-color:#1d1e1f,
-  button-color: #626aef
+  button-color: #626aef,
 );
 $backgroundThemes: (
   light-theme: $light-theme,
@@ -36,9 +36,9 @@ $org-theme:(
   color-white:#e6a23c13,
 );
 $red-theme:(
-    base-color: #F56C6C,
-   background-color:#F56C6C,
-   color-white:#f56c6c13,
+  base-color: #F56C6C,
+  background-color:#F56C6C,
+  color-white:#f56c6c13,
 );
 $light-blue:#008997;
 $blue:#0367a6;

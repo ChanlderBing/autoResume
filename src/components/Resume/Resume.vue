@@ -1,5 +1,5 @@
 <template>
-  <el-card style="width:780px;height:50px;margin-bottom:20px;">
+  <el-card style="width:780px;height:50px;margin-bottom:20px;" class="card">
      <div class="features">
         <div class="colorPick">
           <el-select v-model="value" class="m-2" :placeholder="options[0].label">
@@ -102,7 +102,13 @@ import resumeMoudleMock from '@/utils/mock.js'
     opacity: 0.4;
   }
 }
+.card{
+  @include left-background();
+  @include border-background();
+  @include home-color();
+}
 .features{
+  
     height: 50px;
     width: 100%;
     display:flex;

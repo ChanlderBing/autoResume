@@ -56,7 +56,7 @@
 import router from '@/router';
 import { ElMessage } from 'element-plus';
 import { reactive, ref } from 'vue';
-import  Instance  from '../api/http';
+import  axios  from '../api/http';
 
 //动画切换
 const value1 = ref(1)
@@ -75,7 +75,7 @@ const signUpData = reactive({
 const signUp = ()=>{
   signUpRuleForms.value.validate((valid)=>{
   if (valid) {
-    Instance.post('login',{...signUpData}).then(res=>{
+    axios.post('login',{...signUpData}).then(res=>{
       if (res?.data?.data.code === 200) {   
         localStorage.setItem("token",res.data.data.data.token)
         router.push({name:"home"})
@@ -126,7 +126,7 @@ const signInRuleForms = ref(null);
 const signIn = ()=>{
   signInRuleForms.value.validate((valid)=>{
   if (valid) {
-    Instance.post('register',{...signInData}).then(res=>{
+    axios.post('register',{...signInData}).then(res=>{
       if (res?.data?.data.code === 200) {   
        ElMessage.success("注册成功！")
        signInRuleForms.value.resetFields()

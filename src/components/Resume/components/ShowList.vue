@@ -71,6 +71,7 @@
       resumeMoudle.value[index] = resumeMoudle.value.splice(index - 1, 1, resumeMoudle.value[index])[0]
     }
   }
+  
   const switchTabDown = (flag) => {
     let index = focusIndex.value
     let detailIndex = focusDetailIndex.value
@@ -108,12 +109,8 @@
   }
   const editInformation = (index:any,index1:any,isExpand:boolean)=>
   {
-    if (store.state.isEdit) {
-      store.commit('switch',false)
-      store.commit('switchEditPersonal',false)
-    }
+    trunOffEdit()
     nextTick(()=>{
-      store.commit('switch',false)
       store.commit('chosenOne',index)
       store.commit('chosenDetail',index1)
       store.commit('switch',true)
@@ -121,10 +118,7 @@
   }
   const addInformation = ()=>{
     let index = focusIndex.value
-    if (store.state.isEdit) {
-      store.commit('switch',false)
-      store.commit('switchEditPersonal',false)
-    } 
+    trunOffEdit()
     store.commit('addStructInit',deepClear(resumeMoudle.value[index].inputList[0]))
     setTimeout(() => {
       store.commit('chosenOne',index)
@@ -146,6 +140,13 @@
         return cloneObj
     } else {
         return target;
+    }
+  }
+  function trunOffEdit() {
+    if (store.state.isEdit || store.state.isAdd || store.state.editPersonal ) {
+      store.commit('switch',false)
+      store.commit('switchEditPersonal',false)
+      store.commit('switchAdd',false)
     }
   }
 </script>

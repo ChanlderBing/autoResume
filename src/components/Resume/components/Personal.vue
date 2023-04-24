@@ -31,12 +31,13 @@ const isShow = ref(false)
 
 const editInformation = ()=>
   {
-    if (store.state.isEdit) {
+    if (store.state.isEdit || store.state.isAdd || store.state.editPersonal ) {
       store.commit('switch',false)
+      store.commit('switchEditPersonal',false)
+      store.commit('switchAdd',false)
     }
     nextTick(()=>{
       store.commit('switchEditPersonal',true)
-      store.commit('switch',true)
     })
   }
 
@@ -66,7 +67,6 @@ onMounted:{
   if (!localStorage.getItem('personalMoudle')) {
       localStorage.setItem('personalMoudle', JSON.stringify(personalMoudleMock));
   }
-  console.log(personalMoudle)
 }
 </script>
 

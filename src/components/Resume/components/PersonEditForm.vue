@@ -42,6 +42,8 @@
     back()
   }
   const back = ()=>{
+    store.commit('switchEditPersonal',false)
+    store.commit('switchAdd',false)
     store.commit('switch',false)
   }
 

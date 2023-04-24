@@ -15,20 +15,17 @@
           </el-select>
         </div>
         <div class="modelAdd">
-          <el-select model-value="添加模块" class="m-2" placeholder="添加模块">
+          <el-select  class="m-2" placeholder="添加模块">
             <el-option
-              v-for="item in options"
+              v-for="item in resumePart"
               :key="item.value"
               :label="item.label"
               :value="item.value"
-              :change="changeTheme(value)"
+              :disabled="item.disabled"
             >
-              
+            <div @click="">{{ item.label}} <span style="margin-left:20px">1</span></div>
             </el-option>
           </el-select>
-        </div>
-        <div class="colorPick">
-          
         </div>
       </div>
   </el-card>
@@ -47,6 +44,7 @@ import store from '@/store';
 import { ref} from 'vue'
 import ShowList from './components/ShowList.vue';
 import resumeMoudleMock from '@/utils/mock.js'
+import axios from 'axios';
 
   const value = ref(store.state.color_theme)
   const options = [
@@ -74,6 +72,32 @@ import resumeMoudleMock from '@/utils/mock.js'
       color: '#E6A23C',
     }
   ]
+  const resumePart = [
+    {
+      value: 'project',
+      label: '项目经验',
+      color: '#F56C6C',
+      disabled:true
+    }
+    ,
+    {
+      value: 'school',
+      label: '校园经历',
+      color: '#67C23A',
+    }
+    ,
+    {
+      value: 'work',
+      label: '工作经历',
+      color: '#409EFF',
+    }
+    ,
+    {
+      value: 'summary',
+      label: '个人总结',
+      color: '#E6A23C',
+    }
+  ]
 
   const changeTheme = (theme:string)=>{
       window.document.getElementById('app')?.setAttribute('data-theme', theme)
@@ -82,6 +106,8 @@ import resumeMoudleMock from '@/utils/mock.js'
   let resumeMoudle = ref(JSON.parse(localStorage.getItem('resumeMoudle')))
 
   onMounted:{
+    //获取数据 1.未登录获取默认简历 2.登录后获取个人简历库首个简历 axios.get()
+    
       if (!localStorage.getItem('resumeMoudle')) {
           localStorage.setItem('resumeMoudle', JSON.stringify(resumeMoudleMock));
       }
@@ -117,6 +143,10 @@ import resumeMoudleMock from '@/utils/mock.js'
     .colorPick{
       ::v-deep .el-select .el-input__inner{
       width: 30px;
+      }
+      ::v-deep .el-input__wrapper{
+        @include left-background();
+        @include border-background();
       }
     }
     .modelAdd{

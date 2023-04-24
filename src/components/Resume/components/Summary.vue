@@ -31,6 +31,8 @@
 
 <script lang="ts" setup>
 import { Plus } from '@element-plus/icons-vue'
+//未登录获取
+//按钮上传文件
 </script>
 
   <style scoped lang="scss">

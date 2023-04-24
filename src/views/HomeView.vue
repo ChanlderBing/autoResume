@@ -35,10 +35,10 @@
   <div class="home">
     <div class="left">
       <Transition name="fade" mode="out-in">
-        <div class="edit" v-if="store.state.isEdit&&!store.state.editPersonal" >
+        <div class="edit" v-if="store.state.isEdit" >
           <EditForm></EditForm>
         </div>
-        <div class="edit" v-else-if="store.state.isEdit&&store.state.editPersonal" >
+        <div class="edit" v-else-if="store.state.editPersonal" >
           <PersonEditForm></PersonEditForm>
         </div>
         <div class="edit" v-else-if="store.state.isAdd">
@@ -52,7 +52,7 @@
     <div class="right">
       <div class="resumeContent">
         <Transition name="resume" mode="out-in">
-        <div v-if="store.state.isEdit ||store.state.isAdd" >
+        <div v-if="store.state.isEdit ||store.state.isAdd || store.state.editPersonal" >
           <Resume></Resume>
         </div>
         <div v-else>

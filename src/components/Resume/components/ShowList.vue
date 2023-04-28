@@ -52,7 +52,9 @@
   import store from "@/store";
   import { ref,nextTick, onMounted } from "vue";
   import Contrl from '@/components/Resume/components/Contrl.vue';
-
+  import { defineEmits } from 'vue'
+  // 使用defineEmits创建名称，接受一个数组
+  const emit = defineEmits(['clickChild'])
   const props = defineProps({
     resumeMoudle:Object
   })
@@ -71,7 +73,7 @@
       resumeMoudle.value[index] = resumeMoudle.value.splice(index - 1, 1, resumeMoudle.value[index])[0]
     }
   }
-  
+
   const switchTabDown = (flag) => {
     let index = focusIndex.value
     let detailIndex = focusDetailIndex.value
@@ -90,9 +92,11 @@
     if (flag == 1) 
     {
       resumeMoudle.value[index].inputList.splice(detailIndex,1)
+      localStorage.setItem("resumeMoudle",JSON.stringify(resumeMoudle.value))
     }else if (flag == 0) 
     {
       resumeMoudle.value.splice(index,1)
+      emit('clickChild',param)
     }
   }
   const focusMoudel = (index:any)=>{

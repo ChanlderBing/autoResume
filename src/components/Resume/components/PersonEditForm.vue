@@ -34,7 +34,6 @@
   import { ElMessage } from 'element-plus';
 
   let personalMoudle = ref(JSON.parse(localStorage.getItem('personalMoudle')))
-
   const onSubmit = () => {
     personalMoudle = unref(personalMoudle)
     localStorage.setItem('personalMoudle',JSON.stringify(personalMoudle))
@@ -71,7 +70,7 @@
         font-weight: bold;
         margin: 0 0 20px;
       }
-      }
+    }
     .personal{
         height: 200px;
         width: 100%;

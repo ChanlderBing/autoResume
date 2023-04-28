@@ -2,7 +2,7 @@
   <el-card>
     <div class="personal">
       <div class="information">
-        <div class="plusBtn"><el-button class="btn" type="primary"><span>+</span>新建简历</el-button></div>
+        <div class="plusBtn"><el-button class="btn" type="primary" @click="createResume()"><span>+</span>新建简历</el-button></div>
         <el-menu
           class="el-menu-demo"
           mode="horizontal"
@@ -31,8 +31,39 @@
 
 <script lang="ts" setup>
 import { Plus } from '@element-plus/icons-vue'
-//未登录获取
-//按钮上传文件
+import  axios  from '../../../api/http';
+import { nextTick, onMounted } from 'vue';
+import { el } from 'element-plus/es/locale';
+import { ElMessage } from 'element-plus';
+import store from '@/store';
+//未登录，获取固定模板。登录后获取个人简历列表显示第一份简历
+//按钮上传文件，获取登录信息。弹出登录信息/个人信息添加表
+//TAB切换
+
+
+//新建简历
+const createResume = ()=>{
+    if (!localStorage.getItem("token")) {
+    ElMessage.error('请先登录！')
+  } else {
+    store.commit('switchEditPersonal',true)
+  }
+}
+  
+
+// 未登录
+let modelResume
+const getModelResume = ()=>{
+  axios.get('getUserResume').then(res=>{
+      if (res?.data?.data.code === 200) {   
+        modelResume = res.data.data
+      }
+  })
+}
+onMounted(() => {
+
+  getModelResume();
+})
 </script>
 
   <style scoped lang="scss">

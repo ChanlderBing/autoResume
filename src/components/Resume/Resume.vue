@@ -34,7 +34,7 @@
       <div class="personal">
         <Personal></Personal>
       </div>
-      <ShowList :resumeMoudle="resumeMoudle"></ShowList>
+      <ShowList :resumeMoudle="resumeMoudle" @clickChild=""></ShowList>
     </div>
   </el-card>
 </template>
@@ -44,7 +44,7 @@ import store from '@/store';
 import { ref} from 'vue'
 import ShowList from './components/ShowList.vue';
 import resumeMoudleMock from '@/utils/mock.js'
-import axios from 'axios';
+import  axios  from '../../api/http';
 
   const value = ref(store.state.color_theme)
   const options = [
@@ -103,7 +103,17 @@ import axios from 'axios';
       window.document.getElementById('app')?.setAttribute('data-theme', theme)
       store.commit('switchThemeColor',theme)
   }
-  let resumeMoudle = ref(JSON.parse(localStorage.getItem('resumeMoudle')))
+
+let resumeMoudle = ref(JSON.parse(localStorage.getItem('resumeMoudle')))
+
+let modelResume
+const getModelResume = ()=>{
+  axios.get('getUserResume').then(res=>{
+      if (res?.data?.data.code === 200) {   
+        modelResume = res.data.data
+      }
+  })
+}
 
   onMounted:{
     //获取数据 1.未登录获取默认简历 2.登录后获取个人简历库首个简历 axios.get()

@@ -34,14 +34,14 @@
       <div class="personal">
         <Personal></Personal>
       </div>
-      <ShowList :resumeMoudle="resumeMoudle" @clickChild=""></ShowList>
+      <ShowList :resumeMoudle="resumeMoudle" @clickChild="resumeMoudleChange"></ShowList>
     </div>
   </el-card>
 </template>
 <script lang="ts" setup>
 import Personal from '@/components/Resume/components/Personal.vue'
 import store from '@/store';
-import { ref} from 'vue'
+import { reactive, ref} from 'vue'
 import ShowList from './components/ShowList.vue';
 import resumeMoudleMock from '@/utils/mock.js'
 import  axios  from '../../api/http';
@@ -72,7 +72,7 @@ import  axios  from '../../api/http';
       color: '#E6A23C',
     }
   ]
-  const resumePart = [
+  const resumePart = reactive([
     {
       value: 'project',
       label: '项目经验',
@@ -84,44 +84,51 @@ import  axios  from '../../api/http';
       value: 'school',
       label: '校园经历',
       color: '#67C23A',
+      disabled:true
     }
     ,
     {
       value: 'work',
       label: '工作经历',
       color: '#409EFF',
+      disabled:true
     }
     ,
     {
       value: 'summary',
       label: '个人总结',
       color: '#E6A23C',
+      disabled:true
     }
-  ]
+  ])
 
   const changeTheme = (theme:string)=>{
       window.document.getElementById('app')?.setAttribute('data-theme', theme)
       store.commit('switchThemeColor',theme)
   }
+ 
+  let resumeMoudle = reactive(JSON.parse(localStorage.getItem('resumeMoudle')))
 
-let resumeMoudle = ref(JSON.parse(localStorage.getItem('resumeMoudle')))
+  let modelResume
+  const getModelResume = ()=>{
+    axios.get('getUserResume').then(res=>{
+        if (res?.data?.data.code === 200) {   
+          modelResume = res.data.data
+        }
+    })
+  }
 
-let modelResume
-const getModelResume = ()=>{
-  axios.get('getUserResume').then(res=>{
-      if (res?.data?.data.code === 200) {   
-        modelResume = res.data.data
-      }
-  })
-}
+  const resumeMoudleChange = (index)=>{
+    resumeMoudle[index].isShow = false
+    localStorage.setItem("resumeMoudle",JSON.stringify(resumeMoudle))
+  }
 
   onMounted:{
     //获取数据 1.未登录获取默认简历 2.登录后获取个人简历库首个简历 axios.get()
-    
-      if (!localStorage.getItem('resumeMoudle')) {
-          localStorage.setItem('resumeMoudle', JSON.stringify(resumeMoudleMock));
-      }
-  }
+    if (!localStorage.getItem('resumeMoudle')) {
+        localStorage.setItem('resumeMoudle', JSON.stringify(resumeMoudleMock));
+    }
+  }                 
 
 </script>
 

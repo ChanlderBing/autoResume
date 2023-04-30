@@ -1,9 +1,9 @@
 <template>
-    <div :class="focusIndex == index ? 'active':''" v-for="(item,index) in resumeMoudle" :key="'id'+ index"  @mouseover="focusMoudel(index)" @mouseleave="blurMoudel()">
+    <div :class="focusIndex == index ? 'active':''" v-for="(item,index) in resumeMoudle" :key="index"  @mouseover="focusMoudel(index)" @mouseleave="blurMoudel()">
       <div class="piece">
         <div :class="focusIndex == index ? ['activeTitle','title']:'title'">
           <div class="colorDiv"></div>
-          <div class="titleName"> {{item.title}}</div>
+          <div class="titleName"> {{item.title}} {{ item.isShow ? 1 :0 }}</div>
           <div class="line"></div>
           <div class="control" v-if="focusIndex == index">
               <Contrl 
@@ -13,8 +13,8 @@
                 @add="addInformation"
                 :flag = 0
                 :addHidden= "item.expand"
-                :upBan = "index == '0'"
-                :downBan = "index == (resumeMoudle.length - 1).toString()"
+                :upBan = "index == 0"
+                :downBan = "index == (resumeMoudle.length - 1)"
               >
               </Contrl>
           </div>
@@ -50,7 +50,7 @@
 
 <script lang="ts" setup>
   import store from "@/store";
-  import { ref,nextTick, onMounted } from "vue";
+  import { ref,nextTick, onMounted, reactive,watch, getCurrentInstance, toRefs, computed } from "vue";
   import Contrl from '@/components/Resume/components/Contrl.vue';
   import { defineEmits } from 'vue'
   // 使用defineEmits创建名称，接受一个数组
@@ -58,7 +58,12 @@
   const props = defineProps({
     resumeMoudle:Object
   })
-  let resumeMoudle = ref(props.resumeMoudle)
+
+  let resumeMoudle = computed(() => {
+      return props.resumeMoudle.filter((res: any) => {
+        return res.isShow !== false
+    })
+ })
   let focusIndex = ref()
   let focusDetailIndex = ref()
   
@@ -79,24 +84,23 @@
     let detailIndex = focusDetailIndex.value
     if (detailIndex <= resumeMoudle.value.length - 1 && flag == 1) 
     {
-      resumeMoudle.value[index].inputList[detailIndex] = resumeMoudle.value[index].inputList.splice(detailIndex + 1, 1, resumeMoudle.value[index].inputList[detailIndex])[0]
+      resumeMoudle[index].inputList[detailIndex] = resumeMoudle[index].inputList.splice(detailIndex + 1, 1, resumeMoudle[index].inputList[detailIndex])[0]
     }else if (detailIndex <= resumeMoudle.value.length - 1 && flag == 0)
     {
-      resumeMoudle.value[index] = resumeMoudle.value.splice(index + 1, 1, resumeMoudle.value[index])[0]
+      resumeMoudle[index] = resumeMoudle.value.splice(index + 1, 1, resumeMoudle[index])[0]
     }
   }
 
   const tabDel = (flag:Number) =>{
     let index = focusIndex.value
     let detailIndex = focusDetailIndex.value
-    if (flag == 1) 
+    if (flag == 1)  
     {
-      resumeMoudle.value[index].inputList.splice(detailIndex,1)
-      localStorage.setItem("resumeMoudle",JSON.stringify(resumeMoudle.value))
-    }else if (flag == 0) 
+      resumeMoudle[index].inputList.splice(detailIndex,1)
+      localStorage.setItem("resumeMoudle",JSON.stringify(resumeMoudle))
+    }else if (flag == 0)  
     {
-      resumeMoudle.value.splice(index,1)
-      emit('clickChild',param)
+      emit('clickChild', index)
     }
   }
   const focusMoudel = (index:any)=>{
@@ -153,6 +157,11 @@
       store.commit('switchAdd',false)
     }
   }
+
+  onMounted:{
+   console.log(props.resumeMoudle);
+  }  
+
 </script>
 <style scoped lang="scss">
 

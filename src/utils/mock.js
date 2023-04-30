@@ -1,5 +1,6 @@
  let resumeMoudleMock = [
     {
+    isShow:true,
     title:'教育经历',
     expand:true,
     inputList:[{
@@ -27,6 +28,7 @@
     }]
 },
 {
+    isShow:true,
     title:'工作经历',
     expand:true,
     inputList:[{

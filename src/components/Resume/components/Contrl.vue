@@ -24,7 +24,8 @@
 
   const emit = defineEmits(["up","dowm","del","add"]);
   const upClick = ()=>{
-    emit("up",props.flag) 
+    emit("up",props.flag)
+    console.log(11);
   }
   const dowmClick = ()=>{
     emit("dowm",props.flag) 

@@ -50,7 +50,7 @@
 
 <script lang="ts" setup>
   import store from "@/store";
-  import { ref,nextTick, onMounted, reactive,watch, getCurrentInstance, toRefs, computed } from "vue";
+  import { ref,nextTick, onMounted, computed } from "vue";
   import Contrl from '@/components/Resume/components/Contrl.vue';
   import { defineEmits } from 'vue'
   // 使用defineEmits创建名称，接受一个数组
@@ -59,11 +59,14 @@
     resumeMoudle:Object
   })
 
-  let resumeMoudle = computed(() => {
+  let resumeMoudle = computed({
+    get:() => {
       return props.resumeMoudle.filter((res: any) => {
         return res.isShow !== false
     })
- })
+    },
+    set:()=>  resumeMoudle
+  })
   let focusIndex = ref()
   let focusDetailIndex = ref()
   
@@ -73,9 +76,11 @@
     if (detailIndex && detailIndex !== 0 && flag == 1) 
     {
       resumeMoudle.value[index].inputList[detailIndex] = resumeMoudle.value[index].inputList.splice(detailIndex - 1, 1, resumeMoudle.value[index].inputList[detailIndex])[0]
+        
     }else if (index && index!==0 && flag == 0)
     {
       resumeMoudle.value[index] = resumeMoudle.value.splice(index - 1, 1, resumeMoudle.value[index])[0]
+      console.log(resumeMoudle.value[index]);
     }
   }
 
@@ -84,10 +89,10 @@
     let detailIndex = focusDetailIndex.value
     if (detailIndex <= resumeMoudle.value.length - 1 && flag == 1) 
     {
-      resumeMoudle[index].inputList[detailIndex] = resumeMoudle[index].inputList.splice(detailIndex + 1, 1, resumeMoudle[index].inputList[detailIndex])[0]
+      resumeMoudle.value[index].inputList[detailIndex] = resumeMoudle.value[index].inputList.splice(detailIndex + 1, 1, resumeMoudle.value[index].inputList[detailIndex])[0]
     }else if (detailIndex <= resumeMoudle.value.length - 1 && flag == 0)
     {
-      resumeMoudle[index] = resumeMoudle.value.splice(index + 1, 1, resumeMoudle[index])[0]
+      resumeMoudle.value[index] = resumeMoudle.value.splice(index + 1, 1, resumeMoudle.value[index])[0]
     }
   }
 
@@ -104,7 +109,7 @@
     }
   }
   const focusMoudel = (index:any)=>{
-    focusIndex.value = index - 0;
+    focusIndex.value = index - 0; 
   }
   const blurMoudel = ()=>{
     focusIndex.value = null

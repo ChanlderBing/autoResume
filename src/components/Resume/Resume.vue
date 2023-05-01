@@ -17,13 +17,14 @@
         <div class="modelAdd">
           <el-select  class="m-2" placeholder="添加模块">
             <el-option
-              v-for="item in resumePart"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-              :disabled="item.disabled"
+              v-for="(item,index) in resumeMoudle"
+              :key="index"
+              :label="item.title"
+              :value="item.isExpand"
+              :disabled="item.isShow"
+              @click="resumeMoudleChange(index)"
             >
-            <div @click="">{{ item.label}} <span style="margin-left:20px">1</span></div>
+            <div>{{ item.title }} <span style="margin-left:20px">1</span></div>
             </el-option>
           </el-select>
         </div>
@@ -119,7 +120,8 @@ import  axios  from '../../api/http';
   }
 
   const resumeMoudleChange = (index)=>{
-    resumeMoudle[index].isShow = false
+    resumeMoudle[index].isShow = resumeMoudle[index].isShow ?false:true
+    
     localStorage.setItem("resumeMoudle",JSON.stringify(resumeMoudle))
   }
 

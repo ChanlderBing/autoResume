@@ -33,7 +33,6 @@
 import { Plus } from '@element-plus/icons-vue'
 import  axios  from '../../../api/http';
 import { nextTick, onMounted } from 'vue';
-import { el } from 'element-plus/es/locale';
 import { ElMessage } from 'element-plus';
 import store from '@/store';
 //未登录，获取固定模板。登录后获取个人简历列表显示第一份简历
@@ -44,12 +43,15 @@ import store from '@/store';
 //新建简历
 const createResume = ()=>{
     if (!localStorage.getItem("token")) {
-    ElMessage.error('请先登录！')
+      ElMessage.error('请先登录！')
   } else {
-    store.commit('switchEditPersonal',true)
+      store.commit('switchEditPersonal',true)
   }
 }
   
+const resumeChange = (id:number)=>{
+    //选择简历
+}
 
 // 未登录
 let modelResume

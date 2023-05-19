@@ -22,15 +22,15 @@
               <el-input v-model="personalMoudle[0].inputList[1][key]" />
             </el-form-item>
           </template>
-        </el-form>
-    </div>
+      </el-form>
+    </div> 
   </el-card>
-  </template>
+</template>
   
   <script setup lang="ts">
   import store from '@/store';
   import '@wangeditor/editor/dist/css/style.css' // 引入 css
-  import { onBeforeUnmount,unref, ref, shallowRef, onMounted } from 'vue'
+  import { unref, ref, onMounted } from 'vue'
   import { ElMessage } from 'element-plus';
 
   let personalMoudle = ref(JSON.parse(localStorage.getItem('personalMoudle')))
@@ -59,22 +59,22 @@
 </script>
 
 <style scoped lang="scss">
-    .topTab{
+.topTab{
       height: 60px;
       display: flex;
       justify-content: space-between;
     }
-    .skill{
-      .skillTitle{
-        font-size: larger;
-        font-weight: bold;
-        margin: 0 0 20px;
-      }
-    }
-    .personal{
-        height: 200px;
-        width: 100%;
-        background-color: pink;
-    }
-   
+.skill{
+  .skillTitle{
+    font-size: larger;
+    font-weight: bold;
+    margin: 0 0 20px;
+  }
+}
+.personal{
+    height: 200px;
+    width: 100%;
+    background-color: pink;
+}
+
   </style>

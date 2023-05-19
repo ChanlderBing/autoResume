@@ -42,6 +42,40 @@
         },
         richText:''
     }]
-}]
+}
+,
+{
+    isShow:true,
+    title:'项目经历',
+    expand:true,
+    inputList:[{
+        school:'',
+        major:'',
+        degree:'',
+        academy:'',
+        Time:{
+            startTime:'',
+            endTime:''
+        },
+        richText:''
+    }]
+},
+{
+    isShow:true,
+    title:'个人总结',
+    expand:true,
+    inputList:[{
+        school:'',
+        major:'',
+        degree:'',
+        academy:'',
+        Time:{
+            startTime:'',
+            endTime:''
+        },
+        richText:''
+    }]
+}
+]
 
 export default resumeMoudleMock

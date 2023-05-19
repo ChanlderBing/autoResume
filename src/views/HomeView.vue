@@ -100,7 +100,7 @@ import Summary from '@/components/Resume/components/Summary.vue';
 import EditForm from '@/components/Resume/components/EditForm.vue';
 import AddForm from '@/components/Resume/components/AddForm.vue';
 import printjs from 'print-js'
-import { ref } from 'vue';
+import { reactive, ref,provide } from 'vue';
 import PersonEditForm from '@/components/Resume/components/PersonEditForm.vue';
 import {  useRouter } from 'vue-router';
 
@@ -115,10 +115,13 @@ const loginToGet = ()=>{
 
 const router = useRouter()
 const goToLogin = ()=>{
-  router.push({name:"login",})
+  router.push({name:"login"})
 }
 
-const style1 =  '.text{padding:30px} ';
+const resumeMoudle = reactive(JSON.parse(localStorage.getItem('resumeMoudle')))
+provide('resumeMoudle',resumeMoudle)
+
+const style1 =  '.text{padding:30px}';
 const print = () => 
   printjs({
     printable: 'printC',
@@ -129,7 +132,7 @@ const print = () =>
   })
 const dayNightSwitch = ref(true)
 const changeTheme = (value)=>{
-    window.document.getElementById('app')?.setAttribute('data-theme1', dayNightSwitch.value  ? 'light-theme':'dark-theme')
+    window.document.getElementById('app')?.setAttribute('data-theme1', dayNightSwitch.value ? 'light-theme':'dark-theme')
 }
 </script>
 
@@ -169,6 +172,7 @@ const changeTheme = (value)=>{
     display: flex;
     flex-direction: row;
     justify-content: center;
+    height: 1206px;
     @include home-background();
     @include home-color();
     padding-top: 20px;

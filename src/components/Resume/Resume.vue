@@ -20,11 +20,11 @@
               v-for="(item,index) in resumeMoudle"
               :key="index"
               :label="item.title"
-              :value="item.isExpand"
+              value="添加模块"
               :disabled="item.isShow"
               @click="resumeMoudleChange(index)"
             >
-            <div>{{ item.title }} <span style="margin-left:20px">1</span></div>
+            <div>{{ item.title }} <span style="margin-left:20px"></span></div>
             </el-option>
           </el-select>
         </div>
@@ -35,18 +35,19 @@
       <div class="personal">
         <Personal></Personal>
       </div>
-      <ShowList :resumeMoudle="resumeMoudle" @clickChild="resumeMoudleChange"></ShowList>
+      <ShowList  @clickChild="resumeMoudleChange"></ShowList>
     </div>
   </el-card>
 </template>
 <script lang="ts" setup>
 import Personal from '@/components/Resume/components/Personal.vue'
 import store from '@/store';
-import { reactive, ref} from 'vue'
+import { reactive, ref,inject} from 'vue'
 import ShowList from './components/ShowList.vue';
 import resumeMoudleMock from '@/utils/mock.js'
 import  axios  from '../../api/http';
 
+  const resumeMoudle = inject('resumeMoudle') as any
   const value = ref(store.state.color_theme)
   const options = [
     {
@@ -73,43 +74,14 @@ import  axios  from '../../api/http';
       color: '#E6A23C',
     }
   ]
-  const resumePart = reactive([
-    {
-      value: 'project',
-      label: '项目经验',
-      color: '#F56C6C',
-      disabled:true
-    }
-    ,
-    {
-      value: 'school',
-      label: '校园经历',
-      color: '#67C23A',
-      disabled:true
-    }
-    ,
-    {
-      value: 'work',
-      label: '工作经历',
-      color: '#409EFF',
-      disabled:true
-    }
-    ,
-    {
-      value: 'summary',
-      label: '个人总结',
-      color: '#E6A23C',
-      disabled:true
-    }
-  ])
+
 
   const changeTheme = (theme:string)=>{
       window.document.getElementById('app')?.setAttribute('data-theme', theme)
       store.commit('switchThemeColor',theme)
   }
  
-  let resumeMoudle = reactive(JSON.parse(localStorage.getItem('resumeMoudle')))
-
+  
   let modelResume
   const getModelResume = ()=>{
     axios.get('getUserResume').then(res=>{
@@ -120,12 +92,12 @@ import  axios  from '../../api/http';
   }
 
   const resumeMoudleChange = (index)=>{
-    resumeMoudle[index].isShow = resumeMoudle[index].isShow ?false:true
-    
+    resumeMoudle[index].isShow = resumeMoudle[index].isShow ? false:true
     localStorage.setItem("resumeMoudle",JSON.stringify(resumeMoudle))
   }
 
   onMounted:{
+    
     //获取数据 1.未登录获取默认简历 2.登录后获取个人简历库首个简历 axios.get()
     if (!localStorage.getItem('resumeMoudle')) {
         localStorage.setItem('resumeMoudle', JSON.stringify(resumeMoudleMock));

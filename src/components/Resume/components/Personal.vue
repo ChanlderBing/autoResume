@@ -41,6 +41,8 @@ const editInformation = ()=>
     })
   }
 
+  
+//头像更换
 const inputFile = ref(null)
 const imgSrc  =  ref(require('@/assets/img/wyk.jpg'))
 const updateFile =(e)=>{

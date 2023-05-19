@@ -3,7 +3,7 @@
       <div class="piece">
         <div :class="focusIndex == index ? ['activeTitle','title']:'title'">
           <div class="colorDiv"></div>
-          <div class="titleName"> {{item.title}} {{ item.isShow ? 1 :0 }}</div>
+          <div class="titleName"> {{item.title}}</div>
           <div class="line"></div>
           <div class="control" v-if="focusIndex == index">
               <Contrl 
@@ -50,7 +50,7 @@
 
 <script lang="ts" setup>
   import store from "@/store";
-  import { ref,nextTick, onMounted, computed } from "vue";
+  import { ref,nextTick, onMounted, computed, inject } from "vue";
   import Contrl from '@/components/Resume/components/Contrl.vue';
   import { defineEmits } from 'vue'
   // 使用defineEmits创建名称，接受一个数组
@@ -59,9 +59,10 @@
     resumeMoudle:Object
   })
 
+  const resumeMoudle1 = inject('resumeMoudle') as any
   let resumeMoudle = computed({
     get:() => {
-      return props.resumeMoudle.filter((res: any) => {
+      return resumeMoudle1.filter((res: any) => {
         return res.isShow !== false
     })
     },
@@ -76,7 +77,6 @@
     if (detailIndex && detailIndex !== 0 && flag == 1) 
     {
       resumeMoudle.value[index].inputList[detailIndex] = resumeMoudle.value[index].inputList.splice(detailIndex - 1, 1, resumeMoudle.value[index].inputList[detailIndex])[0]
-        
     }else if (index && index!==0 && flag == 0)
     {
       resumeMoudle.value[index] = resumeMoudle.value.splice(index - 1, 1, resumeMoudle.value[index])[0]
@@ -101,7 +101,7 @@
     let detailIndex = focusDetailIndex.value
     if (flag == 1)  
     {
-      resumeMoudle[index].inputList.splice(detailIndex,1)
+      resumeMoudle.value[index].inputList.splice(detailIndex,1)
       localStorage.setItem("resumeMoudle",JSON.stringify(resumeMoudle))
     }else if (flag == 0)  
     {
@@ -164,7 +164,7 @@
   }
 
   onMounted:{
-   console.log(props.resumeMoudle);
+  console.log(resumeMoudle1);
   }  
 
 </script>

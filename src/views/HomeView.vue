@@ -45,7 +45,7 @@
           <AddForm></AddForm>
         </div>
         <div class="test" v-else>
-          <Summary></Summary> 
+          <Summary @changeResume="changeResume(1)"></Summary> 
         </div>
       </Transition>
     </div>
@@ -90,7 +90,6 @@
       </span>
     </template>
   </el-dialog>
-
 </template>
 
 <script lang="ts" setup>
@@ -100,9 +99,10 @@ import Summary from '@/components/Resume/components/Summary.vue';
 import EditForm from '@/components/Resume/components/EditForm.vue';
 import AddForm from '@/components/Resume/components/AddForm.vue';
 import printjs from 'print-js'
-import { reactive, ref,provide } from 'vue';
+import { reactive, ref,provide, onMounted, watch, toRefs } from 'vue';
 import PersonEditForm from '@/components/Resume/components/PersonEditForm.vue';
 import {  useRouter } from 'vue-router';
+import  axios  from '../api/http';
 
 const formLabelAlign =  ref({
   Name:'',
@@ -117,9 +117,17 @@ const router = useRouter()
 const goToLogin = ()=>{
   router.push({name:"login"})
 }
-
-const resumeMoudle = reactive(JSON.parse(localStorage.getItem('resumeMoudle')))
+let resumeMoudle = ref(JSON.parse(localStorage.getItem('resumeMoudle')))
 provide('resumeMoudle',resumeMoudle)
+let personalMoudle = ref(JSON.parse(localStorage.getItem('personalMoudle'))[0])
+provide('personalMoudle',personalMoudle)
+
+//调用接口获取简历
+const changeResume = async (id)=>{
+  const {data:res} = await axios.get('posts/getUserResume',id)
+  resumeMoudle.value = res.data.resumeMoudle
+  personalMoudle.value = res.data.personalMoudle
+}
 
 const style1 =  '.text{padding:30px}';
 const print = () => 

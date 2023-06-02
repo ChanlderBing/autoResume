@@ -11,7 +11,7 @@
           <el-form-item :label="realationship[key]" v-if="moduleCheck(key) === 'normal'">
             <el-input v-model="renderListDetail[key]" />
           </el-form-item>
-      <el-form-item label="时间" v-if="moduleCheck(key) === 'Time'">
+      <el-form-item label="时间" v-if="moduleCheck(key) === 'startTime'">
         <el-col :span="11">
         <el-date-picker
           v-model="renderListDetail[key].startTime"
@@ -68,7 +68,7 @@
   let renderList = ref(resumeMoudle[store.state.editChosen])
   let renderListDetail = ref(renderList.value.inputList[store.state.editChosenDetail])
   
-  const checkList = ['Text','Time']
+  const checkList = ['Text','startTime']
   const moduleCheck =(key)=>{
     if (checkList.find((item)=>{
       return key.includes(item)
@@ -76,8 +76,8 @@
       return 'Text'
     }else if(checkList.find((item)=>{
         return key.includes(item)
-    }) === 'Time') {
-    return 'Time'
+    }) === 'startTime') {
+    return 'startTime'
   }
     return 'normal'
   }

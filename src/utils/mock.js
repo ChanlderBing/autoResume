@@ -9,10 +9,8 @@
         degree:'',
         academy:'',
         city:'',
-        Time:{
             startTime:'',
-            endTime:''
-        },
+            endTime:'',
         richText:''
     },
     {
@@ -20,10 +18,8 @@
         major:'',
         degree:'',
         academy:'',
-        Time:{
-            startTime:'',
-            endTime:''
-        },
+        startTime:'',
+        endTime:'',
         richText:''
     }]
 },
@@ -53,10 +49,8 @@
         major:'',
         degree:'',
         academy:'',
-        Time:{
             startTime:'',
-            endTime:''
-        },
+            endTime:'',
         richText:''
     }]
 },
@@ -69,10 +63,8 @@
         major:'',
         degree:'',
         academy:'',
-        Time:{
             startTime:'',
-            endTime:''
-        },
+            endTime:'',
         richText:''
     }]
 }

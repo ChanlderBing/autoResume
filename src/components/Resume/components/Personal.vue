@@ -1,12 +1,12 @@
 <template>
   <div class="personal">
     <div class="information"  @click="editInformation()">
-      <p><h2>{{ personalMoudle[0].userName }}</h2></p>
+      <p><h2>{{ personalMoudle.userName }}</h2></p>
       <div>
-        <span v-for="(list1,key,index1) in personalMoudle[0].inputList[0]">{{ list1 }}<span v-if="Object.keys(list1).length -1 > index1"> | </span></span>
+        <span v-for="(list1,key,index1) in personalMoudle.inputList[0]">{{ list1 }}<span v-if="Object.keys(list1).length -1 > index1"> | </span></span>
       </div>
       <div>
-        <span v-for="(list,key,index) in personalMoudle[0].inputList[1]">{{ list }}<span v-if="Object.keys(list).length -1 >= index"> | </span></span>
+        <span v-for="(list,key,index) in personalMoudle.inputList[1]">{{ list }}<span v-if="Object.keys(list).length -1 >= index"> | </span></span>
       </div>
     </div>
     <div class="avatar" @mouseleave="isShow = false;"  @mouseenter="isShow = true" >
@@ -21,12 +21,11 @@
 </template>
 
 <script lang="ts" setup>
-import { nextTick, ref } from "vue";
+import { inject, nextTick, ref } from "vue";
 import { ElMessage } from 'element-plus';
 import store from "@/store";
-import personalMoudleMock from '@/utils/personal.js'
 
-let personalMoudle = ref(JSON.parse(localStorage.getItem('personalMoudle')))
+let personalMoudle = inject('personalMoudle') as any
 const isShow = ref(false)
 
 const editInformation = ()=>
@@ -65,11 +64,6 @@ const upload = ()=>{
    const a = inputFile.value.click()
 }
 
-onMounted:{
-  if (!localStorage.getItem('personalMoudle')) {
-      localStorage.setItem('personalMoudle', JSON.stringify(personalMoudleMock));
-  }
-}
 </script>
 
 <style scoped lang="scss">

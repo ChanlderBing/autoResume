@@ -11,9 +11,15 @@
 <script setup lang="ts">
 import { json } from 'stream/consumers';
 import { onMounted } from 'vue'
- import { resumeMoudleMock } from "./utils/mock.js";
+ import  resumeMoudleMock  from "./utils/mock.js";
+ import  personalMoudleMock  from "./utils/personal.js";
  onMounted(() => {
-   
+  if (!localStorage.getItem('personalMoudle')) {
+      localStorage.setItem('personalMoudle', JSON.stringify(personalMoudleMock));
+  }
+  if (!localStorage.getItem('resumeMoudle')) {
+        localStorage.setItem('resumeMoudle', JSON.stringify(resumeMoudleMock));
+    }
  })
   
 </script>

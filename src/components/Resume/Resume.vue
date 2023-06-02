@@ -35,19 +35,20 @@
       <div class="personal">
         <Personal></Personal>
       </div>
-      <ShowList  @clickChild="resumeMoudleChange"></ShowList>
+      <ShowList  @clickChild="resumeMoudleChange" ></ShowList>
     </div>
   </el-card>
 </template>
 <script lang="ts" setup>
 import Personal from '@/components/Resume/components/Personal.vue'
 import store from '@/store';
-import { reactive, ref,inject} from 'vue'
+import { reactive, ref,inject, watchEffect} from 'vue'
 import ShowList from './components/ShowList.vue';
 import resumeMoudleMock from '@/utils/mock.js'
-import  axios  from '../../api/http';
 
-  const resumeMoudle = inject('resumeMoudle') as any
+const resumeMoudle1 = inject('resumeMoudle') as any
+const resumeMoudle =  resumeMoudle1
+//let resumeMoudle = ref(JSON.parse(localStorage.getItem('resumeMoudle')))
   const value = ref(store.state.color_theme)
   const options = [
     {
@@ -81,23 +82,13 @@ import  axios  from '../../api/http';
       store.commit('switchThemeColor',theme)
   }
  
-  
   let modelResume
-  const getModelResume = ()=>{
-    axios.get('getUserResume').then(res=>{
-        if (res?.data?.data.code === 200) {   
-          modelResume = res.data.data
-        }
-    })
-  }
-
   const resumeMoudleChange = (index)=>{
     resumeMoudle[index].isShow = resumeMoudle[index].isShow ? false:true
     localStorage.setItem("resumeMoudle",JSON.stringify(resumeMoudle))
   }
 
   onMounted:{
-    
     //获取数据 1.未登录获取默认简历 2.登录后获取个人简历库首个简历 axios.get()
     if (!localStorage.getItem('resumeMoudle')) {
         localStorage.setItem('resumeMoudle', JSON.stringify(resumeMoudleMock));

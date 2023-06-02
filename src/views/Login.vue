@@ -75,7 +75,7 @@ const signUpData = reactive({
 const signUp = ()=>{
   signUpRuleForms.value.validate((valid)=>{
   if (valid) {
-    axios.post('login',{...signUpData}).then(res=>{
+    axios.post('user/login',{...signUpData}).then(res=>{
       if (res?.data?.data.code === 200) {   
         localStorage.setItem("token",res.data.data.data.token)
         router.push({name:"home"})

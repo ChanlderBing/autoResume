@@ -17,7 +17,7 @@
                 <div class="resumeDetail">
                   <div class="top">
                     <span  class="resumeName">陈炫华</span>
-                    <span  class="editBtn"><img src="../../../assets/more.png" style="width: 32px;height: 32px;position: absolute;left: -40px;top: -5px;"></span>
+                    <span  class="editBtn" @click="resumeChange(1)"><img src="../../../assets/more.png" style="width: 32px;height: 32px;position: absolute;left: -40px;top: -5px;"></span>
                   </div>         
                 <div class="editTime">最后编辑于12-08</div>
               </div>
@@ -27,12 +27,12 @@
     </div>
     </div>
   </el-card>
+
   </template>
 
 <script lang="ts" setup>
-import { Plus } from '@element-plus/icons-vue'
 import  axios  from '../../../api/http';
-import { nextTick, onMounted } from 'vue';
+import { nextTick, onMounted,defineEmits, ref } from 'vue';
 import { ElMessage } from 'element-plus';
 import store from '@/store';
 //未登录，获取固定模板。登录后获取个人简历列表显示第一份简历
@@ -48,24 +48,23 @@ const createResume = ()=>{
       store.commit('switchEditPersonal',true)
   }
 }
-  
+
+//切换简历
+const emit = defineEmits(['changeResume'])
 const resumeChange = (id:number)=>{
     //选择简历
+    emit('changeResume',id)
 }
 
 // 未登录
 let modelResume
 const getModelResume = ()=>{
-  axios.get('getUserResume').then(res=>{
+  axios.get('posts/getUserResume').then(res=>{
       if (res?.data?.data.code === 200) {   
         modelResume = res.data.data
       }
   })
 }
-onMounted(() => {
-
-  getModelResume();
-})
 </script>
 
   <style scoped lang="scss">
@@ -145,6 +144,17 @@ onMounted(() => {
         }
     }
 
-    
+
+.parent {
+  display: flex;
+  align-items: center;
+  width: 200px;
+  font-size: 12px;
+  border: 1px solid #aaa;
+}
+h3 {
+  margin-right: 4px;
+  white-space: nowrap;
+}
     
   </style>

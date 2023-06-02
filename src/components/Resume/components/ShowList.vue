@@ -22,7 +22,7 @@
         <div class="inputList" v-for="(list,index1) in item.inputList" :key="'Id'+ index1" @click="editInformation(index,index1,item.expand)" @mouseover="focusDetailMoudel(index1)" @mouseleave="blurDetailMoudel()"> 
             <div class="menu-title"> 
               <div class="title-left">{{list.school}}</div>
-              <div class="title-right" v-if="list.Time.startTime">{{list.Time.startTime}}至{{list.Time.endTime}} </div>
+              <div class="title-right" v-if="list.startTime">{{list.startTime}}至{{list.endTime}} </div>
             </div>
             <div class="sec-title">
               <div class="title-left">{{list.major}}{{list.academy}} {{list.degree}} {{list.city}}</div>
@@ -50,27 +50,37 @@
 
 <script lang="ts" setup>
   import store from "@/store";
-  import { ref,nextTick, onMounted, computed, inject } from "vue";
+  import { ref,nextTick, onMounted, computed, inject, watch,reactive, onUpdated } from "vue";
   import Contrl from '@/components/Resume/components/Contrl.vue';
   import { defineEmits } from 'vue'
+  import  axios  from '../../../api/http';
   // 使用defineEmits创建名称，接受一个数组
   const emit = defineEmits(['clickChild'])
-  const props = defineProps({
-    resumeMoudle:Object
-  })
+  // const props = defineProps({
+  //   resumeMoudle:Object
+  // })
+//   let resumeMoudle1 =  reactive()
+// //调用接口获取简历
+// const changeResume = async (id)=>{
+//   const {data:res} = await axios.get('posts/getUserResume',id)
+//   resumeMoudle1 = res.data.resumeMoudle
 
-  const resumeMoudle1 = inject('resumeMoudle') as any
-  let resumeMoudle = computed({
-    get:() => {
-      return resumeMoudle1.filter((res: any) => {
-        return res.isShow !== false
-    })
-    },
-    set:()=>  resumeMoudle
-  })
+// }
+let resumeMoudle  = inject('resumeMoudle') as any
+// let resumeMoudle = resumeMoudle1.value
+//let resumeMoudle1 = reactive(JSON.parse(localStorage.getItem('resumeMoudle')))
+//调用接口获取简历
+  // let resumeMoudle = computed({
+  //   get:() => {
+  //     return resumeMoudle1.value.filter((res: any) => {
+  //       return res.isShow !== false
+  //   })
+  //   },
+  //   set:()=>  resumeMoudle1
+  // })
+
   let focusIndex = ref()
   let focusDetailIndex = ref()
-  
   const switchTabUp = (flag) => {
     let index = focusIndex.value
     let detailIndex = focusDetailIndex.value
@@ -162,10 +172,6 @@
       store.commit('switchAdd',false)
     }
   }
-
-  onMounted:{
-  console.log(resumeMoudle1);
-  }  
 
 </script>
 <style scoped lang="scss">

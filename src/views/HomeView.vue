@@ -117,6 +117,7 @@ const router = useRouter()
 const goToLogin = ()=>{
   router.push({name:"login"})
 }
+
 let resumeMoudle = ref(JSON.parse(localStorage.getItem('resumeMoudle')))
 provide('resumeMoudle',resumeMoudle)
 let personalMoudle = ref(JSON.parse(localStorage.getItem('personalMoudle'))[0])
@@ -129,15 +130,16 @@ const changeResume = async (id)=>{
   personalMoudle.value = res.data.personalMoudle
 }
 
-const style1 =  '.text{padding:30px}';
-const print = () => 
+const print = () => {
   printjs({
     printable: 'printC',
     type: 'html',
     targetStyles: ['*'],
     header: null,
-    style:style1,
+    style:"@media print{@page {size:portrait}}",
+    documentTitle:'牛的adsad',
   })
+} 
 const dayNightSwitch = ref(true)
 const changeTheme = (value)=>{
     window.document.getElementById('app')?.setAttribute('data-theme1', dayNightSwitch.value ? 'light-theme':'dark-theme')

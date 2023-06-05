@@ -11,13 +11,13 @@
           <el-menu-item index="2">简历模板</el-menu-item>
         </el-menu>
           <div class="resumeList">
-            <div class="resume">
-              <div class="content">
+            <div class="resume" >
+              <div class="content" @click="resumeChange(1)">
                 <div class="pic"><img src="../../../assets/img/wyk.jpg"/> </div>
                 <div class="resumeDetail">
                   <div class="top">
                     <span  class="resumeName">陈炫华</span>
-                    <span  class="editBtn" @click="resumeChange(1)"><img src="../../../assets/more.png" style="width: 32px;height: 32px;position: absolute;left: -40px;top: -5px;"></span>
+                    <span  class="editBtn"><img src="../../../assets/more.png" style="width: 32px;height: 32px;position: absolute;left: -40px;top: -5px;"></span>
                   </div>         
                 <div class="editTime">最后编辑于12-08</div>
               </div>
@@ -52,18 +52,32 @@ const createResume = ()=>{
 //切换简历
 const emit = defineEmits(['changeResume'])
 const resumeChange = (id:number)=>{
-    //选择简历
+  if (!localStorage.getItem("token")) {
+      ElMessage.error('请先登录！')
+  } else {
+       //选择简历
     emit('changeResume',id)
+  }
 }
 
 // 未登录
 let modelResume
 const getModelResume = ()=>{
-  axios.get('posts/getUserResume').then(res=>{
+  axios.get('posts/getUserResumeAll').then(res=>{
       if (res?.data?.data.code === 200) {   
         modelResume = res.data.data
       }
   })
+}
+onMounted:{
+  if (localStorage.getItem("token")) {
+    getModelResume()
+  }else if(localStorage.getItem("personalMoudle")){
+    modelResume = localStorage.getItem("personalMoudle")
+  }else{
+    const {data:res} = await axios.get('posts/getUserResume')
+    modelResume = res.data.resumeMoudle
+  }
 }
 </script>
 

@@ -53,31 +53,13 @@
   import { ref,nextTick, onMounted, computed, inject, watch,reactive, onUpdated } from "vue";
   import Contrl from '@/components/Resume/components/Contrl.vue';
   import { defineEmits } from 'vue'
-  import  axios  from '../../../api/http';
   // 使用defineEmits创建名称，接受一个数组
   const emit = defineEmits(['clickChild'])
   // const props = defineProps({
   //   resumeMoudle:Object
   // })
-//   let resumeMoudle1 =  reactive()
-// //调用接口获取简历
-// const changeResume = async (id)=>{
-//   const {data:res} = await axios.get('posts/getUserResume',id)
-//   resumeMoudle1 = res.data.resumeMoudle
 
-// }
-let resumeMoudle  = inject('resumeMoudle') as any
-// let resumeMoudle = resumeMoudle1.value
-//let resumeMoudle1 = reactive(JSON.parse(localStorage.getItem('resumeMoudle')))
-//调用接口获取简历
-  // let resumeMoudle = computed({
-  //   get:() => {
-  //     return resumeMoudle1.value.filter((res: any) => {
-  //       return res.isShow !== false
-  //   })
-  //   },
-  //   set:()=>  resumeMoudle1
-  // })
+  let resumeMoudle  = inject('resumeMoudle') as any
 
   let focusIndex = ref()
   let focusDetailIndex = ref()

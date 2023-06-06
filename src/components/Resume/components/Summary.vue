@@ -7,16 +7,15 @@
           class="el-menu-demo"
           mode="horizontal"
         >
-          <el-menu-item index="1">我的简历</el-menu-item>
-          <el-menu-item index="2">简历模板</el-menu-item>
+          <el-menu-item index="1">{{ resumeType }}</el-menu-item>
         </el-menu>
           <div class="resumeList">
-            <div class="resume" >
-              <div class="content" @click="resumeChange(1)">
+            <div class="resume" v-for="item in arr.modelResume">
+              <div class="content" @click="resumeChange(item.resumeId)">
                 <div class="pic"><img src="../../../assets/img/wyk.jpg"/> </div>
                 <div class="resumeDetail">
                   <div class="top">
-                    <span  class="resumeName">陈炫华</span>
+                    <span  class="resumeName">{{item.userName}}</span>
                     <span  class="editBtn"><img src="../../../assets/more.png" style="width: 32px;height: 32px;position: absolute;left: -40px;top: -5px;"></span>
                   </div>         
                 <div class="editTime">最后编辑于12-08</div>
@@ -32,13 +31,19 @@
 
 <script lang="ts" setup>
 import  axios  from '../../../api/http';
-import { nextTick, onMounted,defineEmits, ref } from 'vue';
+import { defineEmits, ref, reactive,computed } from 'vue';
 import { ElMessage } from 'element-plus';
 import store from '@/store';
+import {  } from '@vue/reactivity';
 //未登录，获取固定模板。登录后获取个人简历列表显示第一份简历
 //按钮上传文件，获取登录信息。弹出登录信息/个人信息添加表
 //TAB切换
 
+const token = ref(localStorage.getItem("token"))
+
+const resumeType = computed(()=>{
+  return token ? '我的简历':'简历模板'
+})
 
 //新建简历
 const createResume = ()=>{
@@ -51,38 +56,44 @@ const createResume = ()=>{
 
 //切换简历
 const emit = defineEmits(['changeResume'])
-const resumeChange = (id:number)=>{
+const resumeChange = (resumeId:number)=>{
   if (!localStorage.getItem("token")) {
       ElMessage.error('请先登录！')
   } else {
        //选择简历
-    emit('changeResume',id)
+    emit('changeResume',resumeId)
   }
 }
 
 // 未登录
-let modelResume
+const arr = reactive({
+  modelResume:[] //列表简历
+})
 const getModelResume = ()=>{
   axios.get('posts/getUserResumeAll').then(res=>{
-      if (res?.data?.data.code === 200) {   
-        modelResume = res.data.data
+      if (res?.data?.data?.code === 200) { 
+        arr.modelResume = res.data.data.data
       }
   })
 }
+const getResume = async ()=>{
+  const {data:res} = await axios.get('posts/getUserResumeOne')
+  arr.modelResume = res.data
+  localStorage.setItem('modelResume',JSON.stringify(arr.modelResume))
+}
+
 onMounted:{
   if (localStorage.getItem("token")) {
     getModelResume()
-  }else if(localStorage.getItem("personalMoudle")){
-    modelResume = localStorage.getItem("personalMoudle")
+  }else if(localStorage.getItem("modelResume")){
+    arr.modelResume= JSON.parse(localStorage.getItem("modelResume"))
   }else{
-    const {data:res} = await axios.get('posts/getUserResume')
-    modelResume = res.data.resumeMoudle
+    getResume()
   }
 }
 </script>
 
   <style scoped lang="scss">
- 
     .personal{
         width: 100%;
         .plusBtn{

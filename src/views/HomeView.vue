@@ -45,7 +45,7 @@
           <AddForm></AddForm>
         </div>
         <div class="test" v-else>
-          <Summary @changeResume="changeResume(1)"></Summary> 
+          <Summary @changeResume="changeResume"></Summary> 
         </div>
       </Transition>
     </div>
@@ -124,22 +124,24 @@ let personalMoudle = ref(JSON.parse(localStorage.getItem('personalMoudle'))[0])
 provide('personalMoudle',personalMoudle)
 
 //调用接口获取简历
-const changeResume = async (id)=>{
-  const {data:res} = await axios.get('posts/getUserResume',id)
+const changeResume = async (resumeId)=>{
+  const {data:res} = await axios.get('posts/getUserResume',resumeId)
   resumeMoudle.value = res.data.resumeMoudle
   personalMoudle.value = res.data.personalMoudle
 }
 
 const print = () => {
+  document.title = "henen"
   printjs({
     printable: 'printC',
     type: 'html',
     targetStyles: ['*'],
     header: null,
-    style:"@media print{@page {size:portrait}}",
-    documentTitle:'牛的adsad',
+   // style:"@media print{@page {size:portrait}};",
+    //onPrintDialogClose: changeTitle,
   })
-} 
+}
+
 const dayNightSwitch = ref(true)
 const changeTheme = (value)=>{
     window.document.getElementById('app')?.setAttribute('data-theme1', dayNightSwitch.value ? 'light-theme':'dark-theme')

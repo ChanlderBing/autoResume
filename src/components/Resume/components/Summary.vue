@@ -6,11 +6,17 @@
         <el-menu
           class="el-menu-demo"
           mode="horizontal"
+          @select="switchTab"
+          :default-active="activeIndex"
         >
-          <el-menu-item index="1">{{ resumeType }}</el-menu-item>
+          <el-menu-item index="1">我的简历</el-menu-item>
+          <el-menu-item index="2">简历模板</el-menu-item>
         </el-menu>
           <div class="resumeList">
-            <div class="resume" v-for="item in arr.modelResume">
+            <el-empty v-if="arr.authResume.length < 1 && activeIndex === '1'">
+              <el-button type="primary">Button</el-button>
+            </el-empty>
+            <div class="resume" v-for="item in arr.resumeList">
               <div class="content" @click="resumeChange(item.resumeId)">
                 <div class="pic"><img src="../../../assets/img/wyk.jpg"/> </div>
                 <div class="resumeDetail">
@@ -35,15 +41,16 @@ import { defineEmits, ref, reactive,computed } from 'vue';
 import { ElMessage } from 'element-plus';
 import store from '@/store';
 import {  } from '@vue/reactivity';
+import { el } from 'element-plus/es/locale';
 //未登录，获取固定模板。登录后获取个人简历列表显示第一份简历
 //按钮上传文件，获取登录信息。弹出登录信息/个人信息添加表
 //TAB切换
 
-const token = ref(localStorage.getItem("token"))
+// const token = ref(localStorage.getItem("token"))
 
-const resumeType = computed(()=>{
-  return token ? '我的简历':'简历模板'
-})
+// const resumeType = computed(()=>{
+//   return token ? '我的简历':'简历模板'
+// })
 
 //新建简历
 const createResume = ()=>{
@@ -65,27 +72,41 @@ const resumeChange = (resumeId:number)=>{
   }
 }
 
-// 未登录
 const arr = reactive({
-  modelResume:[] //列表简历
+  resumeList:[],//列表简历
+  modelResume:[],
+  authResume:[]
 })
+const activeIndex = ref('1') 
+const switchTab = (key: string) => {
+ if (key === '1') {
+  activeIndex.value = '1' 
+  arr.resumeList = arr.authResume
+ } else {
+  activeIndex.value = '2' 
+  arr.resumeList = arr.modelResume
+ }
+}
 const getModelResume = ()=>{
   axios.get('posts/getUserResumeAll').then(res=>{
       if (res?.data?.data?.code === 200) { 
-        arr.modelResume = res.data.data.data
+        arr.authResume = res.data.data.data
       }
+  }).catch(err=>{
+    ElMessage.info('登录信息已过期，请重新登录获取个人信息')
   })
 }
 const getResume = async ()=>{
   const {data:res} = await axios.get('posts/getUserResumeOne')
-  arr.modelResume = res.data
+  arr.modelResume = res.data.data
   localStorage.setItem('modelResume',JSON.stringify(arr.modelResume))
 }
 
 onMounted:{
-  if (localStorage.getItem("token")) {
+  if (store.state.token) {
     getModelResume()
-  }else if(localStorage.getItem("modelResume")){
+  }
+  if(localStorage.getItem("modelResume")){
     arr.modelResume= JSON.parse(localStorage.getItem("modelResume"))
   }else{
     getResume()

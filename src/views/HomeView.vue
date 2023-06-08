@@ -118,9 +118,9 @@ const goToLogin = ()=>{
   router.push({name:"login"})
 }
 
-let resumeMoudle = ref(JSON.parse(localStorage.getItem('resumeMoudle')))
+let resumeMoudle = ref({})
+let personalMoudle = ref({})
 provide('resumeMoudle',resumeMoudle)
-let personalMoudle = ref(JSON.parse(localStorage.getItem('personalMoudle'))[0])
 provide('personalMoudle',personalMoudle)
 
 //调用接口获取简历
@@ -145,6 +145,17 @@ const print = () => {
 const dayNightSwitch = ref(true)
 const changeTheme = (value)=>{
     window.document.getElementById('app')?.setAttribute('data-theme1', dayNightSwitch.value ? 'light-theme':'dark-theme')
+}
+
+onMounted:{
+  if (store.state.token) {
+    changeResume(1)
+  }else if(localStorage.getItem("resumeMoudle")){
+    resumeMoudle.value = JSON.parse(localStorage.getItem('resumeMoudle'))
+    personalMoudle.value = JSON.parse(localStorage.getItem('personalMoudle'))[0]
+  }else{
+    //getResume()
+  }
 }
 </script>
 

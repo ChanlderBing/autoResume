@@ -55,9 +55,6 @@
   import { defineEmits } from 'vue'
   // 使用defineEmits创建名称，接受一个数组
   const emit = defineEmits(['clickChild'])
-  // const props = defineProps({
-  //   resumeMoudle:Object
-  // })
 
   let resumeMoudle  = inject('resumeMoudle') as any
 
@@ -72,7 +69,6 @@
     }else if (index && index!==0 && flag == 0)
     {
       resumeMoudle.value[index] = resumeMoudle.value.splice(index - 1, 1, resumeMoudle.value[index])[0]
-      console.log(resumeMoudle.value[index]);
     }
   }
 

@@ -8,7 +8,8 @@ export default createStore({
     editPersonal:false,
     isAdd:false,
     color_theme: 'red-theme',
-    addStruct:{}
+    addStruct:{},
+    token: localStorage.getItem('token') || null
   },
   getters: {
     
@@ -34,7 +35,15 @@ export default createStore({
     },
     addStructInit(state,Struct){
       state.addStruct = Struct
-    }
+    },
+    updateToken(state, token) {
+      state.token = token
+      localStorage.setItem('token', JSON.stringify(token))
+    },
+    romoveToken(state) {
+      state.token = null
+      localStorage.removeItem('token')
+    },
   },
   actions: {
   },

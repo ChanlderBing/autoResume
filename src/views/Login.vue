@@ -54,6 +54,7 @@
 
 <script lang="ts" setup>
 import router from '@/router';
+import store from '@/store';
 import { ElMessage } from 'element-plus';
 import { reactive, ref } from 'vue';
 import  axios  from '../api/http';
@@ -76,8 +77,8 @@ const signUp = ()=>{
   signUpRuleForms.value.validate((valid)=>{
   if (valid) {
     axios.post('user/login',{...signUpData}).then(res=>{
-      if (res?.data?.data.code === 200) {   
-        localStorage.setItem("token",res.data.data.data.token)
+      if (res?.data?.data.code === 200) {
+        store.commit('updateToken',res.data.data.data.token)
         router.push({name:"home"})
       }
     }).catch(error=>{

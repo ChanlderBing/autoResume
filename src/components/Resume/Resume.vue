@@ -48,7 +48,6 @@ import resumeMoudleMock from '@/utils/mock.js'
 
 const resumeMoudle1 = inject('resumeMoudle') as any
 const resumeMoudle =  resumeMoudle1
-//let resumeMoudle = ref(JSON.parse(localStorage.getItem('resumeMoudle')))
   const value = ref(store.state.color_theme)
   const options = [
     {
@@ -90,9 +89,7 @@ const resumeMoudle =  resumeMoudle1
 
   onMounted:{
     //获取数据 1.未登录获取默认简历 2.登录后获取个人简历库首个简历 axios.get()
-    if (!localStorage.getItem('resumeMoudle')) {
-        localStorage.setItem('resumeMoudle', JSON.stringify(resumeMoudleMock));
-    }
+
   }                 
 
 </script>

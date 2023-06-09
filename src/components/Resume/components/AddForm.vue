@@ -14,7 +14,7 @@
       <el-form-item label="时间" v-if="moduleCheck(key) === 'startTime'">
         <el-col :span="11">
         <el-date-picker
-          v-model="renderListDetail[key].startTime"
+          v-model="renderListDetail[key]?.startTime"
           type="date"
           placeholder="开始时间"
           format="YYYY/MM/DD"
@@ -26,7 +26,7 @@
       </el-col>
         <el-col :span="11">
         <el-date-picker
-          v-model="renderListDetail[key].endTime"
+          v-model="renderListDetail[key]?.endTime"
           type="date"
           placeholder="结束时间"
           :disabled-date="disabledDate"
@@ -45,7 +45,7 @@
       />
       <Editor
         style="height: 500px; overflow-y: hidden;"
-        v-model="renderListDetail.richText"
+        v-model="renderListDetail?.richText"
         :defaultConfig="editorConfig"
         @onCreated="handleCreated"
       />
@@ -65,10 +65,7 @@
   
   let resumeMoudle = JSON.parse(localStorage.getItem('resumeMoudle'))
   let renderList = ref(resumeMoudle[store.state.editChosen])
-  let renderListDetail = ref(store.state.addStruct)
-
-  onMounted(()=>{
-  })
+  let renderListDetail = ref(store.state.addStruct) as any
 
   const checkList = ['Text','startTime']
   const moduleCheck =(key)=>{

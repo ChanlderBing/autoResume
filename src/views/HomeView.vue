@@ -118,16 +118,18 @@ const goToLogin = ()=>{
   router.push({name:"login"})
 }
 
-let resumeMoudle = ref({})
-let personalMoudle = ref({})
+let resumeMoudle = ref(null)
+let personalMoudle = ref(null)
+
 provide('resumeMoudle',resumeMoudle)
 provide('personalMoudle',personalMoudle)
 
 //调用接口获取简历
 const changeResume = async (resumeId)=>{
-  const {data:res} = await axios.get('posts/getUserResume',resumeId)
+  const {data:res} = await axios.get(`posts/getUserResume?resumeId=${resumeId}`)
   resumeMoudle.value = res.data.resumeMoudle
   personalMoudle.value = res.data.personalMoudle
+  console.log(res.data.personalMoudle);
 }
 
 const print = () => {
@@ -149,12 +151,14 @@ const changeTheme = (value)=>{
 
 onMounted:{
   if (store.state.token) {
-    changeResume(1)
+    changeResume(35)
   }else if(localStorage.getItem("resumeMoudle")){
     resumeMoudle.value = JSON.parse(localStorage.getItem('resumeMoudle'))
-    personalMoudle.value = JSON.parse(localStorage.getItem('personalMoudle'))[0]
+    personalMoudle.value = JSON.parse(localStorage.getItem('personalMoudle'))
+    console.log(JSON.parse(localStorage.getItem('personalMoudle')));
+    
   }else{
-    //getResume()
+    //changeResume(35)
   }
 }
 </script>

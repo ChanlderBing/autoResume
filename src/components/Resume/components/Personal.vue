@@ -1,7 +1,7 @@
 <template>
-  <div class="personal">
-    <div class="information"  @click="editInformation()">
-      <p><h2>{{ personalMoudle.userName }}</h2></p>
+  <div class="personal"  v-if="personalMoudle">
+    <div class="information" @click="editInformation()">
+      <p><h2>{{  personalMoudle.userName}}</h2></p>
       <div>
         <span v-for="(list1,key,index1) in personalMoudle.inputList[0]">{{ list1 }}<span v-if="Object.keys(list1).length -1 > index1"> | </span></span>
       </div>

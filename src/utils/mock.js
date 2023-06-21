@@ -32,10 +32,8 @@
         major:'',
         degree:'',
         academy:'',
-        Time:{
             startTime:'',
-            endTime:''
-        },
+            endTime:'',
         richText:''
     }]
 }

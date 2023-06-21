@@ -101,28 +101,33 @@ const getModelResume = ()=>{
       }
   }).catch(err=>{
     ElMessage.info('登录信息已过期，请重新登录获取个人信息')
+    //store.commit('romoveToken')
   }).finally(()=>{
-    //loading.value = false
+    loading.value = false
   })
 }
 const getResume = async ()=>{
   const {data:res} = await axios.get('posts/getUserResumeOne').finally(()=>{
-    //loading.value = false
+    loading.value = false
   })
   arr.modelResume = res.data.data
   localStorage.setItem('modelResume',JSON.stringify(arr.modelResume))
+}
+
+const noTokenToGet = ()=>{
+  if(localStorage.getItem("modelResume")){
+    arr.modelResume= JSON.parse(localStorage.getItem("modelResume"))
+    loading.value = false
+  }else{
+    getResume()
+  }
 }
 
 onMounted:{
   if (store.state.token) {
     getModelResume()
   }
-  if(localStorage.getItem("modelResume")){
-    arr.modelResume= JSON.parse(localStorage.getItem("modelResume"))
-  }else{
-   
-    getResume()
-  }
+  noTokenToGet()
 }
 </script>
 

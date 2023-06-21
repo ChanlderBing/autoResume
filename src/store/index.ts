@@ -9,7 +9,7 @@ export default createStore({
     isAdd:false,
     color_theme: 'red-theme',
     addStruct:{},
-    token: localStorage.getItem('token') || null
+    token: JSON.parse(localStorage.getItem('token')) || null
   },
   getters: {
     

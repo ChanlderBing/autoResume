@@ -124,12 +124,25 @@ let personalMoudle = ref(null)
 provide('resumeMoudle',resumeMoudle)
 provide('personalMoudle',personalMoudle)
 
-//调用接口获取简历
+//调用切换接口获取简历
 const changeResume = async (resumeId)=>{
   const {data:res} = await axios.get(`posts/getUserResume?resumeId=${resumeId}`)
   resumeMoudle.value = res.data.resumeMoudle
   personalMoudle.value = res.data.personalMoudle
-  console.log(res.data.personalMoudle);
+}
+//调用接口获取简历 未登录
+const getResumeInit = async ()=>{
+  const {data:res} = await axios.get(`posts/getResumeInit`)
+  resumeMoudle.value = res.data.resumeMoudle
+  personalMoudle.value = res.data.personalMoudle
+}
+//调用接口获取简历 登录
+const resumeInitByJWT = async ()=>{
+  const {data:res} = await axios.get(`posts/ResumeInitByJWT`).catch(async (err)=>{
+    return  await axios.get(`posts/getResumeInit`)
+  })
+  resumeMoudle.value = res.data.resumeMoudle
+  personalMoudle.value = res.data.personalMoudle
 }
 
 const print = () => {
@@ -144,6 +157,7 @@ const print = () => {
   })
 }
 
+// 黑夜模式
 const dayNightSwitch = ref(true)
 const changeTheme = (value)=>{
     window.document.getElementById('app')?.setAttribute('data-theme1', dayNightSwitch.value ? 'light-theme':'dark-theme')
@@ -151,14 +165,12 @@ const changeTheme = (value)=>{
 
 onMounted:{
   if (store.state.token) {
-    changeResume(35)
+    resumeInitByJWT()
   }else if(localStorage.getItem("resumeMoudle")){
     resumeMoudle.value = JSON.parse(localStorage.getItem('resumeMoudle'))
     personalMoudle.value = JSON.parse(localStorage.getItem('personalMoudle'))
-    console.log(JSON.parse(localStorage.getItem('personalMoudle')));
-    
   }else{
-    //changeResume(35)
+    getResumeInit()
   }
 }
 </script>
@@ -237,7 +249,7 @@ onMounted:{
       transform: translateY(8%);
     }
   .fade-leave-active {
-    transition: all 0.8s ease;
+    transition: all 0.6s ease;
   }
   .fade-enter-active {
     transition: all 0.5s ease;
@@ -251,9 +263,11 @@ onMounted:{
     opacity: 0;
     transform: translateX(8%);
   }
-  .resume-enter-active,
+  .resume-enter-active{
+    transition: all 0.5s ease;
+  }
   .resume-leave-active {
-      transition: all 0.9s ease;
+      transition: all 0.6s ease;
   }
   .resume-enter-from {
       opacity: 0;

@@ -7,51 +7,37 @@
   </div>
     <div class="skill">
       <el-form :inline="true" :model="renderListDetail" class="demo-form-inline">
-        <template v-for="(value,key) in renderListDetail">
+        <template v-for="(value,key,index) in renderListDetail" :key="index">
           <el-form-item :label="realationship[key]" v-if="moduleCheck(key) === 'normal'">
             <el-input v-model="renderListDetail[key]" />
           </el-form-item>
-      <el-form-item label="时间" v-if="moduleCheck(key) === 'startTime'">
-        <el-col :span="11">
-        <el-date-picker
-          v-model="renderListDetail[key]?.startTime"
-          type="date"
-          placeholder="开始时间"
-          format="YYYY/MM/DD"
-          value-format="YYYY-MM-DD"
+      <el-form-item label="时间" v-else-if="moduleCheck(key) === 'period'">
+          <el-date-picker
+          v-model="renderListDetail.period"
+          type="daterange"
+          range-separator="至"
+          start-placeholder="开始时间"
+          end-placeholder="结束时间"
         />
-        </el-col>
-      <el-col :span="2" class="text-center">
-        <span class="text-gray-500">-</span>
-      </el-col>
-        <el-col :span="11">
-        <el-date-picker
-          v-model="renderListDetail[key]?.endTime"
-          type="date"
-          placeholder="结束时间"
-          :disabled-date="disabledDate"
-          :shortcuts="shortcuts"
-          format="YYYY/MM/DD"
-          value-format="YYYY-MM-DD"
-        />
-      </el-col>
       </el-form-item>
-      <template v-if="moduleCheck(key) === 'Text'">
-        <div>具体描述</div>
-        <Toolbar
-        style="border-bottom: 1px solid #ccc"
-        :editor="editorRef"
-        :defaultConfig="toolbarConfig"
-      />
-      <Editor
-        style="height: 500px; overflow-y: hidden;"
-        v-model="renderListDetail?.richText"
-        :defaultConfig="editorConfig"
-        @onCreated="handleCreated"
-      />
+      <el-form-item v-else="moduleCheck(key) === 'Text'">
+        <template>
+          <div>具体描述</div>
+          <Toolbar
+          style="border-bottom: 1px solid #ccc"
+          :editor="editorRef"
+          :defaultConfig="toolbarConfig"
+        />
+        <Editor
+          style="height: 500px; overflow-y: hidden;"
+          v-model="renderListDetail.richText"
+          :defaultConfig="editorConfig"
+          @onCreated="handleCreated"
+        />
+        </template>
+      </el-form-item>
       </template>
-      </template>
-  </el-form>
+      </el-form>
     </div>
   </el-card>
   </template>
@@ -59,26 +45,29 @@
   <script setup lang="ts">
   import store from '@/store';
   import '@wangeditor/editor/dist/css/style.css' // 引入 css
-  import { onBeforeUnmount,unref, ref, shallowRef, onMounted } from 'vue'
+  import { onBeforeUnmount,unref, ref, shallowRef, onMounted, inject } from 'vue'
   import { Editor, Toolbar } from '@wangeditor/editor-for-vue'
   import { ElMessage } from 'element-plus';
   
-  let resumeMoudle = JSON.parse(localStorage.getItem('resumeMoudle'))
-  let renderList = ref(resumeMoudle[store.state.editChosen])
+  let resumeMoudle = inject('resumeMoudle') as any
+  let renderList = ref(resumeMoudle.value[store.state.editChosen])
   let renderListDetail = ref(store.state.addStruct) as any
 
-  const checkList = ['Text','startTime']
+  const checkList = ['Text','period','id','resumemodelId','sortIndex','title']
   const moduleCheck =(key)=>{
     if (checkList.find((item)=>{
       return key.includes(item)
     }) === 'Text') {
       return 'Text'
     }else if(checkList.find((item)=>{
-        return key.includes(item)
-    }) === 'startTime') {
-    return 'startTime'
-  }
-    return 'normal'
+      return key.includes(item)
+    }) === 'period') {
+       return 'period'
+    }else if(checkList.find((item)=> key === item && item !==('Text'||'period'))){
+      return null
+    }else {
+      return 'normal'
+    } 
   }
   const onSubmit = () => {
     renderList.value.inputList.push(unref(renderListDetail))
@@ -138,7 +127,8 @@
       'school':'学校',
       'academy':'学时',
       'degree':'学历',
-      'major':'专业'
+      'major':'专业',
+      'city' : '城市'
   }
 </script>
 

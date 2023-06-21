@@ -15,12 +15,7 @@ import { onMounted } from 'vue'
  import  personalMoudleMock  from "./utils/personal.js";
 
  onMounted(() => {
-  if (!localStorage.getItem('personalMoudle')) {
-      localStorage.setItem('personalMoudle', JSON.stringify(personalMoudleMock));
-  }
-  if (!localStorage.getItem('resumeMoudle')) {
-        localStorage.setItem('resumeMoudle', JSON.stringify(resumeMoudleMock));
-    }
+
  })
   
 </script>

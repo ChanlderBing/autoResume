@@ -15,7 +15,6 @@
             <button class="btn" @click="signUp()">Sign Up</button>
           </el-form-item>
         </el-form>
-        
       </div>
     </div>
 

@@ -12,6 +12,7 @@
                 @del="tabDel"
                 @add="addInformation"
                 :flag = 0
+                :moudleId="item.moudleId"
                 :addHidden= "item.expand"
                 :upBan = "index == 0"
                 :downBan = "index == (resumeMoudle.length - 1)"
@@ -36,7 +37,7 @@
                   @up="switchTabUp"
                   @dowm="switchTabDown"
                   @del="tabDel"
-                  :flag = 1
+                  :flag = 8
                   :addHidden = false
                   :upBan = "index1 == 0"
                   :downBan = "index1 == item.inputList.length - 1"
@@ -55,15 +56,23 @@
   import { defineEmits } from 'vue'
   // 使用defineEmits创建名称，接受一个数组
   const emit = defineEmits(['clickChild'])
+  let resumeMoudle1  = inject('resumeMoudle') as any
 
-  let resumeMoudle  = inject('resumeMoudle') as any
+  let resumeMoudle = computed({
+    get:() => {
+      return resumeMoudle1.value?.filter((res: any) => {
+        return res.isShow !== false
+    })
+    },
+    set:()=>  resumeMoudle
+  })
 
   let focusIndex = ref()
   let focusDetailIndex = ref()
   const switchTabUp = (flag) => {
     let index = focusIndex.value
     let detailIndex = focusDetailIndex.value
-    if (detailIndex && detailIndex !== 0 && flag == 1) 
+    if (detailIndex && detailIndex !== 0 && flag == 8) 
     {
       resumeMoudle.value[index].inputList[detailIndex] = resumeMoudle.value[index].inputList.splice(detailIndex - 1, 1, resumeMoudle.value[index].inputList[detailIndex])[0]
     }else if (index && index!==0 && flag == 0)
@@ -75,7 +84,7 @@
   const switchTabDown = (flag) => {
     let index = focusIndex.value
     let detailIndex = focusDetailIndex.value
-    if (detailIndex <= resumeMoudle.value.length - 1 && flag == 1) 
+    if (detailIndex <= resumeMoudle.value.length - 1 && flag == 8) 
     {
       resumeMoudle.value[index].inputList[detailIndex] = resumeMoudle.value[index].inputList.splice(detailIndex + 1, 1, resumeMoudle.value[index].inputList[detailIndex])[0]
     }else if (detailIndex <= resumeMoudle.value.length - 1 && flag == 0)
@@ -87,13 +96,13 @@
   const tabDel = (flag:Number) =>{
     let index = focusIndex.value
     let detailIndex = focusDetailIndex.value
-    if (flag == 1)  
+    if (flag == 8)  
     {
       resumeMoudle.value[index].inputList.splice(detailIndex,1)
       localStorage.setItem("resumeMoudle",JSON.stringify(resumeMoudle))
-    }else if (flag == 0)  
+    }else
     {
-      emit('clickChild', index)
+      emit('clickChild', flag)
     }
   }
   const focusMoudel = (index:any)=>{

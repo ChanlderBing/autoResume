@@ -12,13 +12,14 @@
             <el-input v-model="renderListDetail[key]" />
           </el-form-item>
           <el-form-item label="时间" v-if="moduleCheck(key) === 'period'">
-            <!-- <el-date-picker
+            <el-date-picker
               v-model="renderListDetail.period"
               type="daterange"
               range-separator="至"
               start-placeholder="开始时间"
               end-placeholder="结束时间"
-            /> -->
+              :shortcuts="shortcuts"
+            />
           </el-form-item>
           <template v-if="moduleCheck(key) === 'Text'">
             <div>具体描述</div>
@@ -26,12 +27,14 @@
               style="border-bottom: 1px solid #ccc"
               :editor="editorRef"
               :defaultConfig="toolbarConfig"
+              mode="simple"
               />
               <Editor
                 style="height: 500px; overflow-y: hidden;"
                 v-model="renderListDetail.richText"
                 :defaultConfig="editorConfig"
                 @onCreated="handleCreated"
+                mode="simple"
               />
           </template>
         </template>
@@ -46,6 +49,7 @@
   import { onBeforeUnmount,unref, ref, shallowRef, onMounted, inject } from 'vue'
   import { Editor, Toolbar } from '@wangeditor/editor-for-vue'
   import { ElMessage } from 'element-plus';
+  import  realationship  from "@/utils/realationshipMap.js";
 
   
   let resumeMoudle = inject('resumeMoudle') as any
@@ -62,7 +66,7 @@
       return key.includes(item)
     }) === 'period') {
        return 'period'
-    }else if(checkList.find((item)=> key === item && item !==('Text'||'period'))){
+    }else if(checkList.find((item)=> key === item && item !=='period')){
       return null
     }else {
       return 'normal'
@@ -121,13 +125,7 @@
   const handleCreated = (editor) => {
     editorRef.value = editor // 记录 editor 实例，重要！
   }
-  //对应关系
-  const realationship = {
-      'school':'学校',
-      'academy':'学时',
-      'degree':'学历',
-      'major':'专业'
-  }
+
 </script>
 
   <style scoped lang="scss">
@@ -136,11 +134,4 @@
       display: flex;
       justify-content: space-between;
     }
-    
-    .personal{
-        height: 200px;
-        width: 100%;
-        background-color: pink;
-    }
-   
   </style>

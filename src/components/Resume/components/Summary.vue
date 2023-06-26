@@ -3,37 +3,40 @@
     <div class="personal">
       <div class="information">
         <div class="plusBtn"><el-button class="btn" type="primary" @click="createResume()"><span>+</span>新建简历</el-button></div>
-        <el-menu
-          class="el-menu-demo"
-          mode="horizontal"
-          @select="switchTab"
-          :default-active="activeIndex"
-        >
-          <el-menu-item index="1">我的简历</el-menu-item>
-          <el-menu-item index="2">简历模板</el-menu-item>
-        </el-menu>
-    
+          <el-menu
+            class="el-menu-demo"
+            mode="horizontal"
+            @select="switchTab"
+            :default-active="activeIndex"
+          >
+            <el-menu-item index="1">我的简历</el-menu-item>
+            <el-menu-item index="2">简历模板</el-menu-item>
+          </el-menu>
           <div class="resumeList" v-loading="loading" >
-            <el-empty v-if="arr.authResume&&arr.authResume.length < 1 && activeIndex === '1'">
-              <el-button type="primary">Button</el-button>
+            <el-empty v-if="arr.authResume&&arr.authResume.length < 1 && activeIndex === '1'" description="暂时没有数据" >
+              <el-button type="primary" @click="clickToLogin" v-if="!store.state.token">去登录</el-button>
             </el-empty>
             <el-scrollbar max-height="260px">
-            <div class="resume" v-for="item in arr.resumeList">
-              <div class="content" @click="resumeChange(item.resumeId)">
-                <div class="pic"><img src="../../../assets/img/wyk.jpg"/> </div>
-                <div class="resumeDetail">
-                  <div class="top">
-                    <span  class="resumeName">{{item.userName}}</span>
-                    <span  class="editBtn"><img src="../../../assets/more.png" style="width: 32px;height: 32px;position: absolute;left: -40px;top: -5px;"></span>
-                  </div>         
-                <div class="editTime">最后编辑于12-08</div>
+              <div class="resume" v-for="item in arr.resumeList">
+                <div class="content" @click="resumeChange(item.resumeId)">
+                  <div class="pic"><img src="../../../assets/img/wyk.jpg"/> </div>
+                    <div class="resumeDetail">
+                      <div class="top">
+                        <span  class="resumeName">{{item.userName}}</span>
+                        <span  class="editBtn"><img src="../../../assets/more.png" style="width: 32px;height: 32px;position: absolute;left: -40px;top: -5px;"></span>
+                      </div>         
+                    <div class="editTime">最后编辑于12-08</div>
+                  </div>
+                </div>
               </div>
-            </div>
-            </div>
-          </el-scrollbar>
+            </el-scrollbar>
           </div>
-       
     </div>
+    </div>
+  </el-card>
+  <el-card class="personalExp">
+    <div >
+     经历库
     </div>
   </el-card>
 
@@ -45,6 +48,7 @@ import { defineEmits, ref, reactive,computed } from 'vue';
 import { ElMessage } from 'element-plus';
 import store from '@/store';
 import { Loading } from 'element-plus/es/components/loading/src/service';
+import router from '@/router';
 //未登录，获取固定模板。登录后获取个人简历列表显示第一份简历
 //按钮上传文件，获取登录信息。弹出登录信息/个人信息添加表
 //TAB切换
@@ -59,7 +63,7 @@ const loading = ref(true)
 
 //新建简历
 const createResume = ()=>{
-    if (!localStorage.getItem("token")) {
+    if (!store.state.token) {
       ElMessage.error('请先登录！')
   } else {
       store.commit('switchEditPersonal',true)
@@ -75,6 +79,9 @@ const resumeChange = (resumeId:number)=>{
        //选择简历
     emit('changeResume',resumeId)
   }
+}
+const clickToLogin = ()=>{
+  router.push({name:'login'})
 }
 
 const arr = reactive({
@@ -219,5 +226,7 @@ h3 {
   margin-right: 4px;
   white-space: nowrap;
 }
-    
+.personalExp{
+  margin-top: 30px;
+}   
   </style>

@@ -44,10 +44,8 @@ import Personal from '@/components/Resume/components/Personal.vue'
 import store from '@/store';
 import { reactive, ref,inject, watchEffect} from 'vue'
 import ShowList from './components/ShowList.vue';
-import resumeMoudleMock from '@/utils/mock.js'
 
-const resumeMoudle1 = inject('resumeMoudle') as any
-const resumeMoudle =  resumeMoudle1
+const resumeMoudle = inject('resumeMoudle') as any
   const value = ref(store.state.color_theme)
   const options = [
     {
@@ -82,9 +80,14 @@ const resumeMoudle =  resumeMoudle1
   }
  
   let modelResume
-  const resumeMoudleChange = (index)=>{
-    resumeMoudle[index].isShow = resumeMoudle[index].isShow ? false:true
-    localStorage.setItem("resumeMoudle",JSON.stringify(resumeMoudle))
+  const resumeMoudleChange = (moudleId)=>{
+    console.log(moudleId);
+    
+    const index =  resumeMoudle.value.findIndex((item)=>{
+     return  item.moudleId=== moudleId
+    })
+    resumeMoudle.value[index].isShow = resumeMoudle.value[index].isShow ? false:true
+   // localStorage.setItem("resumeMoudle",JSON.stringify(resumeMoudle.value))
   }
 
   onMounted:{

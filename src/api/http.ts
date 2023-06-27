@@ -12,6 +12,8 @@ import { ElMessage } from 'element-plus';
     switch (status) {
         // 401: 未登录状态，跳转登录页
         case 401:
+            console.log(status);
+            
             store.commit('removeToken')
             break;
         // 403 token过期

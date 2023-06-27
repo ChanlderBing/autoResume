@@ -6,19 +6,21 @@
       <el-button type="primary" class="ml-2" @click="onSubmit">完成</el-button>
     </div>
     <div class="skill">
-      <el-form :inline="true" :model="renderListDetail" class="demo-form-inline">
-        <template v-for="(value,key) in renderListDetail">
+      <el-form :inline="true" :model="renderListDetailForm" class="demo-form-inline">
+        <template v-for="(value,key) in renderListDetailForm">
           <el-form-item :label="realationship[key]" v-if="moduleCheck(key) === 'normal'">
-            <el-input v-model="renderListDetail[key]" />
+            <el-input v-model="renderListDetailForm[key]" />
           </el-form-item>
           <el-form-item label="时间" v-if="moduleCheck(key) === 'period'">
             <el-date-picker
-              v-model="renderListDetail.period"
+              v-model="renderListDetailForm.period"
               type="daterange"
               range-separator="至"
               start-placeholder="开始时间"
               end-placeholder="结束时间"
               :shortcuts="shortcuts"
+              format="YYYY/MM/DD"
+              value-format="YYYY.MM.DD"
             />
           </el-form-item>
           <template v-if="moduleCheck(key) === 'Text'">
@@ -31,7 +33,7 @@
               />
               <Editor
                 style="height: 500px; overflow-y: hidden;"
-                v-model="renderListDetail.richText"
+                v-model="renderListDetailForm.richText"
                 :defaultConfig="editorConfig"
                 @onCreated="handleCreated"
                 mode="simple"
@@ -46,7 +48,7 @@
   <script setup lang="ts">
   import store from '@/store';
   import '@wangeditor/editor/dist/css/style.css' // 引入 css
-  import { onBeforeUnmount,unref, ref, shallowRef, onMounted, inject } from 'vue'
+  import { onBeforeUnmount,unref, ref, shallowRef, onMounted, inject, reactive, render } from 'vue'
   import { Editor, Toolbar } from '@wangeditor/editor-for-vue'
   import { ElMessage } from 'element-plus';
   import  realationship  from "@/utils/realationshipMap.js";
@@ -54,7 +56,12 @@
   
   let resumeMoudle = inject('resumeMoudle') as any
   let renderList = ref(resumeMoudle.value[store.state.editChosen])
-  let renderListDetail = ref(renderList.value.inputList[store.state.editChosenDetail])
+  const renderListDetailForm = ref(JSON.parse(JSON.stringify(renderList.value.inputList[store.state.editChosenDetail])));
+  //将时间反格式显示
+  const dateReInit = (date:string)=>{
+    return date?.split('~')
+  }
+  renderListDetailForm.value.period = dateReInit(renderListDetailForm?.value.period)
   
   const checkList = ['Text','period','id','resumemodelId','sortIndex','title']
   const moduleCheck =(key)=>{
@@ -74,11 +81,17 @@
   }
 
   const onSubmit = () => {
+    renderListDetailForm.value.period = dateInit(renderListDetailForm.value.period)
+    renderList.value.inputList[store.state.editChosenDetail] = renderListDetailForm.value
     resumeMoudle[store.state.editChosen] = unref(renderList)
-    localStorage.setItem('resumeMoudle',JSON.stringify(resumeMoudle))
+    localStorage.setItem('resumeMoudle',JSON.stringify(resumeMoudle.value))
     ElMessage.success('修改成功')
     back()
   }
+  const dateInit = (date:Array<string>)=>{
+    return date[0]+ ' ~ '+ date[1]
+  }
+ 
   const back = ()=>{
     store.commit('switch',false)
   }

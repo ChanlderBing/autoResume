@@ -31,8 +31,6 @@
     emit("dowm",props.flag) 
   }
   const delClick = ()=>{
-    console.log(props.moudleId);
-    
     emit("del",props.moudleId || props.flag) 
   }
   const addClick = ()=>{

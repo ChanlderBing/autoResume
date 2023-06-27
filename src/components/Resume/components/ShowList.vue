@@ -1,5 +1,5 @@
 <template>
-    <div :class="focusIndex == index ? 'active':''" v-for="(item,index) in resumeMoudle" :key="index"  @mouseover="focusMoudel(index)" @mouseleave="blurMoudel()">
+    <div :class="focusIndex == index ? 'active':''" v-for="(item,index) in resumeMoudle" :key="item.moudleId"  @mouseover="focusMoudel(index)" @mouseleave="blurMoudel()">
       <div class="piece">
         <div :class="focusIndex == index ? ['activeTitle','title']:'title'">
           <div class="colorDiv"></div>
@@ -21,17 +21,8 @@
           </div>
         </div>      
         <div class="inputList" v-for="(list,index1) in item.inputList" :key="'Id'+ index1" @click="editInformation(index,index1,item.expand)" @mouseover="focusDetailMoudel(index1)" @mouseleave="blurDetailMoudel()"> 
-            <div class="menu-title"> 
-              <div class="title-left">{{list.school}}</div>
-              <div class="title-right" v-if="list.startTime">{{list.startTime}}至{{list.endTime}} </div>
-            </div>
-            <div class="sec-title">
-              <div class="title-left">{{list.major}}{{list.academy}} {{list.degree}} {{list.city}}</div>
-            </div>
-            <div class="text">
-              <div class="textH5" v-html="list.richText">
-              </div>
-            </div>
+              <component :is='dyamicCom[item.moudleId]' :list="list">
+              </component>
             <div class="control" v-if ="focusIndex == index && focusDetailIndex == index1" @click.stop>
                 <Contrl 
                   @up="switchTabUp"
@@ -54,6 +45,10 @@
   import { ref,nextTick, onMounted, computed, inject, watch,reactive, onUpdated } from "vue";
   import Contrl from '@/components/Resume/components/Contrl.vue';
   import { defineEmits } from 'vue'
+  import school from '@/components/from_components/school.vue'
+  import  summary from '../../from_components/summary.vue'
+  import project from '../../from_components/project.vue'
+  import work from '../../from_components/work.vue'
   // 使用defineEmits创建名称，接受一个数组
   const emit = defineEmits(['clickChild'])
   let resumeMoudle1  = inject('resumeMoudle') as any
@@ -66,6 +61,13 @@
     },
     set:()=>  resumeMoudle
   })
+
+  const dyamicCom =  {
+    '1':work,
+    '2':project,
+    '3':summary,
+    '0':school
+  }
 
   let focusIndex = ref()
   let focusDetailIndex = ref()

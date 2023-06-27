@@ -18,11 +18,11 @@
           <el-select  class="m-2" placeholder="添加模块">
             <el-option
               v-for="(item,index) in resumeMoudle"
-              :key="index"
+              :key="item.moudleId"
               :label="item.title"
               value="添加模块"
               :disabled="item.isShow"
-              @click="resumeMoudleChange(index)"
+              @click="resumeMoudleChange(item.moudleId)"
             >
             <div>{{ item.title }} <span style="margin-left:20px"></span></div>
             </el-option>
@@ -42,7 +42,7 @@
 <script lang="ts" setup>
 import Personal from '@/components/Resume/components/Personal.vue'
 import store from '@/store';
-import { reactive, ref,inject, watchEffect} from 'vue'
+import {  ref,inject} from 'vue'
 import ShowList from './components/ShowList.vue';
 
 const resumeMoudle = inject('resumeMoudle') as any
@@ -81,13 +81,10 @@ const resumeMoudle = inject('resumeMoudle') as any
  
   let modelResume
   const resumeMoudleChange = (moudleId)=>{
-    console.log(moudleId);
-    
     const index =  resumeMoudle.value.findIndex((item)=>{
      return  item.moudleId=== moudleId
     })
     resumeMoudle.value[index].isShow = resumeMoudle.value[index].isShow ? false:true
-   // localStorage.setItem("resumeMoudle",JSON.stringify(resumeMoudle.value))
   }
 
   onMounted:{

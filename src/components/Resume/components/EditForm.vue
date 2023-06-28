@@ -11,7 +11,7 @@
           <el-form-item :label="realationship[key]" v-if="moduleCheck(key) === 'normal'">
             <el-input v-model="renderListDetailForm[key]" />
           </el-form-item>
-          <el-form-item label="时间" v-if="moduleCheck(key) === 'period'">
+          <el-form-item label="时间" v-if="key.toString() === 'period'">
             <el-date-picker
               v-model="renderListDetailForm.period"
               type="daterange"
@@ -23,7 +23,7 @@
               value-format="YYYY.MM.DD"
             />
           </el-form-item>
-          <template v-if="moduleCheck(key) === 'Text'">
+          <template v-if="key.toString() === 'richText'">
             <div>具体描述</div>
               <Toolbar
               style="border-bottom: 1px solid #ccc"
@@ -52,6 +52,7 @@
   import { Editor, Toolbar } from '@wangeditor/editor-for-vue'
   import { ElMessage } from 'element-plus';
   import  realationship  from "@/utils/realationshipMap.js";
+  import  axios  from '@/api/http';
 
   
   let resumeMoudle = inject('resumeMoudle') as any
@@ -80,13 +81,26 @@
     } 
   }
 
+  const dyamicCom =  {
+    '1':'updateWork',
+    '2':'updateProject',
+    '3':'updateSummary',
+    '0':'updateSchool'
+  }
   const onSubmit = () => {
-    renderListDetailForm.value.period = dateInit(renderListDetailForm.value.period)
-    renderList.value.inputList[store.state.editChosenDetail] = renderListDetailForm.value
-    resumeMoudle[store.state.editChosen] = unref(renderList)
-    localStorage.setItem('resumeMoudle',JSON.stringify(resumeMoudle.value))
-    ElMessage.success('修改成功')
-    back()
+      renderListDetailForm.value.period = renderListDetailForm.value.period ? dateInit(renderListDetailForm.value.period) : null
+      axios.post(`posts/${dyamicCom[renderList.value.moudleId]}`,renderListDetailForm.value).then((res)=>{
+      if (res.status=== 201) {
+        ElMessage.success('修改成功')
+        back()
+      }
+
+    })
+    // renderList.value.inputList[store.state.editChosenDetail] = renderListDetailForm.value
+    // resumeMoudle[store.state.editChosen] = unref(renderList)
+    // localStorage.setItem('resumeMoudle',JSON.stringify(resumeMoudle.value))
+    // ElMessage.success('修改成功')
+    // back()
   }
   const dateInit = (date:Array<string>)=>{
     return date[0]+ ' ~ '+ date[1]

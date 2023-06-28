@@ -126,7 +126,7 @@ const signInRuleForms = ref(null);
 const signIn = ()=>{
   signInRuleForms.value.validate((valid)=>{
   if (valid) {
-    axios.post('register',{...signInData}).then(res=>{
+    axios.post('user/register',{...signInData}).then(res=>{
       if (res?.data?.data.code === 200) {   
        ElMessage.success("注册成功！")
        signInRuleForms.value.resetFields()

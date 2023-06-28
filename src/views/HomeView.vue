@@ -135,8 +135,6 @@ const getResumeInit = async ()=>{
   const {data:res} = await axios.get(`posts/getResumeInit`)
   resumeMoudle.value = res.data.resumeMoudle
   personalMoudle.value = res.data.personalMoudle
-  console.log(res.data.personalMoudle);
-  console.log(res.data.resumeMoudle);
   localStorage.setItem('resumeMoudle', JSON.stringify(res.data.resumeMoudle))
   localStorage.setItem('personalMoudle',JSON.stringify(res.data.personalMoudle))
 }
@@ -147,6 +145,8 @@ const resumeInitByJWT = async ()=>{
   })
   resumeMoudle.value = res.data.resumeMoudle
   personalMoudle.value = res.data.personalMoudle
+  console.log(resumeMoudle.value);
+  
 }
 
 const print = () => {

@@ -29,7 +29,6 @@
               style="border-bottom: 1px solid #ccc"
               :editor="editorRef"
               :defaultConfig="toolbarConfig"
-              mode="simple"
               />
               <Editor
                 style="height: 500px; overflow-y: hidden;"
@@ -48,13 +47,13 @@
   <script setup lang="ts">
   import store from '@/store';
   import '@wangeditor/editor/dist/css/style.css' // 引入 css
-  import { onBeforeUnmount,unref, ref, shallowRef, onMounted, inject, reactive, render } from 'vue'
+  import { onBeforeUnmount,unref, ref, shallowRef, onMounted, inject, reactive, render, computed } from 'vue'
   import { Editor, Toolbar } from '@wangeditor/editor-for-vue'
   import { ElMessage } from 'element-plus';
   import  realationship  from "@/utils/realationshipMap.js";
   import  axios  from '@/api/http';
 
-  
+  const emit = defineEmits(['updateResume'])
   let resumeMoudle = inject('resumeMoudle') as any
   let renderList = ref(resumeMoudle.value[store.state.editChosen])
   const renderListDetailForm = ref(JSON.parse(JSON.stringify(renderList.value.inputList[store.state.editChosenDetail])));
@@ -62,7 +61,6 @@
   const dateReInit = (date:string)=>{
     return date?.split('~')
   }
-  renderListDetailForm.value.period = dateReInit(renderListDetailForm?.value.period)
   
   const checkList = ['Text','period','id','resumemodelId','sortIndex','title']
   const moduleCheck =(key)=>{
@@ -87,10 +85,18 @@
     '3':'updateSummary',
     '0':'updateSchool'
   }
+  onMounted:{
+    if (renderListDetailForm.value.period) {
+      renderListDetailForm.value.period = dateReInit(renderListDetailForm.value.period)
+    }
+  }
   const onSubmit = () => {
-      renderListDetailForm.value.period = renderListDetailForm.value.period ? dateInit(renderListDetailForm.value.period) : null
+    if (renderListDetailForm.value.period) {
+      renderListDetailForm.value.period = dateInit(renderListDetailForm.value.period)
+    }
       axios.post(`posts/${dyamicCom[renderList.value.moudleId]}`,renderListDetailForm.value).then((res)=>{
       if (res.status=== 201) {
+        emit('updateResume')
         ElMessage.success('修改成功')
         back()
       }

@@ -29,20 +29,20 @@
   <el-menu-item index="1"
     @click="goToLogin()">登录</el-menu-item>
     <el-menu-item index="2"
-    @click="print()">打印</el-menu-item>
+    @click="print">打印</el-menu-item>
   </el-menu>
   </div> 
   <div class="home">
     <div class="left">
       <Transition name="fade" mode="out-in">
         <div class="edit" v-if="store.state.isEdit" >
-          <EditForm></EditForm>
+          <EditForm @updateResume="resumeInitByJWT"></EditForm>
         </div>
         <div class="edit" v-else-if="store.state.editPersonal" >
-          <PersonEditForm></PersonEditForm>
+          <PersonEditForm @updateResume="resumeInitByJWT"></PersonEditForm>
         </div>
         <div class="edit" v-else-if="store.state.isAdd">
-          <AddForm></AddForm>
+          <AddForm @updateResume="resumeInitByJWT"></AddForm>
         </div>
         <div class="test" v-else>
           <Summary @changeResume="changeResume"></Summary> 
@@ -99,7 +99,7 @@ import Summary from '@/components/Resume/components/Summary.vue';
 import EditForm from '@/components/Resume/components/EditForm.vue';
 import AddForm from '@/components/Resume/components/AddForm.vue';
 import printjs from 'print-js'
-import { reactive, ref,provide, onMounted, watch, toRefs } from 'vue';
+import { reactive, ref,provide, onMounted, watch, toRefs, nextTick } from 'vue';
 import PersonEditForm from '@/components/Resume/components/PersonEditForm.vue';
 import {  useRouter } from 'vue-router';
 import  axios  from '../api/http';
@@ -145,19 +145,22 @@ const resumeInitByJWT = async ()=>{
   })
   resumeMoudle.value = res.data.resumeMoudle
   personalMoudle.value = res.data.personalMoudle
-  console.log(resumeMoudle.value);
-  
 }
 
 const print = () => {
   document.title = "henen"
+  let focuser = setInterval(()=> window.dispatchEvent(new Event('focus')),500)
   printjs({
     printable: 'printC',
     type: 'html',
     targetStyles: ['*'],
-    header: null,
+    onPrintDialogClose:()=>{
+      nextTick(()=>{
+      clearInterval(focuser)
+      document.title = "超级简历"
+    })
+    }
    // style:"@media print{@page {size:portrait}};",
-    //onPrintDialogClose: changeTitle,
   })
 }
 

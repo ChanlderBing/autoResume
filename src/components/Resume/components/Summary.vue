@@ -23,6 +23,13 @@
                     <div class="resumeDetail">
                       <div class="top">
                         <span  class="resumeName">{{item.userName}}</span>
+                        <span v-if="editIndex !== index"> {{item.name}} </span>
+                        <span v-else>
+                           <el-input
+                            v-model="inputPoint"
+                            :placeholder="item.name"
+                          ></el-input>
+                        </span>
                         <span  class="editBtn"><img src="../../../assets/more.png" style="width: 32px;height: 32px;position: absolute;left: -40px;top: -5px;"></span>
                       </div>         
                     <div class="editTime">最后编辑于12-08</div>
@@ -108,7 +115,6 @@ const getModelResume = ()=>{
       }
   }).catch(err=>{
     ElMessage.info('登录信息已过期，请重新登录获取个人信息')
-    //store.commit('romoveToken')
   }).finally(()=>{
     loading.value = false
   })

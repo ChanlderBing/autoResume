@@ -21,7 +21,6 @@
 
 <style scoped>
 .menu-title{
-    height: 24px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -38,6 +37,9 @@
     }
   }
   
+  .textH5{
+    width: 300px;
+  }
   .sec-title{
     .title-left{
       height: 24px;       

@@ -9,10 +9,11 @@
 </template>
 
 <script setup lang="ts">
-import { json } from 'stream/consumers';
 import { onMounted } from 'vue'
  import  resumeMoudleMock  from "./utils/mock.js";
  import  personalMoudleMock  from "./utils/personal.js";
+ 
+
 
  onMounted(() => {
 

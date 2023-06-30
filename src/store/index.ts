@@ -40,7 +40,7 @@ export default createStore({
       state.token = token
       localStorage.setItem('token', JSON.stringify(token))
     },
-    romoveToken(state) {
+    removeToken(state) {
       state.token = null
       localStorage.removeItem('token')
     },

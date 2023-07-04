@@ -11,10 +11,12 @@
     </div>
 </template>
 <script lang="ts" setup>
-  const props = defineProps({
+import { reactive } from 'vue';
+  const {list} = defineProps({
     list: Object,
   })
-  const list = props.list
+ // const list = reactive(props.list)
+ //响应式 list 为渲染对象，只有list的值发生变化才会触发响应式，改变props.list不会触发响应式
 </script>
 
 <style scoped>

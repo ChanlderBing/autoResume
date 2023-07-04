@@ -42,7 +42,7 @@
 
 <script lang="ts" setup>
   import store from "@/store";
-  import { ref,nextTick, onMounted, computed, inject, watch,reactive, onUpdated } from "vue";
+  import { ref,nextTick, onMounted, computed, inject, watch,reactive, onUpdated, getCurrentInstance } from "vue";
   import Contrl from '@/components/Resume/components/Contrl.vue';
   import { defineEmits } from 'vue'
   import school from '@/components/from_components/school.vue'
@@ -52,16 +52,16 @@
   // 使用defineEmits创建名称，接受一个数组
   const emit = defineEmits(['clickChild'])
   let resumeMoudle1  = inject('resumeMoudle') as any
-
   let resumeMoudle = computed({
     get:() => {
       return resumeMoudle1.value?.filter((res: any) => {
         return res.isShow !== false
     })
     },
-    set:()=>  resumeMoudle
+    set:()=>  resumeMoudle1
   })
-
+  onUpdated(() => {
+  })
   const dyamicCom =  {
     '1':work,
     '2':project,

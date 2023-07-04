@@ -12,29 +12,30 @@
             <el-menu-item index="1">我的简历</el-menu-item>
             <el-menu-item index="2">简历模板</el-menu-item>
           </el-menu>
-          <div class="resumeList" v-loading="loading" >
+          <div class="resumeList" loading="loading" >
             <el-empty v-if="arr.authResume&&arr.authResume.length < 1 && activeIndex === '1'" description="暂时没有数据" >
               <el-button type="primary" @click="clickToLogin" v-if="!store.state.token">去登录</el-button>
             </el-empty>
-            <el-scrollbar max-height="260px">
-              <div class="resume" v-for="item in arr.resumeList">
-                <div class="content" @click="resumeChange(item.resumeId)">
-                  <div class="pic"><img src="../../../assets/img/wyk.jpg"/> </div>
-                    <div class="resumeDetail">
-                      <div class="top">
-                        <span  class="resumeName">{{item.userName}}</span>
-                        <span v-if="editIndex !== index"> {{item.name}} </span>
-                        <span v-else>
-                           <el-input
-                            v-model="inputPoint"
-                            :placeholder="item.name"
-                          ></el-input>
-                        </span>
-                        <span  class="editBtn"><img src="../../../assets/more.png" style="width: 32px;height: 32px;position: absolute;left: -40px;top: -5px;"></span>
-                      </div>         
-                    <div class="editTime">最后编辑于12-08</div>
+            <el-scrollbar max-height="270px">
+              <div class="resume" v-for="(item,index) in arr.resumeList">
+                  <div class="content" @click="resumeChange(item.resumeId)">
+                    <div class="pic"><img src="../../../assets/img/wyk.jpg"/> </div>
+                      <div class="resumeDetail">
+                        <div class="top">
+                            <span  class="resumeName" @click.stop="test(item.resumeId)" v-if="item.editActive === 0">{{item.resumeName}}</span>
+                            <span v-else-if="item.editActive === 1">
+                              <el-input 
+                              ref="inputRef"
+                              v-model="item.resumeName"
+                              @blur="emptyCheck(item.resumeId,item.resumeName)"
+                                />
+                            </span>
+                          <span  class="editBtn"><img src="../../../assets/more.png" style="width: 32px;height: 32px;position: absolute;left: -40px;top: -5px;"></span>
+                        </div>         
+                      <div class="editTime">最后编辑于12-08</div>
+                    </div>
                   </div>
-                </div>
+     
               </div>
             </el-scrollbar>
           </div>
@@ -49,12 +50,12 @@
 
   </template>
 
+
 <script lang="ts" setup>
 import  axios  from '../../../api/http';
-import { defineEmits, ref, reactive,computed } from 'vue';
+import { defineEmits, ref, reactive,computed, onMounted, nextTick, getCurrentInstance } from 'vue';
 import { ElMessage } from 'element-plus';
 import store from '@/store';
-import { Loading } from 'element-plus/es/components/loading/src/service';
 import router from '@/router';
 //未登录，获取固定模板。登录后获取个人简历列表显示第一份简历
 //按钮上传文件，获取登录信息。弹出登录信息/个人信息添加表
@@ -66,8 +67,37 @@ import router from '@/router';
 //   return token ? '我的简历':'简历模板'
 // })
 
-const loading = ref(true)
+const { resumeId } = defineProps({
+  resumeId: Number,
+  })
 
+// 自定义指令
+// const vFocus = {
+//   mounted(el,{value}) {
+//     if (value) {
+//       console.log(el);
+//       el.focus()
+//     }
+       
+//   }
+// }
+const inputRef = ref(null)
+const createResumeName = ref('')
+const test = (id)=>{
+  arr.resumeList.forEach(item=> {
+    item.editActive = 0
+  });
+  
+  const index = arr.resumeList.findIndex((item)=>{
+    return item.resumeId === id
+  })
+  createResumeName.value = arr.resumeList[index].resumeName
+  arr.resumeList[index].editActive = 1
+  setTimeout(()=>{
+    inputRef.value[0].focus()
+  },0)
+}
+const loading = ref(true)
 //新建简历
 const createResume = ()=>{
     if (!store.state.token) {
@@ -78,7 +108,7 @@ const createResume = ()=>{
 }
 
 //切换简历
-const emit = defineEmits(['changeResume'])
+const emit = defineEmits(['changeResume','currentResumeId'])
 const resumeChange = (resumeId:number)=>{
   if (!localStorage.getItem("token")) {
       ElMessage.error('请先登录！')
@@ -104,6 +134,27 @@ const switchTab = (key: string) => {
  } else {
   activeIndex.value = '2' 
   arr.resumeList = arr.modelResume
+ }
+}
+
+const emptyCheck = (resumeId,resumeName)=>{
+ if (!resumeName) {
+  ElMessage.error('修改值不能为空')
+  inputRef.value[0].focus()
+ }else{
+  const index = arr.resumeList.findIndex((item)=>{
+    return item.resumeId === resumeId
+  })
+  if (activeIndex.value !== '2') {
+    if (createResumeName.value !==resumeName) {
+      axios.post('posts/updateResumeName',{resumeId:resumeId,resumeName:resumeName}).then(res=>{
+        if (res?.data.code === 0) { 
+          ElMessage.success('修改成功')
+        }
+      })
+    }
+  } 
+  arr.resumeList[index].editActive = 0
  }
 }
 const getModelResume = ()=>{

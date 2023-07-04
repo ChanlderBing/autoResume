@@ -11,11 +11,13 @@
     </div>
 </template>
 <script lang="ts" setup>
+import { ref } from 'vue';
 
-  const props = defineProps({
+
+  const {list}= defineProps({
     list: Object,
   })
-  const list = props.list
+
 
 </script>
 

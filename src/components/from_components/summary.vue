@@ -1,15 +1,18 @@
 <template>
     <div class="menu-title"> 
     <div class="text">
-        <div class="textH5" v-html="list.richText"></div>
+        <div class="textH5" v-html="props.list.richText"></div>
     </div>
     </div>
 </template>
 <script lang="ts" setup>
+import { onUpdated, reactive, ref, toRefs } from 'vue';
+
   const props = defineProps({
     list: Object,
   })
-  const list = props.list
+
+
 </script>
 
 <style scoped>

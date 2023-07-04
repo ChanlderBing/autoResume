@@ -45,7 +45,7 @@
           <AddForm @updateResume="resumeInitByJWT"></AddForm>
         </div>
         <div class="test" v-else>
-          <Summary @changeResume="changeResume"></Summary> 
+          <Summary @changeResume="changeResume" :resumeId="currentResume"></Summary> 
         </div>
       </Transition>
     </div>
@@ -77,9 +77,6 @@
     <el-form-item label="账号">
       <el-input v-model="formLabelAlign.Name" />
     </el-form-item>
-    <el-form-item label="密码">
-      <el-input v-model="formLabelAlign.region" />
-    </el-form-item>
   </el-form>
     <template #footer>
       <span class="dialog-footer">
@@ -99,7 +96,7 @@ import Summary from '@/components/Resume/components/Summary.vue';
 import EditForm from '@/components/Resume/components/EditForm.vue';
 import AddForm from '@/components/Resume/components/AddForm.vue';
 import printjs from 'print-js'
-import { reactive, ref,provide, onMounted, watch, toRefs, nextTick } from 'vue';
+import { reactive, ref,provide, onMounted, watch, toRefs, nextTick, onUpdated } from 'vue';
 import PersonEditForm from '@/components/Resume/components/PersonEditForm.vue';
 import {  useRouter } from 'vue-router';
 import  axios  from '../api/http';
@@ -120,6 +117,7 @@ const goToLogin = ()=>{
 
 let resumeMoudle = ref(null)
 let personalMoudle = ref(null)
+let currentResume = ref(null)
 
 provide('resumeMoudle',resumeMoudle)
 provide('personalMoudle',personalMoudle)
@@ -127,6 +125,7 @@ provide('personalMoudle',personalMoudle)
 //调用切换接口获取简历
 const changeResume = async (resumeId)=>{
   const {data:res} = await axios.get(`posts/getUserResume?resumeId=${resumeId}`)
+  currentResume.value = resumeId
   resumeMoudle.value = res.data.resumeMoudle
   personalMoudle.value = res.data.personalMoudle
 }
@@ -143,11 +142,13 @@ const resumeInitByJWT = async ()=>{
   const {data:res} = await axios.get(`posts/ResumeInitByJWT`).catch(async (err)=>{
     return  await axios.get(`posts/getResumeInit`)
   })
+  currentResume.value = res.data.resumeId
   resumeMoudle.value = res.data.resumeMoudle
   personalMoudle.value = res.data.personalMoudle
 }
 
 const print = () => {
+  
   document.title = "henen"
   let focuser = setInterval(()=> window.dispatchEvent(new Event('focus')),500)
   printjs({
@@ -180,6 +181,7 @@ onMounted:{
     getResumeInit()
   }
 }
+
 </script>
 
 <style lang="scss">

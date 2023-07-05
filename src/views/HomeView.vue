@@ -118,6 +118,10 @@ const goToLogin = ()=>{
 let resumeMoudle = ref(null)
 let personalMoudle = ref(null)
 let currentResume = ref(null)
+let currentResumeName = ref(null)
+const currentResumeNameChange = (ResumeName)=>{
+  currentResumeName.value = ResumeName
+}
 
 provide('resumeMoudle',resumeMoudle)
 provide('personalMoudle',personalMoudle)
@@ -147,9 +151,15 @@ const resumeInitByJWT = async ()=>{
   personalMoudle.value = res.data.personalMoudle
 }
 
-const print = () => {
+const getResumeName = async (resumeId)=>{
+  const {data:res} = await axios.get(`posts/getUserResumeName?resumeId=${resumeId}`)
+  return res.data[0].resumeName
+}
+const print =  () => {
+  //currentResume实则为resumeId
   
-  document.title = "henen"
+  let ResumeName = getResumeName(currentResume.value)
+ // document.title = ResumeName
   let focuser = setInterval(()=> window.dispatchEvent(new Event('focus')),500)
   printjs({
     printable: 'printC',
@@ -158,7 +168,7 @@ const print = () => {
     onPrintDialogClose:()=>{
       nextTick(()=>{
       clearInterval(focuser)
-      document.title = "超级简历"
+      document.title = "简单简历"
     })
     }
    // style:"@media print{@page {size:portrait}};",

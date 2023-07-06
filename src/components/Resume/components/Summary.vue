@@ -22,7 +22,7 @@
                     <div class="pic"><img src="../../../assets/img/wyk.jpg"/> </div>
                       <div class="resumeDetail">
                         <div class="top">
-                            <span  class="resumeName" @click.stop="test(item.resumeId)" v-if="item.editActive === 0">{{item.resumeName}}</span>
+                            <span  class="resumeName" @click.stop="test(item.resumeId)" v-if="item.editActive === 0">{{item.resumeName ? item.resumeName:'未命名简历'}}</span>
                             <span v-else-if="item.editActive === 1">
                               <el-input 
                               ref="inputRef"
@@ -116,7 +116,7 @@ const createResume = ()=>{
     if (!store.state.token) {
       ElMessage.error('请先登录！')
   } else {
-      store.commit('switchEditPersonal',true)
+      store.commit('switchAddPersonal',true)
   }
 }
 

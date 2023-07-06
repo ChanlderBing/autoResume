@@ -36,13 +36,16 @@
     <div class="left">
       <Transition name="fade" mode="out-in">
         <div class="edit" v-if="store.state.isEdit" >
-          <EditForm @updateResume="resumeInitByJWT"></EditForm>
+          <EditForm @updateResume="changeResume(null)"></EditForm>
         </div>
         <div class="edit" v-else-if="store.state.editPersonal" >
-          <PersonEditForm @updateResume="resumeInitByJWT"></PersonEditForm>
+          <PersonEditForm @updateResume="changeResume(null)"></PersonEditForm>
         </div>
         <div class="edit" v-else-if="store.state.isAdd">
-          <AddForm @updateResume="resumeInitByJWT"></AddForm>
+          <AddForm @updateResume="changeResume(null)"></AddForm>
+        </div>
+        <div class="edit" v-else-if="store.state.addPersonal">
+          <PersonAddForm></PersonAddForm>
         </div>
         <div class="test" v-else>
           <Summary @changeResume="changeResume" :resumeId="currentResume"></Summary> 
@@ -52,7 +55,7 @@
     <div class="right">
       <div class="resumeContent">
         <Transition name="resume" mode="out-in">
-        <div v-if="store.state.isEdit ||store.state.isAdd || store.state.editPersonal" >
+        <div v-if="store.state.isEdit ||store.state.isAdd || store.state.editPersonal|| store.state.addPersonal" >
           <Resume></Resume>
         </div>
         <div v-else>
@@ -98,6 +101,7 @@ import AddForm from '@/components/Resume/components/AddForm.vue';
 import printjs from 'print-js'
 import { reactive, ref,provide, onMounted, watch, toRefs, nextTick, onUpdated } from 'vue';
 import PersonEditForm from '@/components/Resume/components/PersonEditForm.vue';
+import PersonAddForm from '@/components/Resume/components/PersonAddForm.vue';
 import {  useRouter } from 'vue-router';
 import  axios  from '../api/http';
 
@@ -128,8 +132,8 @@ provide('personalMoudle',personalMoudle)
 
 //调用切换接口获取简历
 const changeResume = async (resumeId)=>{
-  const {data:res} = await axios.get(`posts/getUserResume?resumeId=${resumeId}`)
-  currentResume.value = resumeId
+  const {data:res} = await axios.get(`posts/getUserResume?resumeId=${resumeId !==null?resumeId:currentResume.value}`)
+  currentResume.value = res.data.resumeId - 0
   resumeMoudle.value = res.data.resumeMoudle
   personalMoudle.value = res.data.personalMoudle
 }

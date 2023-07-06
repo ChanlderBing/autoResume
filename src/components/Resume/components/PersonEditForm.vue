@@ -9,17 +9,17 @@
       <el-form :inline="true" class="demo-form-inline">
         <div class="skillTitle"> 基本信息 </div>
         <el-form-item label="姓名" >
-            <el-input v-model="personalMoudle[0].userName" />
+            <el-input v-model="personalMoudle.userName" />
         </el-form-item>
-        <template v-for="(value,key) in personalMoudle[0].inputList[0]">
+        <template v-for="(value,key) in personalMoudle.inputList[0]">
           <el-form-item :label="realationshipMap[key]" >
-            <el-input v-model="personalMoudle[0].inputList[0][key]" />
+            <el-input v-model="personalMoudle.inputList[0][key]" />
           </el-form-item>
         </template>
         <div class="skillTitle"> 就职意向 </div>
-          <template v-for="(value,key) in personalMoudle[0].inputList[1]">
+          <template v-for="(value,key) in personalMoudle.inputList[1]">
             <el-form-item :label="realationshipMap[key]" >
-              <el-input v-model="personalMoudle[0].inputList[1][key]" />
+              <el-input v-model="personalMoudle.inputList[1][key]" />
             </el-form-item>
           </template>
       </el-form>
@@ -30,21 +30,65 @@
   <script setup lang="ts">
   import store from '@/store';
   import '@wangeditor/editor/dist/css/style.css' // 引入 css
-  import { unref, ref, onMounted } from 'vue'
+  import { unref, ref, onMounted, inject } from 'vue'
   import { ElMessage } from 'element-plus';
+  import axios from '@/api/http';
 
-  let personalMoudle = ref(JSON.parse(localStorage.getItem('personalMoudle')))
+  const emit = defineEmits(['updateResume'])
+  //let personalMoudle = ref(JSON.parse(localStorage.getItem('personalMoudle')))
+  let personalMoudle1 = inject('personalMoudle') as any
+  const personalMoudle = ref(JSON.parse(JSON.stringify(personalMoudle1.value)));
   const onSubmit = () => {
-    personalMoudle = unref(personalMoudle)
-    localStorage.setItem('personalMoudle',JSON.stringify(personalMoudle))
-    ElMessage.success('修改成功')
+    axios.post(`posts/updatePerson`,{...flatten(personalMoudle.value)}).then((res)=>{
+      ElMessage.success('修改成功')
+      emit('updateResume')
     back()
+  })
+    // personalMoudle = unref(personalMoudle)
+    // localStorage.setItem('personalMoudle',JSON.stringify(personalMoudle))
   }
   const back = ()=>{
     store.commit('switchEditPersonal',false)
     store.commit('switchAdd',false)
     store.commit('switch',false)
+    store.commit('switchAddPersonal',false)
   }
+
+  // 对象扁平化
+ const flatten = (myObj)=> {
+    const flatObj = {}
+    let flag = null
+    function formatKey(obj, keyName) {
+        for (let key in obj) {
+            if (typeof obj[key] === 'object' && obj[key] !== null) { //值为对象
+                if (!keyName) {
+                    formatKey(obj[key], key)
+                } else {
+                    if (Array.isArray(obj)) {
+                        formatKey(obj[key], `${key}`)
+                    } else {
+                        formatKey(obj[key], `${key}`)
+                    }
+                }
+            } else { //值不为对象或者值为null
+                if (!keyName) {
+                    flatObj[key] = obj[key]
+                } else {
+                    if (Array.isArray(obj)) {
+                        flatObj[`${keyName}[${key}]`] = obj[key]
+                    } else {
+                        flatObj[`${key}`] = obj[key]
+                    }
+                }
+            }
+
+            
+        }
+    }
+    formatKey(myObj, flag)
+    return flatObj
+}
+
 
   const realationshipMap = {
       'phoneNumber':'手机',

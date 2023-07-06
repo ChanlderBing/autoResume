@@ -6,6 +6,7 @@ export default createStore({
     editChosen: 0,
     editChosenDetail: 0,
     editPersonal:false,
+    addPersonal:false,
     isAdd:false,
     color_theme: 'red-theme',
     addStruct:{},
@@ -23,6 +24,9 @@ export default createStore({
     },
     switchEditPersonal(state,editPersonal){
       state.editPersonal = editPersonal
+    },
+    switchAddPersonal(state,addPersonal){
+      state.addPersonal = addPersonal
     },
     chosenOne(state,editChosen){
       state.editChosen = editChosen

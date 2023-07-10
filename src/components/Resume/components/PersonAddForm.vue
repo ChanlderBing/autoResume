@@ -96,9 +96,6 @@
       return flatObj
   }
 
-
-  
-  
     const realationshipMap = {
         'phoneNumber':'手机',
         'email':'邮件',

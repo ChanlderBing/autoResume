@@ -99,7 +99,7 @@ import Summary from '@/components/Resume/components/Summary.vue';
 import EditForm from '@/components/Resume/components/EditForm.vue';
 import AddForm from '@/components/Resume/components/AddForm.vue';
 import printjs from 'print-js'
-import { reactive, ref,provide, onMounted, watch, toRefs, nextTick, onUpdated } from 'vue';
+import { reactive, ref,provide, onMounted, watch, toRefs, nextTick, onUpdated, watchEffect } from 'vue';
 import PersonEditForm from '@/components/Resume/components/PersonEditForm.vue';
 import PersonAddForm from '@/components/Resume/components/PersonAddForm.vue';
 import {  useRouter } from 'vue-router';
@@ -123,6 +123,16 @@ let resumeMoudle = ref(null)
 let personalMoudle = ref(null)
 let currentResume = ref(null)
 let currentResumeName = ref(null)
+
+watch(() => store.state.editPersonal,() => {
+    if (!store.state.token &&!store.state.editPersonal) {
+      resumeMoudle.value = JSON.parse(localStorage.getItem('resumeMoudle'))
+      personalMoudle.value = JSON.parse(localStorage.getItem('personalMoudle'))
+    }
+    },{
+      deep:true,
+    })
+
 const currentResumeNameChange = (ResumeName)=>{
   currentResumeName.value = ResumeName
 }
@@ -140,6 +150,7 @@ const changeResume = async (resumeId)=>{
 //调用接口获取简历 未登录
 const getResumeInit = async ()=>{
   const {data:res} = await axios.get(`posts/getResumeInit`)
+  currentResume.value = res.data.resumeId
   resumeMoudle.value = res.data.resumeMoudle
   personalMoudle.value = res.data.personalMoudle
   localStorage.setItem('resumeMoudle', JSON.stringify(res.data.resumeMoudle))
@@ -195,7 +206,6 @@ onMounted:{
     getResumeInit()
   }
 }
-
 </script>
 
 <style lang="scss">

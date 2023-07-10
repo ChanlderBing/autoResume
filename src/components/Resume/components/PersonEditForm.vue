@@ -39,13 +39,18 @@
   let personalMoudle1 = inject('personalMoudle') as any
   const personalMoudle = ref(JSON.parse(JSON.stringify(personalMoudle1.value)));
   const onSubmit = () => {
-    axios.post(`posts/updatePerson`,{...flatten(personalMoudle.value)}).then((res)=>{
+    if (store.state.token) {
+      axios.post(`posts/updatePerson`,{...flatten(personalMoudle.value)}).then((res)=>{
       ElMessage.success('修改成功')
       emit('updateResume')
     back()
   })
-    // personalMoudle = unref(personalMoudle)
-    // localStorage.setItem('personalMoudle',JSON.stringify(personalMoudle))
+    } else {
+      personalMoudle1 =personalMoudle
+    localStorage.setItem('personalMoudle',JSON.stringify(unref(personalMoudle)))
+    ElMessage.success('修改成功')
+    back()
+    }
   }
   const back = ()=>{
     store.commit('switchEditPersonal',false)
@@ -80,9 +85,7 @@
                         flatObj[`${key}`] = obj[key]
                     }
                 }
-            }
-
-            
+            } 
         }
     }
     formatKey(myObj, flag)

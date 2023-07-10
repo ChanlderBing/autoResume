@@ -94,19 +94,23 @@
     if (renderListDetailForm.value.period) {
       renderListDetailForm.value.period = dateInit(renderListDetailForm.value.period)
     }
+    if (store.state.token) {
       axios.post(`posts/${dyamicCom[renderList.value.moudleId]}`,renderListDetailForm.value).then((res)=>{
       if (res.status=== 201) {
         emit('updateResume')
         ElMessage.success('修改成功')
         back()
       }
-
     })
-    // renderList.value.inputList[store.state.editChosenDetail] = renderListDetailForm.value
-    // resumeMoudle[store.state.editChosen] = unref(renderList)
-    // localStorage.setItem('resumeMoudle',JSON.stringify(resumeMoudle.value))
-    // ElMessage.success('修改成功')
-    // back()
+    } else {
+    renderList.value.inputList[store.state.editChosenDetail] = renderListDetailForm.value
+    resumeMoudle[store.state.editChosen] = unref(renderList)
+    localStorage.setItem('resumeMoudle',JSON.stringify(resumeMoudle.value))
+    ElMessage.success('修改成功')
+    back()
+    }
+  
+   
   }
   const dateInit = (date:Array<string>)=>{
     return date[0]+ ' ~ '+ date[1]

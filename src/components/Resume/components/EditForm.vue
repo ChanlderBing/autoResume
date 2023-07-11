@@ -103,14 +103,12 @@
       }
     })
     } else {
-    renderList.value.inputList[store.state.editChosenDetail] = renderListDetailForm.value
-    resumeMoudle[store.state.editChosen] = unref(renderList)
-    localStorage.setItem('resumeMoudle',JSON.stringify(resumeMoudle.value))
-    ElMessage.success('修改成功')
-    back()
+      renderList.value.inputList[store.state.editChosenDetail] = renderListDetailForm.value
+      resumeMoudle[store.state.editChosen] = unref(renderList)
+      localStorage.setItem('resumeMoudle',JSON.stringify(resumeMoudle.value))
+      ElMessage.success('修改成功')
+      back()
     }
-  
-   
   }
   const dateInit = (date:Array<string>)=>{
     return date[0]+ ' ~ '+ date[1]
@@ -148,7 +146,6 @@
   }
   //richText
   const editorRef = shallowRef()
-
   const toolbarConfig = {}
   const editorConfig = { placeholder: '请输入内容...' }
 

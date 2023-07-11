@@ -19,6 +19,8 @@
           start-placeholder="开始时间"
           end-placeholder="结束时间"
           :shortcuts="shortcuts"
+          format="YYYY/MM/DD"
+          value-format="YYYY.MM.DD"
         />
       </el-form-item>
       <el-form-item v-if="moduleCheck(key) === 'Text'">
@@ -52,6 +54,7 @@
   import { Editor, Toolbar } from '@wangeditor/editor-for-vue'
   import { ElMessage } from 'element-plus';
   import  realationship  from "@/utils/realationshipMap.js";
+  import  axios  from '@/api/http';
 
   
   let resumeMoudle = inject('resumeMoudle') as any
@@ -74,12 +77,38 @@
       return 'normal'
     } 
   }
+  const dateInit = (date:Array<string>)=>{
+    return date[0]+ ' ~ '+ date[1]
+  }
+  const dateReInit = (date:string)=>{
+    return date?.split('~')
+  }
+  
+  const dyamicCom =  {
+    '1':'setWork',
+    '2':'setProject',
+    '0':'setSchool'
+  }
+  const emit = defineEmits(['updateResume'])
   const onSubmit = () => {
+    if (renderListDetail.value.period) {
+      renderListDetail.value.period = dateInit(renderListDetail.value.period)
+    }
+    if (store.state.token) {
+      axios.post(`posts/${dyamicCom[renderList.value.moudleId]}`,renderListDetail.value).then((res)=>{
+      if (res.status=== 201) {
+        emit('updateResume')
+        ElMessage.success('修改成功')
+        back()
+      }
+    })
+    } else {
     renderList.value.inputList.push(unref(renderListDetail))
     resumeMoudle[store.state.editChosen] = unref(renderList)
-    localStorage.setItem('resumeMoudle',JSON.stringify(resumeMoudle))
+    localStorage.setItem('resumeMoudle',JSON.stringify(resumeMoudle.value))
     ElMessage.success('修改成功')
     back()
+    }
   }
   const back = ()=>{
     store.commit('switchAdd',false)

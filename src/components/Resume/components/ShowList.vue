@@ -60,15 +60,12 @@
     },
     set:()=>  resumeMoudle1
   })
-  onUpdated(() => {
-  })
   const dyamicCom =  {
     '1':work,
     '2':project,
     '3':summary,
     '0':school
   }
-
   let focusIndex = ref()
   let focusDetailIndex = ref()
   const switchTabUp = (flag) => {

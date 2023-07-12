@@ -80,9 +80,6 @@
   const dateInit = (date:Array<string>)=>{
     return date[0]+ ' ~ '+ date[1]
   }
-  const dateReInit = (date:string)=>{
-    return date?.split('~')
-  }
   
   const dyamicCom =  {
     '1':'setWork',
@@ -95,6 +92,7 @@
       renderListDetail.value.period = dateInit(renderListDetail.value.period)
     }
     if (store.state.token) {
+      renderListDetail.value.resumemodelId = 
       axios.post(`posts/${dyamicCom[renderList.value.moudleId]}`,renderListDetail.value).then((res)=>{
       if (res.status=== 201) {
         emit('updateResume')

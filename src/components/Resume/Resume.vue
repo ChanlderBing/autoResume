@@ -86,11 +86,7 @@ const resumeMoudle = inject('resumeMoudle') as any
     })
     resumeMoudle.value[index].isShow = resumeMoudle.value[index].isShow ? false:true
   }
-
-  onMounted:{
-    //获取数据 1.未登录获取默认简历 2.登录后获取个人简历库首个简历 axios.get()
-
-  }                 
+            
 
 </script>
 

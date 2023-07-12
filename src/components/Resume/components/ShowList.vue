@@ -52,13 +52,11 @@
   // 使用defineEmits创建名称，接受一个数组
   const emit = defineEmits(['clickChild'])
   let resumeMoudle1  = inject('resumeMoudle') as any
-  let resumeMoudle = computed({
-    get:() => {
-      return resumeMoudle1.value?.filter((res: any) => {
-        return res.isShow !== false
+  let resumeMoudle = computed(() => {
+    //访问异步数据，导致这里二次更新
+    return resumeMoudle1.value?.filter((res: any) => {
+      return res.isShow !== false
     })
-    },
-    set:()=>  resumeMoudle1
   })
   const dyamicCom =  {
     '1':work,
@@ -77,18 +75,24 @@
     }else if (index && index!==0 && flag == 0)
     {
       resumeMoudle.value[index] = resumeMoudle.value.splice(index - 1, 1, resumeMoudle.value[index])[0]
+      blurMoudel()
     }
   }
 
   const switchTabDown = (flag) => {
     let index = focusIndex.value
     let detailIndex = focusDetailIndex.value
-    if (detailIndex <= resumeMoudle.value.length - 1 && flag == 8) 
+    console.log(index);
+    console.log(detailIndex);
+    console.log(flag);
+    
+    if (detailIndex < resumeMoudle.value[index].inputList.length - 1 && flag == 8) 
     {
       resumeMoudle.value[index].inputList[detailIndex] = resumeMoudle.value[index].inputList.splice(detailIndex + 1, 1, resumeMoudle.value[index].inputList[detailIndex])[0]
-    }else if (detailIndex <= resumeMoudle.value.length - 1 && flag == 0)
+    }else if (index < resumeMoudle.value.length - 1 && flag == 0)
     {
-      resumeMoudle.value[index] = resumeMoudle.value.splice(index + 1, 1, resumeMoudle.value[index])[0]
+     resumeMoudle.value[index] = resumeMoudle.value.splice(index + 1, 1, resumeMoudle.value[index])[0]
+      blurMoudel()
     }
   }
 
@@ -142,8 +146,10 @@
             const val = target[key]
             if (typeof val === 'object' && val) {
                 cloneObj[key] = deepClear(val) // 是对象就再次调用该函数递归
-            } else {
-                cloneObj[key] = '' // 基本类型的话直接复制值
+            } else  if(key === 'resumemodelId'){
+                cloneObj[key] = val // 基本类型的话直接复制值
+            }else{
+              cloneObj[key] = ''
             }
         }
         return cloneObj

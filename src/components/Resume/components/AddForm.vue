@@ -23,7 +23,7 @@
           value-format="YYYY.MM.DD"
         />
       </el-form-item>
-      <el-form-item v-if="moduleCheck(key) === 'Text'">
+      <el-form-item v-if="key.toString() === 'richText'">
         <div>具体描述</div>
         <div style="border: 1px solid #ccc">
           <Toolbar
@@ -92,7 +92,6 @@
       renderListDetail.value.period = dateInit(renderListDetail.value.period)
     }
     if (store.state.token) {
-      renderListDetail.value.resumemodelId = 
       axios.post(`posts/${dyamicCom[renderList.value.moudleId]}`,renderListDetail.value).then((res)=>{
       if (res.status=== 201) {
         emit('updateResume')

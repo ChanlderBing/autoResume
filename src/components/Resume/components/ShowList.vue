@@ -42,7 +42,7 @@
 
 <script lang="ts" setup>
   import store from "@/store";
-  import { ref,nextTick, onMounted, computed, inject, watch,reactive, onUpdated, getCurrentInstance } from "vue";
+  import { ref,nextTick, onMounted, computed, inject} from "vue";
   import Contrl from '@/components/Resume/components/Contrl.vue';
   import { defineEmits } from 'vue'
   import school from '@/components/from_components/school.vue'
@@ -53,7 +53,7 @@
   const emit = defineEmits(['clickChild'])
   let resumeMoudle1  = inject('resumeMoudle') as any
   let resumeMoudle = computed(() => {
-    //访问异步数据，导致这里二次更新
+    //访问异步数据，这里二次更新
     return resumeMoudle1.value?.filter((res: any) => {
       return res.isShow !== false
     })
@@ -82,10 +82,6 @@
   const switchTabDown = (flag) => {
     let index = focusIndex.value
     let detailIndex = focusDetailIndex.value
-    console.log(index);
-    console.log(detailIndex);
-    console.log(flag);
-    
     if (detailIndex < resumeMoudle.value[index].inputList.length - 1 && flag == 8) 
     {
       resumeMoudle.value[index].inputList[detailIndex] = resumeMoudle.value[index].inputList.splice(detailIndex + 1, 1, resumeMoudle.value[index].inputList[detailIndex])[0]

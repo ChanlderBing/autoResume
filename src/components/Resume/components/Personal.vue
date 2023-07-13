@@ -24,6 +24,7 @@
 import { inject, nextTick, ref } from "vue";
 import { ElMessage } from 'element-plus';
 import store from "@/store";
+import  axios  from '@/api/http';
 
 let personalMoudle = inject('personalMoudle') as any
 const isShow = ref(false)
@@ -54,6 +55,10 @@ const updateFile =(e)=>{
     img.onload = ({target})=>{
       imgSrc.value = target.result as string
     }
+    axios.post('posts/updatePic',file).then((res)=>{
+      console.log(11);
+      
+    })
     ElMessage.success("上传成功")
   } else
   {

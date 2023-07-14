@@ -36,7 +36,7 @@ import { ElMessage } from 'element-plus';
 // 创建axios实例
 var aioxs = axios.create({  timeout: 1000 * 12,baseURL:process.env.VUE_APP_BASE_URL});
 // 设置post请求头
-aioxs.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
+aioxs.defaults.headers.post['Content-Type'] = 'multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW';
 /** 
  * 请求拦截器 
  * 每次请求前，如果存在token则在请求头中携带token 

@@ -24,7 +24,8 @@
 import { inject, nextTick, ref } from "vue";
 import { ElMessage } from 'element-plus';
 import store from "@/store";
-import  axios  from '@/api/http';
+import axios from "@/api/https";
+
 
 let personalMoudle = inject('personalMoudle') as any
 const isShow = ref(false)
@@ -40,13 +41,15 @@ const editInformation = ()=>
       store.commit('switchEditPersonal',true)
     })
   }
-
   
 //头像更换
 const inputFile = ref(null)
 const imgSrc  =  ref(require('@/assets/img/wyk.jpg'))
 const updateFile =(e)=>{
+  let data = new FormData();
   const file = e.target.files[0]
+  data.append('file',file);
+  data.append('resumeId',personalMoudle.value.resumeId);
   let arr = file.name.split('.')
   let name = arr[1]
   if (name.toLowerCase()== 'jpge'||'png' || 'jpg') {
@@ -55,7 +58,7 @@ const updateFile =(e)=>{
     img.onload = ({target})=>{
       imgSrc.value = target.result as string
     }
-    axios.post('posts/updatePic',file).then((res)=>{
+    axios.post('posts/updatePic',data).then((res)=>{
       console.log(11);
       
     })

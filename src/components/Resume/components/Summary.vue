@@ -22,7 +22,7 @@
                     <div class="pic"><img src="../../../assets/img/wyk.jpg"/> </div>
                       <div class="resumeDetail">
                         <div class="top">
-                            <span  class="resumeName" @click.stop="test(item.resumeId)" v-if="item.editActive === 0">{{item.resumeName ? item.resumeName:'未命名简历'}}</span>
+                            <span  class="resumeName" @click.stop="test(item.resumeId)" v-if="item.editActive === 0">{{item.resumeName ? item.resumeName:'未命名简历'}}   <svg class="editicon" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" width="13" height="13" data-v-ea893728=""><path d="m199.04 672.64 193.984 112 224-387.968-193.92-112-224 388.032zm-23.872 60.16 32.896 148.288 144.896-45.696L175.168 732.8zM455.04 229.248l193.92 112 56.704-98.112-193.984-112-56.64 98.112zM104.32 708.8l384-665.024 304.768 175.936L409.152 884.8h.064l-248.448 78.336L104.32 708.8zm384 254.272v-64h448v64h-448z" fill="currentColor"></path></svg></span>
                             <span v-else-if="item.editActive === 1">
                               <el-input 
                               ref="inputRef"
@@ -151,14 +151,16 @@ const switchTab = (key: string) => {
 }
 
 const emptyCheck = (resumeId,resumeName)=>{
-  if (!resumeName) {
-    ElMessage.error('修改值不能为空')
-    inputRef.value[0].focus()
-  }else{
-    const index = arr.resumeList.findIndex((item)=>{
+  const index = arr.resumeList.findIndex((item)=>{
       return item.resumeId === resumeId
   })
-  if (activeIndex.value !== '2' &&createResumeName.value !==resumeName) {
+  if (!resumeName) {
+    ElMessage.error('简历名称不能为空')
+    arr.resumeList[index].resumeName = createResumeName.value
+    arr.resumeList[index].editActive = 0
+    inputRef.value[0].focus()
+  }else{
+  if (activeIndex.value !== '2' && createResumeName.value !==resumeName) {
     axios.post('posts/updateResumeName',{resumeId:resumeId,resumeName:resumeName}).then(res=>{
       if (res?.data.code === 0) { 
         ElMessage.success('修改成功')  
@@ -167,9 +169,10 @@ const emptyCheck = (resumeId,resumeName)=>{
   } else if(createResumeName.value !==resumeName){
     emit('currentResumeNameChange',resumeName)
   }
-  arr.resumeList[index].editActive = 0
+    arr.resumeList[index].editActive = 0
+  }
  }
-}
+
 const getModelResume = ()=>{
   axios.get('posts/getUserResumeAll').then(res=>{
       if (res?.data?.data?.code === 200) { 
@@ -259,6 +262,14 @@ onMounted:{
                 justify-content: space-between;
                 .resumeName{
                   font-size: 4px;
+                  .editicon{
+                    width: 12px;
+                    height: 12px;
+                    opacity: 0;
+                  }
+                }
+                .resumeName:hover .editicon{
+                  opacity: 1;
                 }
                 .editBtn{
                   position: relative;

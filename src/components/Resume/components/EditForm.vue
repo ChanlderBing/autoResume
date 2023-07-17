@@ -6,12 +6,15 @@
       <el-button type="primary" class="ml-2" @click="onSubmit">完成</el-button>
     </div>
     <div class="skill">
-      <el-form :inline="true" :model="renderListDetailForm" class="demo-form-inline">
+      <el-form :inline="true" :model="renderListDetailForm" ref="ruleForm" class="demo-form-inline">
         <template v-for="(value,key) in renderListDetailForm">
-          <el-form-item :label="realationship[key]" v-if="moduleCheck(key) === 'normal'">
-            <el-input v-model="renderListDetailForm[key]" />
-          </el-form-item>
-          <el-form-item label="时间" v-if="key.toString() === 'period'">
+          <template  v-if="moduleCheck(key) === 'normal'">    
+            <el-form-item  :label="realationship[key]"  :prop="key" :rules="[{required: true, message: '请输入'+ realationship[key], trigger: 'blur'}]">
+              <el-input v-model="renderListDetailForm[key]" />
+            </el-form-item>
+          </template>
+      
+          <el-form-item label="时间" v-if="key.toString() === 'period'" :prop="key"  :rules="[{required: true, message: '请输入时间', trigger: 'change'}]">
             <el-date-picker
               v-model="renderListDetailForm.period"
               type="daterange"
@@ -23,7 +26,8 @@
               value-format="YYYY.MM.DD"
             />
           </el-form-item>
-          <template v-if="key.toString() === 'richText'">
+          
+          <template v-if="key.toString() === 'richText'" >
             <div>具体描述</div>
               <Toolbar
               style="border-bottom: 1px solid #ccc"
@@ -52,6 +56,7 @@
   import { ElMessage } from 'element-plus';
   import  realationship  from "@/utils/realationshipMap.js";
   import  axios  from '@/api/http';
+
 
   const emit = defineEmits(['updateResume'])
   let resumeMoudle = inject('resumeMoudle') as any
@@ -90,7 +95,10 @@
       renderListDetailForm.value.period = dateReInit(renderListDetailForm.value.period)
     }
   }
-  const onSubmit = () => {
+  const ruleForm = ref(null);
+  const onSubmit = () => {  
+  ruleForm.value.validate((valid)=>{
+  if (valid) {
     if (renderListDetailForm.value.period) {
       renderListDetailForm.value.period = dateInit(renderListDetailForm.value.period)
     }
@@ -109,6 +117,10 @@
       ElMessage.success('修改成功')
       back()
     }
+    }else{
+    ElMessage.error("输入数据格式不对")
+  }
+  })
   }
   const dateInit = (date:Array<string>)=>{
     return date[0]+ ' ~ '+ date[1]

@@ -123,6 +123,7 @@ let resumeMoudle = ref(null)
 let personalMoudle = ref(null)
 let currentResume = ref(null)
 let currentResumeName = ref(null)
+let printResumeName = ref(null)
 
 watch(() => store.state.editPersonal,() => {
     if (!store.state.token &&!store.state.editPersonal) {
@@ -168,13 +169,14 @@ const resumeInitByJWT = async ()=>{
 
 const getResumeName = async (resumeId)=>{
   const {data:res} = await axios.get(`posts/getUserResumeName?resumeId=${resumeId}`)
-  return res.data[0].resumeName
+  console.log(res.data[0]);
+  
+  document.title =  res.data[0].resumeName
+
 }
 const print =  () => {
   //currentResume实则为resumeId
-  
-  let ResumeName = getResumeName(currentResume.value)
- // document.title = ResumeName
+  getResumeName(currentResume.value)
   let focuser = setInterval(()=> window.dispatchEvent(new Event('focus')),500)
   printjs({
     printable: 'printC',

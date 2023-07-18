@@ -45,7 +45,7 @@
           <AddForm @updateResume="changeResume(null)"></AddForm>
         </div>
         <div class="edit" v-else-if="store.state.addPersonal">
-          <PersonAddForm></PersonAddForm>
+          <PersonAddForm @updateResume="changeResume"></PersonAddForm>
         </div>
         <div class="test" v-else>
           <Summary @changeResume="changeResume" :resumeId="currentResume"></Summary> 
@@ -168,10 +168,13 @@ const resumeInitByJWT = async ()=>{
 }
 
 const getResumeName = async (resumeId)=>{
-  const {data:res} = await axios.get(`posts/getUserResumeName?resumeId=${resumeId}`)
-  console.log(res.data[0]);
+  if (store.state.token) {
+    const {data:res} = await axios.get(`posts/getUserResumeName?resumeId=${resumeId}`)
+    document.title =  res.data[0].resumeName
+  } else {
+    
+  }
   
-  document.title =  res.data[0].resumeName
 
 }
 const print =  () => {

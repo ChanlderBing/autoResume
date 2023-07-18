@@ -52,9 +52,11 @@
   }
   let personalMoudle1 = inject('personalMoudle') as any
   let personalMoudle = ref(deepClear(personalMoudle1.value));
+  const emit =  defineEmits(['updateResume'])
     const onSubmit = () => {
       axios.post(`posts/setUserResume`,{...flatten(personalMoudle.value)}).then((res)=>{
       ElMessage.success('修改成功')
+      emit('updateResume',res.data.data.insertId)
       back()
     })
     }

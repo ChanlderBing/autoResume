@@ -53,14 +53,17 @@ const updateFile =(e)=>{
   let arr = file.name.split('.')
   let name = arr[1]
   if (name.toLowerCase()== 'jpge'||'png' || 'jpg') {
-    let img = new FileReader()
-    img.readAsDataURL(e.target.files[0])
-    img.onload = ({target})=>{
-      imgSrc.value = target.result as string
-    }
     axios.post('posts/updatePic',data).then((res)=>{
-    })
-    ElMessage.success("上传成功")
+      ElMessage.success("上传成功")
+      personalMoudle.value.avatar = null
+      let img = new FileReader()
+      img.readAsDataURL(e.target.files[0])
+      img.onload = ({target})=>{
+        imgSrc.value = target.result as string
+      }
+    }).catch(err=>{
+      ElMessage.error("上传文件失败")
+    }) 
   } else
   {
     ElMessage.error("文件格式错误")

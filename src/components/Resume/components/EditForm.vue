@@ -102,7 +102,7 @@
     if (renderListDetailForm.value.period) {
       renderListDetailForm.value.period = dateInit(renderListDetailForm.value.period)
     }
-    if (store.state.token) {
+    if (store.state.token && store.state.currentResumeId != 49) {
       axios.post(`posts/${dyamicCom[renderList.value.moudleId]}`,renderListDetailForm.value).then((res)=>{
       if (res.status=== 201) {
         emit('updateResume')

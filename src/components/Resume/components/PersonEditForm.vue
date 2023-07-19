@@ -35,18 +35,18 @@
   import axios from '@/api/http';
 
   const emit = defineEmits(['updateResume'])
-  //let personalMoudle = ref(JSON.parse(localStorage.getItem('personalMoudle')))
+
   let personalMoudle1 = inject('personalMoudle') as any
   const personalMoudle = ref(JSON.parse(JSON.stringify(personalMoudle1.value)));
   const onSubmit = () => {
-    if (store.state.token) {
+    if (store.state.token && store.state.currentResumeId != 49) {
       axios.post(`posts/updatePerson`,{...flatten(personalMoudle.value)}).then((res)=>{
       ElMessage.success('修改成功')
       emit('updateResume')
     back()
   })
     } else {
-      personalMoudle1 =personalMoudle
+    personalMoudle1 =personalMoudle
     localStorage.setItem('personalMoudle',JSON.stringify(unref(personalMoudle)))
     ElMessage.success('修改成功')
     back()

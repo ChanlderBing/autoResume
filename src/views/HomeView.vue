@@ -48,7 +48,7 @@
           <PersonAddForm @updateResume="changeResume"></PersonAddForm>
         </div>
         <div class="test" v-else>
-          <Summary @changeResume="changeResume" :resumeId="currentResume"></Summary> 
+          <Summary @changeResume="changeResume"  @changeModelResume="changeModelResume" ></Summary> 
         </div>
       </Transition>
     </div>
@@ -121,18 +121,32 @@ const goToLogin = ()=>{
 
 let resumeMoudle = ref(null)
 let personalMoudle = ref(null)
-let currentResume = ref(null)
 let currentResumeName = ref(null)
 let printResumeName = ref(null)
 
 watch(() => store.state.editPersonal,() => {
-    if (!store.state.token &&!store.state.editPersonal) {
-      resumeMoudle.value = JSON.parse(localStorage.getItem('resumeMoudle'))
+    if (store.state.currentResumeId === 49 &&!store.state.editPersonal) {
       personalMoudle.value = JSON.parse(localStorage.getItem('personalMoudle'))
     }
     },{
       deep:true,
     })
+
+watch(() => store.state.isEdit,() => {
+if (store.state.currentResumeId === 49 &&!store.state.isEdit) {
+  resumeMoudle.value = JSON.parse(localStorage.getItem('resumeMoudle'))
+}
+},{
+  deep:true,
+})
+
+watch(() => store.state.isAdd,() => {
+if (store.state.currentResumeId === 49 &&!store.state.isAdd) {
+  resumeMoudle.value = JSON.parse(localStorage.getItem('resumeMoudle'))
+}
+},{
+  deep:true,
+}) 
 
 const currentResumeNameChange = (ResumeName)=>{
   currentResumeName.value = ResumeName
@@ -143,17 +157,29 @@ provide('personalMoudle',personalMoudle)
 
 //调用切换接口获取简历
 const changeResume = async (resumeId)=>{
-  const {data:res} = await axios.get(`posts/getUserResume?resumeId=${resumeId !==null?resumeId:currentResume.value}`)
-  currentResume.value = res.data.resumeId - 0
+  const {data:res} = await axios.get(`posts/getUserResume?resumeId=${resumeId}`)
+  store.commit('changeCurrentResumeId',resumeId)
   resumeMoudle.value = res.data.resumeMoudle
   personalMoudle.value = res.data.personalMoudle
+}
+//切换模板简历简历
+const changeModelResume = async ()=>{
+  store.commit('changeCurrentResumeId',49)
+  resumeMoudle.value = JSON.parse(localStorage.getItem('resumeMoudle'))
+  personalMoudle.value = JSON.parse(localStorage.getItem('personalMoudle'))
 }
 //调用接口获取简历 未登录
 const getResumeInit = async ()=>{
   const {data:res} = await axios.get(`posts/getResumeInit`)
-  currentResume.value = res.data.resumeId
+  store.commit('changeCurrentResumeId',res.data.resumeId)
   resumeMoudle.value = res.data.resumeMoudle
   personalMoudle.value = res.data.personalMoudle
+  localStorage.setItem('resumeMoudle', JSON.stringify(res.data.resumeMoudle))
+  localStorage.setItem('personalMoudle',JSON.stringify(res.data.personalMoudle))
+}
+//调用接口获取不显示
+const getResumeInitWithoutPath = async ()=>{
+  const {data:res} = await axios.get(`posts/getResumeInit`)
   localStorage.setItem('resumeMoudle', JSON.stringify(res.data.resumeMoudle))
   localStorage.setItem('personalMoudle',JSON.stringify(res.data.personalMoudle))
 }
@@ -162,24 +188,27 @@ const resumeInitByJWT = async ()=>{
   const {data:res} = await axios.get(`posts/ResumeInitByJWT`).catch(async (err)=>{
     return  await axios.get(`posts/getResumeInit`)
   })
-  currentResume.value = res.data.resumeId
+  store.commit('changeCurrentResumeId',res.data.resumeId)
   resumeMoudle.value = res.data.resumeMoudle
   personalMoudle.value = res.data.personalMoudle
 }
 
 const getResumeName = async (resumeId)=>{
-  if (store.state.token) {
+  if (store.state.token && store.state.currentResumeId !== 49) {
     const {data:res} = await axios.get(`posts/getUserResumeName?resumeId=${resumeId}`)
+    if (res.data[0].resumeName === '') {
+      document.title = '未命名简历'
+    }else{
     document.title =  res.data[0].resumeName
+    }
   } else {
-    
+    console.log(JSON.parse(localStorage.getItem('modelResume'))[0]);
+    document.title = JSON.parse(localStorage.getItem('modelResume'))[0].resumeName
   }
-  
-
 }
 const print =  () => {
   //currentResume实则为resumeId
-  getResumeName(currentResume.value)
+  getResumeName(store.state.currentResumeId)
   let focuser = setInterval(()=> window.dispatchEvent(new Event('focus')),500)
   printjs({
     printable: 'printC',
@@ -204,13 +233,21 @@ const changeTheme = (value)=>{
 onMounted:{
   if (store.state.token) {
     resumeInitByJWT()
-  }else if(localStorage.getItem("resumeMoudle")){
-    resumeMoudle.value = JSON.parse(localStorage.getItem('resumeMoudle'))
-    personalMoudle.value = JSON.parse(localStorage.getItem('personalMoudle'))
+    if(localStorage.getItem("resumeMoudle")){
+      resumeMoudle.value = JSON.parse(localStorage.getItem('resumeMoudle'))
+      personalMoudle.value = JSON.parse(localStorage.getItem('personalMoudle'))
+    }else{
+      getResumeInitWithoutPath()
+    }
   }else{
-    getResumeInit()
+      if(localStorage.getItem("resumeMoudle")){
+        resumeMoudle.value = JSON.parse(localStorage.getItem('resumeMoudle'))
+        personalMoudle.value = JSON.parse(localStorage.getItem('personalMoudle'))
+      }else{
+        getResumeInit()
+      }
+    }
   }
-}
 </script>
 
 <style lang="scss">

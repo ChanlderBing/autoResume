@@ -23,7 +23,7 @@
         <div class="inputList" v-for="(list,index1) in item.inputList" :key="'Id'+ index1" @click="editInformation(index,index1,item.expand)" @mouseover="focusDetailMoudel(index1)" @mouseleave="blurDetailMoudel()"> 
               <component :is='dyamicCom[item.moudleId]' :list="list">
               </component>
-            <div class="control" v-if ="focusIndex == index && focusDetailIndex == index1" @click.stop>
+            <div class="control" v-if ="focusIndex == index && focusDetailIndex == index1 && item.moudleId !==3" @click.stop>
                 <Contrl 
                   @up="switchTabUp"
                   @dowm="switchTabDown"
@@ -186,6 +186,7 @@
     font-size: 12px;
     text-align: left;
     position: relative;
+    min-height: 24px;
     .text{
       font-size: 16px;
     }
@@ -201,6 +202,7 @@
     justify-content: space-between;
     align-items: center;
     font-size: 14px;
+   
     .title-left{
       font-weight: bold;
       width: 300px;

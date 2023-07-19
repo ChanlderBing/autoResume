@@ -19,7 +19,7 @@
             <el-scrollbar max-height="270px">
               <div class="resume" v-for="(item,index) in arr.resumeList">
                   <div class="content" @click="resumeChange(item.resumeId)">
-                    <div class="pic"><img :src="item.avatar?item.avatar:imgSrc"/> </div>
+                    <div class="pic"><img :src="item.avatar?`http://10.9.45.73:3000/upload_img/${item.avatar}`:imgSrc"/> </div>
                       <div class="resumeDetail">
                         <div class="top">
                             <span  class="resumeName" @click.stop="test(item.resumeId)" v-if="item.editActive === 0">{{item.resumeName ? item.resumeName:'未命名简历'}}   <svg class="editicon" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" width="13" height="13" data-v-ea893728=""><path d="m199.04 672.64 193.984 112 224-387.968-193.92-112-224 388.032zm-23.872 60.16 32.896 148.288 144.896-45.696L175.168 732.8zM455.04 229.248l193.92 112 56.704-98.112-193.984-112-56.64 98.112zM104.32 708.8l384-665.024 304.768 175.936L409.152 884.8h.064l-248.448 78.336L104.32 708.8zm384 254.272v-64h448v64h-448z" fill="currentColor"></path></svg></span>
@@ -33,7 +33,7 @@
                             </span>
                           <span  class="editBtn"><img src="../../../assets/more.png" style="width: 32px;height: 32px;position: absolute;left: -40px;top: -5px;"></span>
                         </div>
-                        <div class="editTime" v-if="item.resumeId===resumeId"> 
+                        <div class="editTime" v-if="item.resumeId===store.state.currentResumeId"> 
                           <el-tooltip
                           class="box-item"
                           effect="dark"
@@ -78,9 +78,9 @@ import router from '@/router';
 // })
 const imgSrc  =  ref(require('@/assets/img/wyk.jpg'))
 //结构赋值会失去响应式
-const  prop  = defineProps({
-  resumeId: Number,
-  })
+// const  prop  = defineProps({
+//   resumeId: Number,
+//   })
 
 // 自定义指令
 // const vFocus = {
@@ -119,13 +119,15 @@ const createResume = ()=>{
 }
 
 //切换简历
-const emit = defineEmits(['changeResume','currentResumeNameChange'])
+const emit = defineEmits(['changeResume','currentResumeNameChange','changeModelResume'])
 const resumeChange = (resumeId1:number)=>{
-  if (resumeId1 === prop.resumeId) {
+  if (resumeId1 === store.state.currentResumeId) {
     ElMessage.warning('正在浏览该简历')
   }else if(!localStorage.getItem("token")) {
       ElMessage.error('请先登录！')
-  } else {
+  } else if (resumeId1 === 49 ) {
+    emit('changeModelResume')
+  }else{
        //选择简历
     emit('changeResume',resumeId1)
   }
@@ -163,14 +165,16 @@ const emptyCheck = (resumeId,resumeName)=>{
   if (activeIndex.value !== '2' && createResumeName.value !==resumeName) {
     axios.post('posts/updateResumeName',{resumeId:resumeId,resumeName:resumeName}).then(res=>{
       if (res?.data.code === 0) { 
-        ElMessage.success('修改成功')  
+        ElMessage.success('修改成功')
       }
     })
   } else if(createResumeName.value !==resumeName){
-    emit('currentResumeNameChange',resumeName)
-  }
     arr.resumeList[index].editActive = 0
+    localStorage.setItem('modelResume',JSON.stringify((arr.resumeList)))
+    ElMessage.success('修改成功')
   }
+  }
+  arr.resumeList[index].editActive = 0
  }
 
 const getModelResume = ()=>{

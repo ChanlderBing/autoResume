@@ -10,12 +10,16 @@ export default createStore({
     isAdd:false,
     color_theme: 'red-theme',
     addStruct:{},
-    token: JSON.parse(localStorage.getItem('token')) || null
+    token: JSON.parse(localStorage.getItem('token')) || null,
+    currentResumeId:null
   },
   getters: {
     
   },
   mutations: {
+    changeCurrentResumeId(state,currentResumeId){
+      state.currentResumeId = currentResumeId
+    },
     switch(state,isEdit){
       state.isEdit = isEdit
     },

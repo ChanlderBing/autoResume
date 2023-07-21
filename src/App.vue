@@ -9,15 +9,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue'
- import  resumeMoudleMock  from "./utils/mock.js";
- import  personalMoudleMock  from "./utils/personal.js";
- 
 
-
- onMounted(() => {
-
- })
   
 </script>
 <style lang="scss">

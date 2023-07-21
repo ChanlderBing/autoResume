@@ -3,10 +3,10 @@
     <div class="information" @click="editInformation()">
       <p><h2>{{  personalMoudle.userName}}</h2></p>
       <div>
-        <span v-for="(list1,key,index1) in personalMoudle.inputList[0]">{{ list1 }}<span v-if="Object.keys(list1).length -1 > index1"> | </span></span>
+        <span v-for="(list1,key,index1) in personalMoudle.inputList[0]">{{ list1 }}<span v-if="Object.keys(personalMoudle.inputList[0]).length - 1 > index1"> | </span></span>
       </div>
       <div>
-        <span v-for="(list,key,index) in personalMoudle.inputList[1]">{{ list }}<span v-if="Object.keys(list).length -1 >= index"> | </span></span>
+        <span v-for="(list,key,index) in personalMoudle.inputList[1]">{{ list }}<span v-if="Object.keys(personalMoudle.inputList[1]).length - 1 > index"> | </span></span>
       </div>
     </div>
     <div class="avatar" @mouseleave="isShow = false;"  @mouseenter="isShow = true" >

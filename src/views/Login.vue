@@ -78,8 +78,9 @@ const signUp = ()=>{
     axios.post('user/login',{...signUpData}).then(res=>{
       if (res?.data?.data.code === 200) {
         store.commit('updateToken',res.data.data.data.token)
-        router.push({name:"home"})
+        router.push({path:"HomeView"})
       }
+     
     }).catch(error=>{
       console.log(error);
   })
@@ -88,7 +89,6 @@ const signUp = ()=>{
   }
 }) 
 }
-
 
 const valiRepassword = (rule: any, value: any, callback: any) => {
   if (value === '') {

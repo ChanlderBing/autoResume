@@ -36,13 +36,13 @@
     <div class="left">
       <Transition name="fade" mode="out-in">
         <div class="edit" v-if="store.state.isEdit" >
-          <EditForm @updateResume="changeResume(null)"></EditForm>
+          <EditForm @updateResume="changeResume(store.state.currentResumeId)"></EditForm>
         </div>
         <div class="edit" v-else-if="store.state.editPersonal" >
-          <PersonEditForm @updateResume="changeResume(null)"></PersonEditForm>
+          <PersonEditForm @updateResume="changeResume(store.state.currentResumeId)"></PersonEditForm>
         </div>
         <div class="edit" v-else-if="store.state.isAdd">
-          <AddForm @updateResume="changeResume(null)"></AddForm>
+          <AddForm @updateResume="changeResume(store.state.currentResumeId)"></AddForm>
         </div>
         <div class="edit" v-else-if="store.state.addPersonal">
           <PersonAddForm @updateResume="changeResume"></PersonAddForm>

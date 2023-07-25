@@ -8,10 +8,10 @@
     <div class="skill">
       <el-form :inline="true" :model="renderListDetail" class="demo-form-inline">
         <template v-for="(value,key,index) in renderListDetail" :key="index">
-          <el-form-item :label="realationship[key]" v-if="moduleCheck(key) === 'normal'">
+          <el-form-item :label="realationship[key]" v-if="moduleCheck(key) === 'normal'" :prop="key" :rules="[{required: true, message: '请输入'+ realationship[key], trigger: 'blur'},{ min: 2, max: 12, message: '长度应该在2-12个字符', trigger: 'blur'}]">
             <el-input v-model="renderListDetail[key]" />
           </el-form-item>
-      <el-form-item label="时间" v-if="moduleCheck(key) === 'period'">
+      <el-form-item label="时间" v-if="moduleCheck(key) === 'period'" :prop="key"  :rules="[{required: true, message: '请输入时间', trigger: 'change'}]">
           <el-date-picker
           v-model="renderListDetail.period"
           type="daterange"

@@ -3,7 +3,7 @@
     <!-- Sign Up -->
     <div class="container__form container--signup">
       <div  class="form" id="form1">
-        <h2 class="form__title">Sign Up</h2>
+        <h2 class="form__title">登 录</h2>
         <el-form :model="signUpData" label-width="60px" :rules="rules" ref="signUpRuleForms">
           <el-form-item label="账号"  prop="userName">
             <el-input type="text" placeholder="请输入账号" class="input" v-model="signUpData.userName"   />
@@ -11,17 +11,17 @@
           <el-form-item label="密码"  prop="password">
             <el-input type="password" placeholder="输入密码" class="input" v-model="signUpData.password"   />
           </el-form-item>
-          <el-form-item >
-            <button class="btn" @click="signUp()">Sign Up</button>
-          </el-form-item>
         </el-form>
+            <button class="btn" @click="signUp()">登 录</button>
+
+            <div class="visitor" @click="signUpWithoutPass()" style="font-size: 13px;padding-top: 16px;">游客登录</div>
       </div>
     </div>
 
     <!-- Sign In -->
     <div class="container__form container--signin">
       <div  class="form" id="form1">
-        <h2 class="form__title">Sign In</h2>
+        <h2 class="form__title">注 册</h2>
         <el-form :model="signInData" label-width="80px" ref="signInRuleForms" :rules="rules" >
           <el-form-item label="账号"  prop="userName">
             <el-input type="text" placeholder="请输入账号" class="input" v-model="signInData.userName"  />
@@ -33,7 +33,7 @@
             <el-input type="password" placeholder="密码确认" class="input" v-model="signInData.repassword"   />
           </el-form-item>
         </el-form>
-        <button class="btn" @click="signIn()">Sign In</button>
+        <button class="btn" @click="signIn()">注 册</button>
       </div>
     </div>
 
@@ -41,10 +41,10 @@
       <div class="container__overlay">
         <div class="overlay">
           <div class="overlay__panel overlay--left">
-            <button class="btn" id="signIn" @click="signInClick()">Sign In</button>
+            <button class="btn" id="signIn" @click="signInClick()">注 册</button>
           </div>
           <div class="overlay__panel overlay--right">
-            <button class="btn" id="signUp" @click="signUpClick()">Sign Up</button>
+            <button class="btn" id="signUp" @click="signUpClick()">登 录</button>
           </div>
         </div>
       </div>
@@ -78,7 +78,7 @@ const signUp = ()=>{
     axios.post('user/login',{...signUpData}).then(res=>{
       if (res?.data?.data.code === 200) {
         store.commit('updateToken',res.data.data.data.token)
-        router.push({path:"HomeView"})
+        router.push({path:"/HomeView"})
       }
      
     }).catch(error=>{
@@ -88,6 +88,9 @@ const signUp = ()=>{
     ElMessage.error("输入数据格式不对")
   }
 }) 
+}
+const signUpWithoutPass = ()=>{
+  router.push({path:"/HomeView"})
 }
 
 const valiRepassword = (rule: any, value: any, callback: any) => {
@@ -329,5 +332,8 @@ const signIn = ()=>{
     }
     .el-form-item__error {
     display: block !important;
+  }
+  .visitor:hover{
+    color: cadetblue;
   }
 </style>

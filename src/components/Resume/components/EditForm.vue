@@ -9,7 +9,7 @@
       <el-form :inline="true" :model="renderListDetailForm" ref="ruleForm" class="demo-form-inline">
         <template v-for="(value,key) in renderListDetailForm">
           <template  v-if="moduleCheck(key) === 'normal'">    
-            <el-form-item  :label="realationship[key]"  :prop="key" :rules="[{required: true, message: '请输入'+ realationship[key], trigger: 'blur'}]">
+            <el-form-item  :label="realationship[key]"  :prop="key" :rules="[{required: true, message: '请输入'+ realationship[key], trigger: 'blur'},{ min: 2, max: 12, message: '长度应该在2-12个字符', trigger: 'blur'}]">
               <el-input v-model="renderListDetailForm[key]" />
             </el-form-item>
           </template>

@@ -6,19 +6,19 @@
           <el-button type="primary" class="ml-2" @click="onSubmit">完成</el-button>
       </div>
       <div class="skill">
-        <el-form :inline="true" class="demo-form-inline">
+        <el-form :inline="true" class="demo-form-inline"  ref="ruleForm" :rules="rules">
           <div class="skillTitle"> 基本信息 </div>
           <el-form-item label="姓名" >
               <el-input v-model="personalMoudle.userName" />
           </el-form-item>
           <template v-for="(value,key) in personalMoudle.inputList[0]">
-            <el-form-item :label="realationshipMap[key]" >
-              <el-input v-model="personalMoudle.inputList[0][key]" />
-            </el-form-item>
+            <el-form-item :label="realationshipMap[key]" :prop="`inputList[0].${key}`">
+              <el-input v-model="personalMoudle.inputList[0][key]"  />
+            </el-form-item> 
           </template>
           <div class="skillTitle"> 就职意向 </div>
             <template v-for="(value,key) in personalMoudle.inputList[1]">
-              <el-form-item :label="realationshipMap[key]" >
+              <el-form-item :label="realationshipMap[key]" :prop="`inputList[1].${key}`" >
                 <el-input v-model="personalMoudle.inputList[1][key]" />
               </el-form-item>
             </template>
@@ -33,6 +33,7 @@
     import { unref, ref, onMounted, inject } from 'vue'
     import { ElMessage } from 'element-plus';
     import axios from '@/api/http';
+    import  rules  from "@/utils/useFormRules.js";
   
     const deepClear =  (target)=> {
     if (typeof target === 'object' && target) {

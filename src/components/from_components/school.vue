@@ -4,7 +4,7 @@
         <div class="title-right" v-if="list.period">{{list.period}} </div>
     </div>
     <div class="sec-title">
-        <div class="title-left">{{list.major}}{{list.academy}} {{list.degree}} {{list.city}}</div>
+        <div class="title-left">{{list.major}}  {{list.academy}} {{list.degree}} {{list.city}}</div>
     </div>
     <div class="text">
         <div class="textH5" v-html="list.richText"></div>

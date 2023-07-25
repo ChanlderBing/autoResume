@@ -17,7 +17,7 @@
               <el-button type="primary" @click="clickToLogin" v-if="!store.state.token">去登录</el-button>
             </el-empty>
             <el-scrollbar max-height="270px">
-              <div class="resume" v-for="(item,index) in arr.resumeList">
+              <el-card shadow="hover" class="resume" :body-style="{ padding: '2px' }" v-for="(item,index) in arr.resumeList">
                   <div class="content" @click="resumeChange(item.resumeId)">
                     <div class="pic"><img :src="item.avatar?`http://10.9.45.73:3000/upload_img/${item.avatar}`:imgSrc"/> </div>
                       <div class="resumeDetail">
@@ -46,7 +46,7 @@
                     </div>
                   </div>
      
-              </div>
+              </el-card>
             </el-scrollbar>
           </div>
     </div>
@@ -56,13 +56,65 @@
     <div >
      经历库
     </div>
+    <el-collapse accordion>
+      <el-collapse-item name="1">
+        <template #title>
+          教育经历
+        </template>
+        <div class="experiencedList" >
+          <div class="experienced" v-for="(item,index) in resumeMoudle[0].inputList">
+            <div class="detail">
+              <div class="name">
+                {{item.school}}
+              </div>
+              <div class="depsDetail">
+                {{item.major}} {{item.academy}} {{item.degree}} 
+              </div>
+              <div class="summary">
+                {{item.richText}} 
+              </div>
+            </div>
+            <el-divider />
+            <div class="action">
+              <div class="time">最后编辑于12-08</div>
+              <el-button type="primary">使用</el-button>
+            </div>
+          </div>
+          </div>
+      </el-collapse-item>
+      <el-collapse-item title="工作经历" name="2">
+        <div class="experiencedList">
+          <div class="name"></div>
+            <div class="depsDetail"></div>
+            <div class="summary"></div>
+            <el-divider />
+          <div class="action"></div>
+        </div>
+      </el-collapse-item>
+      <el-collapse-item title="项目经历" name="3">
+        <div class="experiencedList">
+          <div class="name"></div>
+            <div class="depsDetail"></div>
+            <div class="summary"></div>
+            <el-divider />
+          <div class="action"></div>
+        </div>
+      </el-collapse-item>
+      <el-collapse-item title="个人总结" name="4">
+        <div class="experiencedList">
+          <div class="summary"></div>
+          <el-divider />
+          <div class="action"></div>
+        </div>
+      </el-collapse-item>
+    </el-collapse>
   </el-card>
   </template>
 
 
 <script lang="ts" setup>
 import  axios  from '../../../api/http';
-import { defineEmits, ref, reactive,computed, onMounted, nextTick, getCurrentInstance } from 'vue';
+import { defineEmits, ref, reactive,computed, onMounted, nextTick, getCurrentInstance, inject } from 'vue';
 import { ElMessage } from 'element-plus';
 import store from '@/store';
 import router from '@/router';
@@ -140,6 +192,7 @@ const arr = reactive({
   modelResume:[],
   authResume:[]
 })
+let resumeMoudle  = inject('resumeMoudle') as any
 const activeIndex = ref('1') 
 const switchTab = (key: string) => {
  if (key === '1') {
@@ -244,14 +297,15 @@ onMounted:{
         @include home-color();
       }
         .resumeList{
-          .resume:hover{
-            box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.12);
-          }
+          // .resume:hover{
+          //   box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.12);
+          // }
           .resume{
             border:1px solid;
             @include border-background();
             border-radius: 4px;
             margin-top: 16px;
+        
             .content{
             display: flex;
             margin: 10px 6px 10px 10px;
@@ -315,5 +369,22 @@ h3 {
 }
 .personalExp{
   margin-top: 30px;
+  .experiencedList{
+   // background: antiquewhite;
+    width: 96%;
+    border-radius: 13px;
+ 
+    .experienced{
+      margin-top: 8px;
+      background: antiquewhite;
+    }
+    .detail{
+
+    }
+    .action{
+      display: flex;
+      justify-content: space-between;
+    }
+  }
 }   
   </style>

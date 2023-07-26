@@ -20,7 +20,8 @@
     addHidden:Boolean,
     upBan:Boolean,
     downBan:Boolean,
-    moudleId:Number
+    moudleId:Number,
+    id:Number,
   })
 
   const emit = defineEmits(["up","dowm","del","add"]);
@@ -31,7 +32,11 @@
     emit("dowm",props.flag) 
   }
   const delClick = ()=>{
-    emit("del",props.moudleId || props.flag) 
+    if (props.flag === 8) {
+      emit("del",{moudleId:props.moudleId,status:false,id:props.id}) 
+    }else{
+    emit("del",{moudleId:props.moudleId}) 
+    }
   }
   const addClick = ()=>{
     emit("add") 

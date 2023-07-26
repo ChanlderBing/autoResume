@@ -35,16 +35,19 @@
       <div class="personal">
         <Personal></Personal>
       </div>
-      <ShowList  @clickChild="resumeMoudleChange" ></ShowList>
+      <ShowList  @clickChild="resumeMoudleChange" @clickToHide="clickToHide" ></ShowList>
     </div>
   </el-card>
 </template>
 <script lang="ts" setup>
 import Personal from '@/components/Resume/components/Personal.vue'
 import store from '@/store';
+import  axios  from '@/api/http';
+import { ElMessage } from 'element-plus';
 import {  ref,inject} from 'vue'
 import ShowList from './components/ShowList.vue';
 
+const emit = defineEmits(['updateResume'])
 const resumeMoudle = inject('resumeMoudle') as any
   const value = ref(store.state.color_theme)
   const options = [
@@ -86,7 +89,16 @@ const resumeMoudle = inject('resumeMoudle') as any
     })
     resumeMoudle.value[index].isShow = resumeMoudle.value[index].isShow ? false:true
   }
-            
+  
+  //删除简历
+const clickToHide = (moudleId,status,id)=>{
+  axios.post('posts/updateShowStatus',{moudleId:moudleId,status:status,id:id}).then(res=>{
+    if (res?.data.code === 0) { 
+      emit('updateResume',store.state.currentResumeId)
+      ElMessage.success('删除成功')
+    }
+  })
+}          
 
 </script>
 

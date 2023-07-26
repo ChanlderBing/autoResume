@@ -70,14 +70,14 @@
               <div class="depsDetail">
                 {{item.major}} {{item.academy}} {{item.degree}} 
               </div>
-              <div class="summary">
-                {{item.richText}} 
+              <div class="summary" v-html="item.richText" v-ellipsis="3">
               </div>
             </div>
             <el-divider />
             <div class="action">
-              <div class="time">最后编辑于12-08</div>
-              <el-button type="primary">使用</el-button>
+              <div class="time">
+              最后编辑于12-08</div>
+              <el-button type="primary" class="elbtn" @click="clickToShow(0,true,item.id)" :disabled="item.isShow">{{ item.isShow ? '已使用':'使用' }}</el-button>
             </div>
           </div>
           </div>
@@ -143,6 +143,26 @@ const imgSrc  =  ref(require('@/assets/img/wyk.jpg'))
        
 //   }
 // }
+const vEllipsis ={
+  mounted(el, binding){
+    // 获取期望的文本行数，默认为1
+    const n = binding.value || 1;
+    // （1）实现超出n行有省略号
+    el.style.display = "-webkit-box";
+    el.style.webkitBoxOrient = "vertical";
+    el.style.webkitLineClamp = n;
+    el.style.overflow = "hidden";
+  },
+  updated(el, binding){
+    // （2）实现鼠标移入在溢出情况下才有提示文案
+    nextTick(()=>{
+      if (el.clientHeight < el.scrollHeight) {
+        el.title = el.innerText;
+    }
+  })
+  },
+}
+
 const inputRef = ref(null)
 const createResumeName = ref('')
 const test = (id)=>{
@@ -259,6 +279,16 @@ const noTokenToGet = ()=>{
   }
 }
 
+//经历库加入简历
+const clickToShow = (moudleId,status,id)=>{
+  axios.post('posts/updateShowStatus',{moudleId:moudleId,status:status,id:id}).then(res=>{
+      if (res?.data.code === 0) { 
+        emit('changeResume',store.state.currentResumeId)
+        ElMessage.success('添加成功')
+      }
+    })
+}
+
 onMounted:{
   if (store.state.token) {
     getModelResume()
@@ -289,9 +319,9 @@ onMounted:{
       .el-menu{
         @include left-background();
         @include border-background();
-        --el-color-primary: #626aef;
-        --el-color-primary-light-3: #969bf3;
-        --el-color-primary-dark-2: #5a61eb;
+        // --el-color-primary: #626aef;
+        // --el-color-primary-light-3: #969bf3;
+        // --el-color-primary-dark-2: #5a61eb;
       }
       .el-menu-item{
         @include home-color();
@@ -373,18 +403,41 @@ h3 {
    // background: antiquewhite;
     width: 96%;
     border-radius: 13px;
- 
+    .el-divider--horizontal {
+      margin: 4px 0;
+    }
     .experienced{
       margin-top: 8px;
       background: antiquewhite;
-    }
-    .detail{
-
+      border-radius: 13px;
+      padding: 6px 10px;
+      .detail{
+        .name{
+          font-weight:bold;
+          font-size: 16px;
+        }
+        .depsDetail{
+          font-size: 12px;
+        }
+      .summary{
+        font-size: 12px;
+        word-wrap:break-word;
+        white-space:pre-wrap;
+      }
     }
     .action{
       display: flex;
       justify-content: space-between;
+      align-items: center;
+      .time{
+
+      }
+      .elbtn{
+
+      }
     }
   }
+    }
+   
 }   
   </style>

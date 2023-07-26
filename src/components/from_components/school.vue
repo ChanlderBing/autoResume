@@ -40,7 +40,7 @@ import { ref } from 'vue';
   }
   
   .textH5{
-    width: 300px;
+    word-wrap:break-word; 
   }
   .sec-title{
     .title-left{

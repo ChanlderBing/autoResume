@@ -20,14 +20,16 @@
               </Contrl>
           </div>
         </div>      
-        <div class="inputList" v-for="(list,index1) in item.inputList" :key="'Id'+ index1" @click="editInformation(index,index1,item.expand)" @mouseover="focusDetailMoudel(index1)" @mouseleave="blurDetailMoudel()"> 
-              <component :is='dyamicCom[item.moudleId]' :list="list">
+        <div class="inputList" v-for="(list,index1) in resumeMoudle3(item.inputList)"  :key="'Id'+ index1"  @click="editInformation(index,index1,item.expand)" @mouseover="focusDetailMoudel(index1)" @mouseleave="blurDetailMoudel()"> 
+          <component :is='dyamicCom[item.moudleId]' :list="list">
               </component>
             <div class="control" v-if ="focusIndex == index && focusDetailIndex == index1 && item.moudleId !==3" @click.stop>
                 <Contrl 
                   @up="switchTabUp"
                   @dowm="switchTabDown"
                   @del="tabDel"
+                  :id="list.id"
+                  :moudleId="item.moudleId"
                   :flag = 8
                   :addHidden = false
                   :upBan = "index1 == 0"
@@ -50,7 +52,7 @@
   import project from '../../from_components/project.vue'
   import work from '../../from_components/work.vue'
   // 使用defineEmits创建名称，接受一个数组
-  const emit = defineEmits(['clickChild'])
+  const emit = defineEmits(['clickChild','clickToHide'])
   let resumeMoudle1  = inject('resumeMoudle') as any
   let resumeMoudle = computed(() => {
     //访问异步数据，这里二次更新
@@ -63,6 +65,11 @@
     '2':project,
     '3':summary,
     '0':school
+  }
+  let resumeMoudle3 = (arr) => {
+    return arr.filter((res: any) => {
+      return res.isShow !== 0
+    })
   }
   let focusIndex = ref()
   let focusDetailIndex = ref()
@@ -92,16 +99,17 @@
     }
   }
 
-  const tabDel = (flag:Number) =>{
+  const tabDel = (obj) =>{
     let index = focusIndex.value
     let detailIndex = focusDetailIndex.value
-    if (flag == 8)  
+    if (obj.id)  
     {
-      resumeMoudle.value[index].inputList.splice(detailIndex,1)
-      localStorage.setItem("resumeMoudle",JSON.stringify(resumeMoudle))
+      emit('clickToHide',obj.moudleId,false,obj.id)
+      // resumeMoudle.value[index].inputList.splice(detailIndex,1)
+      // localStorage.setItem("resumeMoudle",JSON.stringify(resumeMoudle))
     }else
     {
-      emit('clickChild', flag)
+      emit('clickChild',obj.moudleId)
     }
   }
   const focusMoudel = (index:any)=>{

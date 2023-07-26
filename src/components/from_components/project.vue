@@ -34,7 +34,9 @@
       font-size: 12px;
     }
   }
-  
+  .textH5{
+    word-wrap:break-word; 
+  }
   .sec-title{
     .title-left{
       height: 24px;       

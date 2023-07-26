@@ -56,10 +56,10 @@
       <div class="resumeContent">
         <Transition name="resume" mode="out-in">
         <div v-if="store.state.isEdit ||store.state.isAdd || store.state.editPersonal|| store.state.addPersonal" >
-          <Resume></Resume>
+          <Resume @updateResume="changeResume"></Resume>
         </div>
         <div v-else>
-          <Resume></Resume>
+          <Resume @updateResume="changeResume"></Resume>
         </div>
       </Transition>
       </div>
@@ -300,9 +300,9 @@ onMounted:{
       width: 470px;
       height: 600px;
       margin: 0 40px;
-      --el-color-primary:#626aef;
-      --el-color-primary-light-3:#969bf3;
-      --el-color-primary-dark-2:#5a61eb;
+      // --el-color-primary:#626aef;
+      // --el-color-primary-light-3:#969bf3;
+      // --el-color-primary-dark-2:#5a61eb;
       .el-card {
         @include border-background();
       }

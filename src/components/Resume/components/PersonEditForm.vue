@@ -30,7 +30,7 @@
 <script setup lang="ts">
 import store from '@/store';
 import '@wangeditor/editor/dist/css/style.css' // 引入 css
-import { unref, ref, onMounted, inject,reactive } from 'vue'
+import { unref, ref,inject} from 'vue'
 import { ElMessage } from 'element-plus';
 import axios from '@/api/http';
 import  rules  from "@/utils/useFormRules.js";
@@ -43,20 +43,20 @@ const emit = defineEmits(['updateResume'])
   const onSubmit = () => {
     ruleForm.value.validate((valid)=>{
     if (valid) {
-    if (store.state.token && store.state.currentResumeId != 49) {
-      axios.post(`posts/updatePerson`,{...flatten(personalMoudle.value)}).then((res)=>{
-      ElMessage.success('修改成功')
-      emit('updateResume')
-    back()
-  })
+      if (store.state.token && store.state.currentResumeId != 49) {
+        axios.post(`posts/updatePerson`,{...flatten(personalMoudle.value)}).then((res)=>{
+        ElMessage.success('修改成功')
+        emit('updateResume')
+      back()
+    })
     } else {
-    personalMoudle1 =personalMoudle
-    localStorage.setItem('personalMoudle',JSON.stringify(unref(personalMoudle)))
-    ElMessage.success('修改成功')
-    back()
+      personalMoudle1 =personalMoudle
+      localStorage.setItem('personalMoudle',JSON.stringify(unref(personalMoudle)))
+      ElMessage.success('修改成功')
+      back()
+      }
     }
-  }
-  })
+    })
   }
   const back = ()=>{
     store.commit('switchEditPersonal',false)

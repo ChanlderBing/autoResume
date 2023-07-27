@@ -102,15 +102,21 @@
   const tabDel = (obj) =>{
     let index = focusIndex.value
     let detailIndex = focusDetailIndex.value
-    if (obj.id)  
-    {
-      emit('clickToHide',obj.moudleId,false,obj.id)
-      // resumeMoudle.value[index].inputList.splice(detailIndex,1)
-      // localStorage.setItem("resumeMoudle",JSON.stringify(resumeMoudle))
-    }else
-    {
+    console.log(obj);
+      
+    if (obj.id){
+      if (store.state.token && store.state.currentResumeId != 49) {
+        emit('clickToHide',obj.moudleId,false,obj.id)
+      }else{
+      const indexMoudel  =   resumeMoudle.value[index].inputList.findIndex((item)=>{
+          return item.id = obj.id
+        })
+        resumeMoudle.value[index].inputList[indexMoudel].isShow = 0  
+        localStorage.setItem("resumeMoudle",JSON.stringify(resumeMoudle.value))
+      }
+    }else{
       emit('clickChild',obj.moudleId)
-    }
+    }  
   }
   const focusMoudel = (index:any)=>{
     focusIndex.value = index - 0; 

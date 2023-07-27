@@ -6,7 +6,7 @@
       <el-button type="primary" class="ml-2" @click="onSubmit">完成</el-button>
   </div>
     <div class="skill">
-      <el-form :inline="true" :model="renderListDetail" class="demo-form-inline">
+      <el-form :inline="true" :model="renderListDetail" class="demo-form-inline" ref="ruleForm">
         <template v-for="(value,key,index) in renderListDetail" :key="index">
           <el-form-item :label="realationship[key]" v-if="moduleCheck(key) === 'normal'" :prop="key" :rules="[{required: true, message: '请输入'+ realationship[key], trigger: 'blur'},{ min: 2, max: 12, message: '长度应该在2-12个字符', trigger: 'blur'}]">
             <el-input v-model="renderListDetail[key]" />
@@ -61,7 +61,7 @@
   let renderList = ref(resumeMoudle.value[store.state.editChosen])
   let renderListDetail = ref(store.state.addStruct) as any
 
-  const checkList = ['Text','period','id','resumemodelId','sortIndex','title']
+  const checkList = ['Text','period','id','resumemodelId','sortIndex','title','isShow']
   const moduleCheck =(key)=>{
     if (checkList.find((item)=>{
       return key.includes(item)
@@ -87,7 +87,10 @@
     '0':'setSchool'
   }
   const emit = defineEmits(['updateResume'])
+  const ruleForm =  ref(null)
   const onSubmit = () => {
+    ruleForm.value.validate((valid)=>{
+  if (valid) {
     if (renderListDetail.value.period) {
       renderListDetail.value.period = dateInit(renderListDetail.value.period)
     }
@@ -106,6 +109,8 @@
     ElMessage.success('修改成功')
     back()
     }
+  }
+})
   }
   const back = ()=>{
     store.commit('switchAdd',false)

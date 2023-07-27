@@ -13,7 +13,6 @@
               <el-input v-model="renderListDetailForm[key]" />
             </el-form-item>
           </template>
-      
           <el-form-item label="时间" v-if="key.toString() === 'period'" :prop="key"  :rules="[{required: true, message: '请输入时间', trigger: 'change'}]">
             <el-date-picker
               v-model="renderListDetailForm.period"
@@ -51,7 +50,7 @@
   <script setup lang="ts">
   import store from '@/store';
   import '@wangeditor/editor/dist/css/style.css' // 引入 css
-  import { onBeforeUnmount,unref, ref, shallowRef, onMounted, inject, reactive, render, computed } from 'vue'
+  import { onBeforeUnmount,unref, ref, shallowRef, onMounted, inject, reactive, render, computed, isShallow } from 'vue'
   import { Editor, Toolbar } from '@wangeditor/editor-for-vue'
   import { ElMessage } from 'element-plus';
   import  realationship  from "@/utils/realationshipMap.js";
@@ -67,7 +66,7 @@
     return date?.split('~')
   }
   
-  const checkList = ['Text','period','id','resumemodelId','sortIndex','title']
+  const checkList = ['Text','period','id','resumemodelId','sortIndex','title','isShow']
   const moduleCheck =(key)=>{
     if (checkList.find((item)=>{
       return key.includes(item)

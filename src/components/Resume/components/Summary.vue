@@ -52,7 +52,7 @@
     </div>
     </div>
   </el-card>
-  <el-card class="personalExp">
+  <el-card class="personalExp" v-if="resumeMoudle!=null">
     <div >
      经历库
     </div>
@@ -83,12 +83,16 @@
           </div>
       </el-collapse-item>
       <el-collapse-item title="工作经历" name="2">
-        <div class="experiencedList">
+        <div class="experiencedList" v-for="(item,index) in resumeMoudle[1].inputList">
           <div class="name"></div>
             <div class="depsDetail"></div>
-            <div class="summary"></div>
+            <div class="summary" v-html="item.richText" v-ellipsis="3"></div>
             <el-divider />
-          <div class="action"></div>
+          <div class="action">
+            <div class="time">
+              最后编辑于12-08</div>
+              <el-button type="primary" class="elbtn" @click="clickToShow(0,true,item.id)" :disabled="item.isShow">{{ item.isShow ? '已使用':'使用' }}</el-button>
+          </div>
         </div>
       </el-collapse-item>
       <el-collapse-item title="项目经历" name="3">
@@ -97,7 +101,9 @@
             <div class="depsDetail"></div>
             <div class="summary"></div>
             <el-divider />
-          <div class="action"></div>
+          <div class="action">
+            
+          </div>
         </div>
       </el-collapse-item>
       <el-collapse-item title="个人总结" name="4">
@@ -212,7 +218,7 @@ const arr = reactive({
   modelResume:[],
   authResume:[]
 })
-let resumeMoudle  = inject('resumeMoudle') as any
+let resumeMoudle = inject('resumeMoudle') as any
 const activeIndex = ref('1') 
 const switchTab = (key: string) => {
  if (key === '1') {
@@ -281,12 +287,26 @@ const noTokenToGet = ()=>{
 
 //经历库加入简历
 const clickToShow = (moudleId,status,id)=>{
-  axios.post('posts/updateShowStatus',{moudleId:moudleId,status:status,id:id}).then(res=>{
+  console.log(id);
+  console.log(moudleId);
+  if (store.state.currentResumeId !=49) {
+    axios.post('posts/updateShowStatus',{moudleId:moudleId,status:status,id:id}).then(res=>{
       if (res?.data.code === 0) { 
         emit('changeResume',store.state.currentResumeId)
         ElMessage.success('添加成功')
       }
     })
+  } else {
+    const index = resumeMoudle.value.findIndex((item)=>{
+          return item.moudleId === moudleId
+        })
+    const indexMoudel  =   resumeMoudle.value[index].inputList.findIndex((item)=>{
+          return item.id === id
+      })
+      console.log(indexMoudel);
+        resumeMoudle.value[index].inputList[indexMoudel].isShow = 1  
+        localStorage.setItem("resumeMoudle",JSON.stringify(resumeMoudle.value))
+  }
 }
 
 onMounted:{

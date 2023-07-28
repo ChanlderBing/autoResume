@@ -77,7 +77,7 @@
             <div class="action">
               <div class="time">
               最后编辑于12-08</div>
-              <el-button type="primary" class="elbtn" @click="clickToShow(0,true,item.id)" :disabled="item.isShow">{{ item.isShow ? '已使用':'使用' }}</el-button>
+              <el-button type="primary" class="elbtn" @click="clickToShow(0,true,item.id)" :disabled="item.isShow?true:false">{{ item.isShow ? '已使用':'使用' }}</el-button>
             </div>
           </div>
           </div>
@@ -91,7 +91,7 @@
           <div class="action">
             <div class="time">
               最后编辑于12-08</div>
-              <el-button type="primary" class="elbtn" @click="clickToShow(0,true,item.id)" :disabled="item.isShow">{{ item.isShow ? '已使用':'使用' }}</el-button>
+              <el-button type="primary" class="elbtn" @click="clickToShow(1,true,item.id)" :disabled="item.isShow?true:false">{{ item.isShow ? '已使用':'使用' }}</el-button>
           </div>
         </div>
       </el-collapse-item>
@@ -287,9 +287,7 @@ const noTokenToGet = ()=>{
 
 //经历库加入简历
 const clickToShow = (moudleId,status,id)=>{
-  console.log(id);
-  console.log(moudleId);
-  if (store.state.currentResumeId !=49) {
+  if (store.state.currentResumeId !=49&&store.state.token) {
     axios.post('posts/updateShowStatus',{moudleId:moudleId,status:status,id:id}).then(res=>{
       if (res?.data.code === 0) { 
         emit('changeResume',store.state.currentResumeId)
@@ -298,14 +296,13 @@ const clickToShow = (moudleId,status,id)=>{
     })
   } else {
     const index = resumeMoudle.value.findIndex((item)=>{
-          return item.moudleId === moudleId
-        })
-    const indexMoudel  =   resumeMoudle.value[index].inputList.findIndex((item)=>{
-          return item.id === id
-      })
-      console.log(indexMoudel);
-        resumeMoudle.value[index].inputList[indexMoudel].isShow = 1  
-        localStorage.setItem("resumeMoudle",JSON.stringify(resumeMoudle.value))
+      return item.moudleId === moudleId
+    })
+    const indexMoudel = resumeMoudle.value[index].inputList.findIndex((item)=>{
+      return item.id === id
+    })
+    resumeMoudle.value[index].inputList[indexMoudel].isShow = 1  
+    localStorage.setItem("resumeMoudle",JSON.stringify(resumeMoudle.value))
   }
 }
 

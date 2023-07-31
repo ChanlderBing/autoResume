@@ -35,8 +35,13 @@
       <div class="personal">
         <Personal></Personal>
       </div>
-      <ShowList  @clickChild="resumeMoudleChange" @clickToHide="clickToHide" 
-      @moduleSwitchUp="moduleSwitchUp" @moduleSwitchDown="moduleSwitchDown" ></ShowList>
+      <ShowList  
+      @clickChild="resumeMoudleChange" 
+      @clickToHide="clickToHide" 
+      @moduleSwitchUp="moduleSwitchUp" 
+      @moduleSwitchDown="moduleSwitchDown"
+      @moduleDetailSwitchUp="moduleDetailSwitchUp"
+      @moduleDetailSwitchDown="moduleDetailSwitchDown" ></ShowList>
     </div>
   </el-card>
 </template>
@@ -83,7 +88,6 @@ const resumeMoudle = inject('resumeMoudle') as any
       store.commit('switchThemeColor',theme)
   }
  
-  let modelResume
   const resumeMoudleChange = (moudleId)=>{
     const index =  resumeMoudle.value.findIndex((item)=>{
      return  item.moudleId=== moudleId
@@ -101,7 +105,7 @@ const clickToHide = (moudleId,status,id)=>{
   })
 }          
 const moduleSwitchUp = (obj)=>{
-  axios.post('posts/moudelSwitchUp',{...obj}).then(res=>{
+  axios.post('posts/moduleSwitchUp',{...obj}).then(res=>{
     if (res?.data.code === 0) { 
       emit('updateResume',store.state.currentResumeId)
       ElMessage.success('上移成功')
@@ -110,10 +114,26 @@ const moduleSwitchUp = (obj)=>{
 }
 
 const moduleSwitchDown = (obj)=>{
-  axios.post('posts/moudelSwitchDown',{...obj}).then(res=>{
+  axios.post('posts/moduleSwitchDown',{...obj}).then(res=>{
+    if (res?.data.code === 0) { 
+      emit('updateResume',store.state.currentResumeId)
+      ElMessage.success('下移成功')
+    }
+  })
+}
+const moduleDetailSwitchUp = (obj)=>{
+  axios.post('posts/moduleDetailSwitchUp',{...obj}).then(res=>{
     if (res?.data.code === 0) { 
       emit('updateResume',store.state.currentResumeId)
       ElMessage.success('上移成功')
+    }
+  })
+}
+const moduleDetailSwitchDown = (obj)=>{
+  axios.post('posts/moduleDetailSwitchDown',{...obj}).then(res=>{
+    if (res?.data.code === 0) { 
+      emit('updateResume',store.state.currentResumeId)
+      ElMessage.success('下移成功')
     }
   })
 }

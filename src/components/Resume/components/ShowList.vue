@@ -47,7 +47,7 @@
 
 <script lang="ts" setup>
   import store from "@/store";
-  import { ref,nextTick, onMounted, computed, inject} from "vue";
+  import { ref,nextTick, computed, inject} from "vue";
   import Contrl from '@/components/Resume/components/Contrl.vue';
   import { defineEmits } from 'vue'
   import school from '@/components/from_components/school.vue'
@@ -69,7 +69,21 @@
     '3':summary,
     '0':school
   }
+  const sortab = (data)=>{
+    return  function(obj1,obj2){
+      var value1=obj1[data];
+      var value2=obj2[data];
+      if(value2<value1){
+        return 1
+      }else if(value2>value1){
+        return -1
+      }else{
+      return 0
+      }
+    }
+   }
   let resumeMoudle3 = (arr) => {
+    arr.sort(sortab("sortIndex"))
     return arr.filter((res: any) => {
       return res.isShow !== 0
     })
@@ -80,9 +94,9 @@
     let index = focusIndex.value
     let detailIndex = focusDetailIndex.value
     if (store.state.token && store.state.currentResumeId != 49) {
-      if (obj.id &&index && index!==0) {
+      if (obj.id && detailIndex && detailIndex !== 0) {
         emit('moduleDetailSwitchUp',{...obj})
-      } else if(detailIndex && detailIndex !== 0){
+      } else if(index && index !== 0&& !obj.id){
         emit('moduleSwitchUp',{...obj,resumeId:store.state.currentResumeId})
       }
     } else {
@@ -104,9 +118,9 @@
     let index = focusIndex.value
     let detailIndex = focusDetailIndex.value
     if (store.state.token && store.state.currentResumeId != 49) {
-      if (obj.id) {
+      if (index < resumeMoudle.value.length - 1 && !obj.id) {
         emit('moduleSwitchDown',{...obj,resumeId:store.state.currentResumeId})
-      } else {
+      } else if(detailIndex < resumeMoudle.value[index].inputList.length - 1&& obj.id) {
         emit('moduleDetailSwitchDown',{...obj})
       }
     } else {

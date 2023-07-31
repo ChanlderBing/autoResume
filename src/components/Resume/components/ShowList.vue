@@ -11,6 +11,7 @@
                 @dowm="switchTabDown"
                 @del="tabDel"
                 @add="addInformation"
+                :moduleIndex="item.moduleIndex"
                 :flag = 0
                 :moudleId="item.moudleId"
                 :addHidden= "item.expand"
@@ -30,6 +31,8 @@
                   @del="tabDel"
                   :id="list.id"
                   :moudleId="item.moudleId"
+                  :resumemodelId="item.resumemodelId"
+                  :sortIndex="item.sortIndex"
                   :flag = 8
                   :addHidden = false
                   :upBan = "index1 == 0"
@@ -52,7 +55,7 @@
   import project from '../../from_components/project.vue'
   import work from '../../from_components/work.vue'
   // 使用defineEmits创建名称，接受一个数组
-  const emit = defineEmits(['clickChild','clickToHide'])
+  const emit = defineEmits(['clickChild','clickToHide','moduleSwitchUp','moduleSwitchDown','moduleDetailSwitchUp','moduleDetailSwitchDown'])
   let resumeMoudle1  = inject('resumeMoudle') as any
   let resumeMoudle = computed(() => {
     //访问异步数据，这里二次更新
@@ -73,45 +76,64 @@
   }
   let focusIndex = ref()
   let focusDetailIndex = ref()
-  const switchTabUp = (flag) => {
+  const switchTabUp = (obj) => {
     let index = focusIndex.value
     let detailIndex = focusDetailIndex.value
-    if (detailIndex && detailIndex !== 0 && flag == 8) 
-    {
-      resumeMoudle.value[index].inputList[detailIndex] = resumeMoudle.value[index].inputList.splice(detailIndex - 1, 1, resumeMoudle.value[index].inputList[detailIndex])[0]
-    }else if (index && index!==0 && flag == 0)
-    {
-      resumeMoudle.value[index] = resumeMoudle.value.splice(index - 1, 1, resumeMoudle.value[index])[0]
-      blurMoudel()
+    if (store.state.token && store.state.currentResumeId != 49) {
+      if (obj.id &&index && index!==0) {
+        emit('moduleDetailSwitchUp',{...obj})
+      } else if(detailIndex && detailIndex !== 0){
+        emit('moduleSwitchUp',{...obj,resumeId:store.state.currentResumeId})
+      }
+    } else {
+      if (detailIndex && detailIndex !== 0 && obj.id) 
+      {
+        resumeMoudle.value[index].inputList[detailIndex] = resumeMoudle.value[index].inputList.splice(detailIndex - 1, 1, resumeMoudle.value[index].inputList[detailIndex])[0]
+        localStorage.setItem("resumeMoudle",JSON.stringify(resumeMoudle.value))
+      }else if (index && index!==0 && !obj.id)
+      {
+        resumeMoudle.value[index] = resumeMoudle.value.splice(index - 1, 1, resumeMoudle.value[index])[0]
+        localStorage.setItem("resumeMoudle",JSON.stringify(resumeMoudle.value))
+        blurMoudel()
+      }
     }
+   
   }
 
-  const switchTabDown = (flag) => {
+  const switchTabDown = (obj) => {
     let index = focusIndex.value
     let detailIndex = focusDetailIndex.value
-    if (detailIndex < resumeMoudle.value[index].inputList.length - 1 && flag == 8) 
-    {
-      resumeMoudle.value[index].inputList[detailIndex] = resumeMoudle.value[index].inputList.splice(detailIndex + 1, 1, resumeMoudle.value[index].inputList[detailIndex])[0]
-    }else if (index < resumeMoudle.value.length - 1 && flag == 0)
-    {
-     resumeMoudle.value[index] = resumeMoudle.value.splice(index + 1, 1, resumeMoudle.value[index])[0]
-      blurMoudel()
+    if (store.state.token && store.state.currentResumeId != 49) {
+      if (obj.id) {
+        emit('moduleSwitchDown',{...obj,resumeId:store.state.currentResumeId})
+      } else {
+        emit('moduleDetailSwitchDown',{...obj})
+      }
+    } else {
+      if (detailIndex < resumeMoudle.value[index].inputList.length - 1 && obj.id) 
+      {
+        resumeMoudle.value[index].inputList[detailIndex] = resumeMoudle.value[index].inputList.splice(detailIndex + 1, 1, resumeMoudle.value[index].inputList[detailIndex])[0]
+        localStorage.setItem("resumeMoudle",JSON.stringify(resumeMoudle.value))
+      }else if (index < resumeMoudle.value.length - 1 && !obj.id)
+      {
+        resumeMoudle.value[index] = resumeMoudle.value.splice(index + 1, 1, resumeMoudle.value[index])[0]
+        localStorage.setItem("resumeMoudle",JSON.stringify(resumeMoudle.value))
+        blurMoudel()
+      }
     }
   }
 
   const tabDel = (obj) =>{
     let index = focusIndex.value
     let detailIndex = focusDetailIndex.value
-    console.log(obj);
-      
     if (obj.id){
       if (store.state.token && store.state.currentResumeId != 49) {
         emit('clickToHide',obj.moudleId,false,obj.id)
       }else{
-      const indexMoudel  =   resumeMoudle.value[index].inputList.findIndex((item)=>{
-          return item.id = obj.id
-        })
-        resumeMoudle.value[index].inputList[indexMoudel].isShow = 0  
+        const indexModule = resumeMoudle.value[index].inputList.findIndex((item)=>{
+            return item.id = obj.id
+          })
+        resumeMoudle.value[index].inputList[indexModule].isShow = 0  
         localStorage.setItem("resumeMoudle",JSON.stringify(resumeMoudle.value))
       }
     }else{

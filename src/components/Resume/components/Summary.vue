@@ -286,9 +286,9 @@ const noTokenToGet = ()=>{
 }
 
 //经历库加入简历
-const clickToShow = (moudleId,status,id)=>{
+const clickToShow = (moduleId,status,id)=>{
   if (store.state.currentResumeId !=49&&store.state.token) {
-    axios.post('posts/updateShowStatus',{moudleId:moudleId,status:status,id:id}).then(res=>{
+    axios.post('posts/updateShowStatus',{moduleId:moduleId,status:status,id:id}).then(res=>{
       if (res?.data.code === 0) { 
         emit('changeResume',store.state.currentResumeId)
         ElMessage.success('添加成功')
@@ -296,7 +296,7 @@ const clickToShow = (moudleId,status,id)=>{
     })
   } else {
     const index = resumeMoudle.value.findIndex((item)=>{
-      return item.moudleId === moudleId
+      return item.moudleId === moduleId
     })
     const indexMoudel = resumeMoudle.value[index].inputList.findIndex((item)=>{
       return item.id === id

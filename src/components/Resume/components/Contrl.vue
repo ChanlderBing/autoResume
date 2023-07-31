@@ -22,20 +22,31 @@
     downBan:Boolean,
     moudleId:Number,
     id:Number,
+    moduleIndex:Number,
+    sortIndex:Number,
+    resumemodelId:Number
   })
 
   const emit = defineEmits(["up","dowm","del","add"]);
   const upClick = ()=>{
-    emit("up",props.flag)
+    if (props.flag === 8) {
+      emit("up",{moudleId:props.moudleId,resumemodelId:props.resumemodelId,id:props.id,sortIndex:props.sortIndex}) 
+    }else{
+      emit("up",{moudleId:props.moudleId,moduleIndex:props.moduleIndex}) 
+    }
   }
   const dowmClick = ()=>{
-    emit("dowm",props.flag) 
+    if (props.flag === 8) {
+      emit("dowm",{moudleId:props.moudleId,resumemodelId:props.resumemodelId,id:props.id,sortIndex:props.sortIndex}) 
+    }else{
+      emit("dowm",{moudleId:props.moudleId,moduleIndex:props.moduleIndex}) 
+    }
   }
   const delClick = ()=>{
     if (props.flag === 8) {
       emit("del",{moudleId:props.moudleId,status:false,id:props.id}) 
     }else{
-    emit("del",{moudleId:props.moudleId}) 
+      emit("del",{moudleId:props.moudleId}) 
     }
   }
   const addClick = ()=>{

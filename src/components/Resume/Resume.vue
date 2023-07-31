@@ -35,7 +35,8 @@
       <div class="personal">
         <Personal></Personal>
       </div>
-      <ShowList  @clickChild="resumeMoudleChange" @clickToHide="clickToHide" ></ShowList>
+      <ShowList  @clickChild="resumeMoudleChange" @clickToHide="clickToHide" 
+      @moduleSwitchUp="moduleSwitchUp" @moduleSwitchDown="moduleSwitchDown" ></ShowList>
     </div>
   </el-card>
 </template>
@@ -99,7 +100,23 @@ const clickToHide = (moudleId,status,id)=>{
     }
   })
 }          
+const moduleSwitchUp = (obj)=>{
+  axios.post('posts/moudelSwitchUp',{...obj}).then(res=>{
+    if (res?.data.code === 0) { 
+      emit('updateResume',store.state.currentResumeId)
+      ElMessage.success('上移成功')
+    }
+  })
+}
 
+const moduleSwitchDown = (obj)=>{
+  axios.post('posts/moudelSwitchDown',{...obj}).then(res=>{
+    if (res?.data.code === 0) { 
+      emit('updateResume',store.state.currentResumeId)
+      ElMessage.success('上移成功')
+    }
+  })
+}
 </script>
 
 <style scoped lang="scss">

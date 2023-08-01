@@ -20,7 +20,7 @@
     addHidden:Boolean,
     upBan:Boolean,
     downBan:Boolean,
-    moudleId:Number,
+    moduleId:Number,
     id:Number,
     moduleIndex:Number,
     sortIndex:Number,
@@ -30,23 +30,23 @@
   const emit = defineEmits(["up","dowm","del","add"]);
   const upClick = ()=>{
     if (props.flag === 8) {
-      emit("up",{moudleId:props.moudleId,resumemodelId:props.resumemodelId,id:props.id,sortIndex:props.sortIndex}) 
+      emit("up",{moduleId:props.moduleId,resumemodelId:props.resumemodelId,id:props.id,sortIndex:props.sortIndex}) 
     }else{
-      emit("up",{moudleId:props.moudleId,moduleIndex:props.moduleIndex}) 
+      emit("up",{moduleId:props.moduleId,moduleIndex:props.moduleIndex}) 
     }
   }
   const dowmClick = ()=>{
     if (props.flag === 8) {
-      emit("dowm",{moudleId:props.moudleId,resumemodelId:props.resumemodelId,id:props.id,sortIndex:props.sortIndex}) 
+      emit("dowm",{moduleId:props.moduleId,resumemodelId:props.resumemodelId,id:props.id,sortIndex:props.sortIndex}) 
     }else{
-      emit("dowm",{moudleId:props.moudleId,moduleIndex:props.moduleIndex}) 
+      emit("dowm",{moduleId:props.moduleId,moduleIndex:props.moduleIndex}) 
     }
   }
   const delClick = ()=>{
     if (props.flag === 8) {
-      emit("del",{moudleId:props.moudleId,status:false,id:props.id}) 
+      emit("del",{moduleId:props.moduleId,status:false,id:props.id}) 
     }else{
-      emit("del",{moudleId:props.moudleId}) 
+      emit("del",{moduleId:props.moduleId}) 
     }
   }
   const addClick = ()=>{

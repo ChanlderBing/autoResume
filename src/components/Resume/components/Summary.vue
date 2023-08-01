@@ -61,8 +61,7 @@
         <template #title>
           教育经历
         </template>
-        <div class="experiencedList" >
-          <div class="experienced" v-for="(item,index) in resumeMoudle[0].inputList">
+          <div class="experienced" v-for="(item,index) in sortModule(0)">
             <div class="detail">
               <div class="name">
                 {{item.school}}
@@ -80,10 +79,10 @@
               <el-button type="primary" class="elbtn" @click="clickToShow(0,true,item.id)" :disabled="item.isShow?true:false">{{ item.isShow ? '已使用':'使用' }}</el-button>
             </div>
           </div>
-          </div>
       </el-collapse-item>
       <el-collapse-item title="工作经历" name="2">
-        <div class="experiencedList" v-for="(item,index) in resumeMoudle[1].inputList">
+          <div class="experienced" v-for="(item,index) in sortModule(1)">
+            <div class="detail">
           <div class="name"></div>
             <div class="depsDetail"></div>
             <div class="summary" v-html="item.richText" v-ellipsis="3"></div>
@@ -94,23 +93,34 @@
               <el-button type="primary" class="elbtn" @click="clickToShow(1,true,item.id)" :disabled="item.isShow?true:false">{{ item.isShow ? '已使用':'使用' }}</el-button>
           </div>
         </div>
+          </div>
       </el-collapse-item>
       <el-collapse-item title="项目经历" name="3">
-        <div class="experiencedList">
+          <div class="experienced" v-for="(item,index) in sortModule(2)">
+            <div class="detail">
           <div class="name"></div>
             <div class="depsDetail"></div>
             <div class="summary"></div>
             <el-divider />
           <div class="action">
-            
+            <div class="time">
+              最后编辑于12-08</div>
+              <el-button type="primary" class="elbtn" @click="clickToShow(2,true,item.id)" :disabled="item.isShow?true:false">{{ item.isShow ? '已使用':'使用' }}</el-button>
           </div>
         </div>
+          </div>
       </el-collapse-item>
       <el-collapse-item title="个人总结" name="4">
-        <div class="experiencedList">
+          <div class="experienced" v-for="(item,index) in sortModule(3)">
+            <div class="detail">
           <div class="summary"></div>
           <el-divider />
-          <div class="action"></div>
+          <div class="action">
+            <div class="time">
+              最后编辑于12-08</div>
+              <el-button type="primary" class="elbtn" @click="clickToShow(3,true,item.id)" :disabled="item.isShow?true:false">{{ item.isShow ? '已使用':'使用' }}</el-button>
+          </div>
+          </div>
         </div>
       </el-collapse-item>
     </el-collapse>
@@ -149,6 +159,7 @@ const imgSrc  =  ref(require('@/assets/img/wyk.jpg'))
        
 //   }
 // }
+
 const vEllipsis ={
   mounted(el, binding){
     // 获取期望的文本行数，默认为1
@@ -219,6 +230,12 @@ const arr = reactive({
   authResume:[]
 })
 let resumeMoudle = inject('resumeMoudle') as any
+const sortModule = (moduleId)=>{
+  
+  return  resumeMoudle.value.find((item)=>{
+    return item.moduleId === moduleId
+  }).inputList
+}
 const activeIndex = ref('1') 
 const switchTab = (key: string) => {
  if (key === '1') {
@@ -296,7 +313,7 @@ const clickToShow = (moduleId,status,id)=>{
     })
   } else {
     const index = resumeMoudle.value.findIndex((item)=>{
-      return item.moudleId === moduleId
+      return item.moduleId === moduleId
     })
     const indexMoudel = resumeMoudle.value[index].inputList.findIndex((item)=>{
       return item.id === id
@@ -416,10 +433,9 @@ h3 {
 }
 .personalExp{
   margin-top: 30px;
-  .experiencedList{
+
    // background: antiquewhite;
-    width: 96%;
-    border-radius: 13px;
+   
     .el-divider--horizontal {
       margin: 4px 0;
     }
@@ -428,6 +444,8 @@ h3 {
       background: antiquewhite;
       border-radius: 13px;
       padding: 6px 10px;
+      //width: 96%;
+    //border-radius: 13px;
       .detail{
         .name{
           font-weight:bold;
@@ -455,6 +473,5 @@ h3 {
     }
   }
     }
-   
-}   
+  
   </style>

@@ -95,19 +95,19 @@
       renderListDetail.value.period = dateInit(renderListDetail.value.period)
     }
     if (store.state.token && store.state.currentResumeId != 49) {
-      axios.post(`posts/${dyamicCom[renderList.value.moudleId]}`,renderListDetail.value).then((res)=>{
+      axios.post(`posts/${dyamicCom[renderList.value.moduleId]}`,renderListDetail.value).then((res)=>{
       if (res.status=== 201) {
         emit('updateResume')
-        ElMessage.success('修改成功')
+        ElMessage.success('添加成功')
         back()
       }
     })
     } else {
-    renderList.value.inputList.push(unref(renderListDetail))
-    resumeMoudle[store.state.editChosen] = unref(renderList)
-    localStorage.setItem('resumeMoudle',JSON.stringify(resumeMoudle.value))
-    ElMessage.success('修改成功')
-    back()
+      renderList.value.inputList.push(unref(renderListDetail))
+      resumeMoudle[store.state.editChosen] = unref(renderList)
+      localStorage.setItem('resumeMoudle',JSON.stringify(resumeMoudle.value))
+      ElMessage.success('修改成功')
+      back()
     }
   }
 })

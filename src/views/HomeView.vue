@@ -202,7 +202,6 @@ const getResumeName = async (resumeId)=>{
     document.title =  res.data[0].resumeName
     }
   } else {
-    console.log(JSON.parse(localStorage.getItem('modelResume'))[0]);
     document.title = JSON.parse(localStorage.getItem('modelResume'))[0].resumeName
   }
 }

@@ -1,5 +1,5 @@
 <template>
-    <div :class="focusIndex == index ? 'active':''" v-for="(item,index) in resumeMoudle" :key="item.moudleId"  @mouseover="focusMoudel(index)" @mouseleave="blurMoudel()">
+    <div :class="focusIndex == index ? 'active':''" v-for="(item,index) in resumeMoudle" :key="item.moduleId"  @mouseover="focusMoudel(index)" @mouseleave="blurMoudel()">
       <div class="piece">
         <div :class="focusIndex == index ? ['activeTitle','title']:'title'">
           <div class="colorDiv"></div>
@@ -13,7 +13,7 @@
                 @add="addInformation"
                 :moduleIndex="item.moduleIndex"
                 :flag = 0
-                :moudleId="item.moudleId"
+                :moduleId="item.moduleId"
                 :addHidden= "item.expand"
                 :upBan = "index == 0"
                 :downBan = "index == (resumeMoudle.length - 1)"
@@ -21,18 +21,18 @@
               </Contrl>
           </div>
         </div>      
-        <div class="inputList" v-for="(list,index1) in resumeMoudle3(item.inputList)"  :key="'Id'+ index1"  @click="editInformation(index,index1,item.expand)" @mouseover="focusDetailMoudel(index1)" @mouseleave="blurDetailMoudel()"> 
-          <component :is='dyamicCom[item.moudleId]' :list="list">
+        <div class="inputList" v-for="(list,index1) in resumeMoudle3(item.inputList)"  :key="list.sortIndex"  @click="editInformation(index,index1,item.expand)" @mouseover="focusDetailMoudel(index1)" @mouseleave="blurDetailMoudel()"> 
+          <component :is='dyamicCom[item.moduleId]' :list="list">
               </component>
-            <div class="control" v-if ="focusIndex == index && focusDetailIndex == index1 && item.moudleId !==3" @click.stop>
+            <div class="control" v-if ="focusIndex == index && focusDetailIndex == index1 && item.moduleId !==3" @click.stop>
                 <Contrl 
                   @up="switchTabUp"
                   @dowm="switchTabDown"
                   @del="tabDel"
                   :id="list.id"
-                  :moudleId="item.moudleId"
-                  :resumemodelId="item.resumemodelId"
-                  :sortIndex="item.sortIndex"
+                  :moduleId="item.moduleId"
+                  :resumemodelId="list.resumemodelId"
+                  :sortIndex="list.sortIndex"
                   :flag = 8
                   :addHidden = false
                   :upBan = "index1 == 0"
@@ -142,16 +142,16 @@
     let detailIndex = focusDetailIndex.value
     if (obj.id){
       if (store.state.token && store.state.currentResumeId != 49) {
-        emit('clickToHide',obj.moudleId,false,obj.id)
+        emit('clickToHide',obj.moduleId,false,obj.id)
       }else{
         const indexModule = resumeMoudle.value[index].inputList.findIndex((item)=>{
             return item.id = obj.id
-          })
+        })
         resumeMoudle.value[index].inputList[indexModule].isShow = 0  
         localStorage.setItem("resumeMoudle",JSON.stringify(resumeMoudle.value))
       }
     }else{
-      emit('clickChild',obj.moudleId)
+      emit('clickChild',obj.moduleId)
     }  
   }
   const focusMoudel = (index:any)=>{
@@ -189,14 +189,16 @@
     if (typeof target === 'object' && target) {
         let cloneObj = {}
         for (const key in target) { // 遍历
-            const val = target[key]
-            if (typeof val === 'object' && val) {
-                cloneObj[key] = deepClear(val) // 是对象就再次调用该函数递归
-            } else  if(key === 'resumemodelId'){
-                cloneObj[key] = val // 基本类型的话直接复制值
-            }else{
-              cloneObj[key] = ''
-            }
+          const val = target[key]
+          if (typeof val === 'object' && val) {
+            cloneObj[key] = deepClear(val) // 是对象就再次调用该函数递归
+          } else  if(key === 'resumemodelId'){
+            cloneObj[key] = val // 基本类型的话直接复制值
+          }else if (key === 'sortIndex') {
+            cloneObj[key] =  resumeMoudle.value[focusIndex.value].inputList.length
+          }else{
+            cloneObj[key] = ''
+          }
         }
         return cloneObj
     } else {

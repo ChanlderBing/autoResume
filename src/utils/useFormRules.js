@@ -76,7 +76,7 @@ const validatePhone = (rule,value,callback)=>{
       { min: 2, max: 7, message: '长度应该在2-7个字符', trigger: 'blur' },
     ],
     userName: [
-      { required: true, message: 'Please input activity form', trigger: 'blur' },
+      { required: true, message: '请输入人名', trigger: 'blur' },
       { min: 2, max: 7, message: '长度应该在2-7个字符', trigger: 'blur' },
     ],
   })

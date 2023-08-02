@@ -101,13 +101,13 @@
     if (renderListDetailForm.value.period) {
       renderListDetailForm.value.period = dateInit(renderListDetailForm.value.period)
     }
-    if (store.state.token && store.state.currentResumeId != 49) {
+    if (store.state.token && store.state.currentResumeId != store.state.modelResumeId) {
       axios.post(`posts/${dyamicCom[renderList.value.moduleId]}`,renderListDetailForm.value).then((res)=>{
-      if (res.status=== 201) {
-        emit('updateResume')
-        ElMessage.success('修改成功')
-        back()
-      }
+        if (res.status=== 201) {
+          emit('updateResume')
+          ElMessage.success('修改成功')
+          back()
+        }
     })
     } else {
       renderList.value.inputList[store.state.editChosenDetail] = renderListDetailForm.value
@@ -117,7 +117,7 @@
       back()
     }
     }else{
-    ElMessage.error("输入数据格式不对")
+      ElMessage.error("输入数据格式不对")
   }
   })
   }

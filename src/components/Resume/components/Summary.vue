@@ -83,8 +83,8 @@
       <el-collapse-item title="工作经历" name="2">
           <div class="experienced" v-for="(item,index) in sortModule(1)">
             <div class="detail">
-          <div class="name"></div>
-            <div class="depsDetail"></div>
+          <div class="name">{{item.experienceName}}</div>
+            <div class="depsDetail">{{ item.department }} {{ item.role }} {{ item.city }}</div>
             <div class="summary" v-html="item.richText" v-ellipsis="3"></div>
             <el-divider />
           <div class="action">
@@ -98,9 +98,9 @@
       <el-collapse-item title="项目经历" name="3">
           <div class="experienced" v-for="(item,index) in sortModule(2)">
             <div class="detail">
-          <div class="name"></div>
-            <div class="depsDetail"></div>
-            <div class="summary"></div>
+          <div class="name">{{ item.projectName }}</div>
+            <div class="depsDetail">{{ item.projectDescription }} {{ item.city }}</div>
+            <div class="summary" v-html="item.richText" v-ellipsis="3"></div>
             <el-divider />
           <div class="action">
             <div class="time">
@@ -112,8 +112,7 @@
       </el-collapse-item>
       <el-collapse-item title="个人总结" name="4">
           <div class="experienced" v-for="(item,index) in sortModule(3)">
-            <div class="detail">
-          <div class="summary"></div>
+          <div class="summary" v-html="item.richText" v-ellipsis="3"></div>
           <el-divider />
           <div class="action">
             <div class="time">
@@ -121,7 +120,6 @@
               <el-button type="primary" class="elbtn" @click="clickToShow(3,true,item.id)" :disabled="item.isShow?true:false">{{ item.isShow ? '已使用':'使用' }}</el-button>
           </div>
           </div>
-        </div>
       </el-collapse-item>
     </el-collapse>
   </el-card>
@@ -213,7 +211,7 @@ const resumeChange = (resumeId1:number)=>{
     ElMessage.warning('正在浏览该简历')
   }else if(!localStorage.getItem("token")) {
       ElMessage.error('请先登录！')
-  } else if (resumeId1 === 49 ) {
+  } else if (resumeId1 === store.state.modelResumeId ) {
     emit('changeModelResume')
   }else{
        //选择简历
@@ -304,7 +302,7 @@ const noTokenToGet = ()=>{
 
 //经历库加入简历
 const clickToShow = (moduleId,status,id)=>{
-  if (store.state.currentResumeId !=49&&store.state.token) {
+  if (store.state.currentResumeId !=store.state.modelResumeId && store.state.token) {
     axios.post('posts/updateShowStatus',{moduleId:moduleId,status:status,id:id}).then(res=>{
       if (res?.data.code === 0) { 
         emit('changeResume',store.state.currentResumeId)
@@ -419,8 +417,7 @@ onMounted:{
         }
     }
 
-
-.parent {
+.parent {  
   display: flex;
   align-items: center;
   width: 200px;
@@ -433,19 +430,14 @@ h3 {
 }
 .personalExp{
   margin-top: 30px;
-
-   // background: antiquewhite;
-   
     .el-divider--horizontal {
       margin: 4px 0;
     }
     .experienced{
       margin-top: 8px;
-      background: antiquewhite;
+      background: #ecf5ff;
       border-radius: 13px;
       padding: 6px 10px;
-      //width: 96%;
-    //border-radius: 13px;
       .detail{
         .name{
           font-weight:bold;

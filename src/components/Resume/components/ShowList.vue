@@ -21,7 +21,7 @@
               </Contrl>
           </div>
         </div>      
-        <div class="inputList" v-for="(list,index1) in resumeMoudle3(item.inputList)"  :key="list.sortIndex"  @click="editInformation(index,index1,item.expand)" @mouseover="focusDetailMoudel(index1)" @mouseleave="blurDetailMoudel()"> 
+        <div class="inputList" v-for="(list,index1) in resumeMoudle3(item.inputList)"  :key="list.sortIndex"  @click="editInformation(item.moduleId,index1,item.expand)" @mouseover="focusDetailMoudel(index1)" @mouseleave="blurDetailMoudel()"> 
           <component :is='dyamicCom[item.moduleId]' :list="list">
               </component>
             <div class="control" v-if ="focusIndex == index && focusDetailIndex == index1 && item.moduleId !==3" @click.stop>
@@ -93,7 +93,7 @@
   const switchTabUp = (obj) => {
     let index = focusIndex.value
     let detailIndex = focusDetailIndex.value
-    if (store.state.token && store.state.currentResumeId != 49) {
+    if (store.state.token && store.state.currentResumeId != store.state.modelResumeId) {
       if (obj.id && detailIndex && detailIndex !== 0) {
         emit('moduleDetailSwitchUp',{...obj})
       } else if(index && index !== 0&& !obj.id){
@@ -102,7 +102,9 @@
     } else {
       if (detailIndex && detailIndex !== 0 && obj.id) 
       {
-        resumeMoudle.value[index].inputList[detailIndex] = resumeMoudle.value[index].inputList.splice(detailIndex - 1, 1, resumeMoudle.value[index].inputList[detailIndex])[0]
+        resumeMoudle.value[index].inputList[detailIndex].sortIndex = detailIndex - 1
+        resumeMoudle.value[index].inputList[detailIndex - 1].sortIndex = detailIndex 
+       // resumeMoudle.value[index].inputList[detailIndex] = resumeMoudle.value[index].inputList.splice(detailIndex - 1, 1, resumeMoudle.value[index].inputList[detailIndex])[0]
         localStorage.setItem("resumeMoudle",JSON.stringify(resumeMoudle.value))
       }else if (index && index!==0 && !obj.id)
       {
@@ -117,7 +119,7 @@
   const switchTabDown = (obj) => {
     let index = focusIndex.value
     let detailIndex = focusDetailIndex.value
-    if (store.state.token && store.state.currentResumeId != 49) {
+    if (store.state.token && store.state.currentResumeId != store.state.modelResumeId) {
       if (index < resumeMoudle.value.length - 1 && !obj.id) {
         emit('moduleSwitchDown',{...obj,resumeId:store.state.currentResumeId})
       } else if(detailIndex < resumeMoudle.value[index].inputList.length - 1&& obj.id) {
@@ -126,8 +128,10 @@
     } else {
       if (detailIndex < resumeMoudle.value[index].inputList.length - 1 && obj.id) 
       {
-        resumeMoudle.value[index].inputList[detailIndex] = resumeMoudle.value[index].inputList.splice(detailIndex + 1, 1, resumeMoudle.value[index].inputList[detailIndex])[0]
-        localStorage.setItem("resumeMoudle",JSON.stringify(resumeMoudle.value))
+       // resumeMoudle.value[index].inputList[detailIndex] = resumeMoudle.value[index].inputList.splice(detailIndex + 1, 1, resumeMoudle.value[index].inputList[detailIndex])[0]
+       resumeMoudle.value[index].inputList[detailIndex].sortIndex = detailIndex + 1
+       resumeMoudle.value[index].inputList[detailIndex + 1].sortIndex = detailIndex 
+       localStorage.setItem("resumeMoudle",JSON.stringify(resumeMoudle.value))
       }else if (index < resumeMoudle.value.length - 1 && !obj.id)
       {
         resumeMoudle.value[index] = resumeMoudle.value.splice(index + 1, 1, resumeMoudle.value[index])[0]
@@ -141,11 +145,11 @@
     let index = focusIndex.value
     let detailIndex = focusDetailIndex.value
     if (obj.id){
-      if (store.state.token && store.state.currentResumeId != 49) {
+      if (store.state.token && store.state.currentResumeId != store.state.modelResumeId) {
         emit('clickToHide',obj.moduleId,false,obj.id)
       }else{
         const indexModule = resumeMoudle.value[index].inputList.findIndex((item)=>{
-            return item.id = obj.id
+            return item.id === obj.id
         })
         resumeMoudle.value[index].inputList[indexModule].isShow = 0  
         localStorage.setItem("resumeMoudle",JSON.stringify(resumeMoudle.value))
@@ -166,19 +170,22 @@
   const blurDetailMoudel = ()=>{
     focusDetailIndex.value = null
   }
-  const editInformation = (index:any,index1:any,isExpand:boolean)=>
+  const editInformation = (moduleId:any,index1:any,isExpand:boolean)=>
   {
     trunOffEdit()
+    //未登录时顺序错乱
+    let index = focusIndex.value
+    let detailIndex = focusDetailIndex.value
     nextTick(()=>{
       store.commit('chosenOne',index)
-      store.commit('chosenDetail',index1)
+      store.commit('chosenDetail',detailIndex)
       store.commit('switch',true)
     })
   }
   const addInformation = ()=>{
     let index = focusIndex.value
     trunOffEdit()
-    store.commit('addStructInit',deepClear(resumeMoudle.value[index].inputList[0]))
+    store.commit('addStructInit',deepClear(resumeMoudle1.value[index].inputList[0]))
     setTimeout(() => {
       store.commit('chosenOne',index)
       store.commit('switchAdd',true)

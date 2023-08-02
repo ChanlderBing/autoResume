@@ -18,11 +18,11 @@
           <el-select  class="m-2" placeholder="添加模块">
             <el-option
               v-for="(item,index) in resumeMoudle"
-              :key="item.moudleId"
+              :key="item.moduleId"
               :label="item.title"
               value="添加模块"
               :disabled="item.isShow"
-              @click="resumeMoudleChange(item.moudleId)"
+              @click="resumeMoudleChange(item.moduleId)"
             >
             <div>{{ item.title }} <span style="margin-left:20px"></span></div>
             </el-option>
@@ -88,16 +88,16 @@ const resumeMoudle = inject('resumeMoudle') as any
       store.commit('switchThemeColor',theme)
   }
  
-  const resumeMoudleChange = (moudleId)=>{
+  const resumeMoudleChange = (moduleId)=>{
     const index =  resumeMoudle.value.findIndex((item)=>{
-     return  item.moudleId=== moudleId
+     return  item.moduleId=== moduleId
     })
     resumeMoudle.value[index].isShow = resumeMoudle.value[index].isShow ? false:true
   }
   
   //删除简历
-const clickToHide = (moudleId,status,id)=>{
-  axios.post('posts/updateShowStatus',{moudleId:moudleId,status:status,id:id}).then(res=>{
+const clickToHide = (moduleId,status,id)=>{
+  axios.post('posts/updateShowStatus',{moduleId:moduleId,status:status,id:id}).then(res=>{
     if (res?.data.code === 0) { 
       emit('updateResume',store.state.currentResumeId)
       ElMessage.success('删除成功')

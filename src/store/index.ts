@@ -11,7 +11,8 @@ export default createStore({
     color_theme: 'red-theme',
     addStruct:{},
     token: JSON.parse(localStorage.getItem('token')) || null,
-    currentResumeId:49
+    currentResumeId:49,
+    modelResumeId:49
   },
   getters: {
     

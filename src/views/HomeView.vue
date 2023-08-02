@@ -125,7 +125,7 @@ let currentResumeName = ref(null)
 let printResumeName = ref(null)
 
 watch(() => store.state.editPersonal,() => {
-    if (store.state.currentResumeId === 49 &&!store.state.editPersonal) {
+    if (store.state.currentResumeId === store.state.modelResumeId &&!store.state.editPersonal) {
       personalMoudle.value = JSON.parse(localStorage.getItem('personalMoudle'))
     }
     },{
@@ -133,7 +133,7 @@ watch(() => store.state.editPersonal,() => {
     })
 
 watch(() => store.state.isEdit,() => {
-if (store.state.currentResumeId === 49 &&!store.state.isEdit) {
+if (store.state.currentResumeId === store.state.modelResumeId &&!store.state.isEdit) {
   resumeMoudle.value = JSON.parse(localStorage.getItem('resumeMoudle'))
 }
 },{
@@ -141,7 +141,7 @@ if (store.state.currentResumeId === 49 &&!store.state.isEdit) {
 })
 
 watch(() => store.state.isAdd,() => {
-if (store.state.currentResumeId === 49 &&!store.state.isAdd) {
+if (store.state.currentResumeId === store.state.modelResumeId &&!store.state.isAdd) {
   resumeMoudle.value = JSON.parse(localStorage.getItem('resumeMoudle'))
 }
 },{
@@ -164,7 +164,7 @@ const changeResume = async (resumeId)=>{
 }
 //切换模板简历简历
 const changeModelResume = async ()=>{
-  store.commit('changeCurrentResumeId',49)
+  store.commit('changeCurrentResumeId',store.state.modelResumeId)
   resumeMoudle.value = JSON.parse(localStorage.getItem('resumeMoudle'))
   personalMoudle.value = JSON.parse(localStorage.getItem('personalMoudle'))
 }
@@ -194,7 +194,7 @@ const resumeInitByJWT = async ()=>{
 }
 
 const getResumeName = async (resumeId)=>{
-  if (store.state.token && store.state.currentResumeId !== 49) {
+  if (store.state.token && store.state.currentResumeId !==store.state.modelResumeId) {
     const {data:res} = await axios.get(`posts/getUserResumeName?resumeId=${resumeId}`)
     if (res.data[0].resumeName === '') {
       document.title = '未命名简历'

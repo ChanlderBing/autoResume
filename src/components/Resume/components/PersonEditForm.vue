@@ -43,7 +43,7 @@ const emit = defineEmits(['updateResume'])
   const onSubmit = () => {
     ruleForm.value.validate((valid)=>{
     if (valid) {
-      if (store.state.token && store.state.currentResumeId != 49) {
+      if (store.state.token && store.state.currentResumeId != store.state.modelResumeId) {
         axios.post(`posts/updatePerson`,{...flatten(personalMoudle.value)}).then((res)=>{
         ElMessage.success('修改成功')
         emit('updateResume')

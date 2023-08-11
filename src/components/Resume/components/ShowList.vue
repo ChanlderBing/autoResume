@@ -54,6 +54,7 @@
   import  summary from '../../from_components/summary.vue'
   import project from '../../from_components/project.vue'
   import work from '../../from_components/work.vue'
+import { ElMessage, ElMessageBox } from "element-plus";
   // 使用defineEmits创建名称，接受一个数组
   const emit = defineEmits(['clickChild','clickToHide','moduleSwitchUp','moduleSwitchDown','moduleDetailSwitchUp','moduleDetailSwitchDown'])
   let resumeMoudle1  = inject('resumeMoudle') as any
@@ -172,24 +173,73 @@
   }
   const editInformation = (moduleId:any,index1:any,isExpand:boolean)=>
   {
-    trunOffEdit()
-    //未登录时顺序错乱
     let index = focusIndex.value
     let detailIndex = focusDetailIndex.value
-    nextTick(()=>{
-      store.commit('chosenOne',index)
-      store.commit('chosenDetail',detailIndex)
-      store.commit('switch',true)
-    })
+    if (store.state.isEdit || store.state.isAdd || store.state.editPersonal) {
+      ElMessageBox.confirm(
+        '要退出当前编辑吗?',
+        'Warning',
+        {
+          confirmButtonText: '是的',
+          cancelButtonText: '取消',
+          type: 'warning',
+        }
+      ).then(() => {
+          trunOffEdit()
+        //未登录时顺序错乱
+        nextTick(()=>{
+          store.commit('chosenOne',index)
+          store.commit('chosenDetail',detailIndex)
+          store.commit('switch',true)
+        })
+        }).catch(() => {
+          ElMessage({
+            type: 'info',
+            message: '取消成功',
+          })
+        })
+    }else{
+      trunOffEdit()
+        //未登录时顺序错乱
+      nextTick(()=>{
+        store.commit('chosenOne',index)
+        store.commit('chosenDetail',detailIndex)
+        store.commit('switch',true)
+      })
+    }
   }
   const addInformation = ()=>{
     let index = focusIndex.value
-    trunOffEdit()
-    store.commit('addStructInit',deepClear(resumeMoudle1.value[index].inputList[0]))
-    setTimeout(() => {
-      store.commit('chosenOne',index)
-      store.commit('switchAdd',true)
-      }, 100);
+    if (store.state.isEdit || store.state.isAdd || store.state.editPersonal) {
+      ElMessageBox.confirm(
+        '要退出当前编辑吗?',
+        '提醒',
+        {
+          confirmButtonText: '是的',
+          cancelButtonText: '取消',
+          type: 'warning',
+        }
+      ).then(() => {
+        trunOffEdit()
+        store.commit('addStructInit',deepClear(resumeMoudle1.value[index].inputList[0]))
+        setTimeout(() => {
+        store.commit('chosenOne',index)
+        store.commit('switchAdd',true)
+        }, 100);
+          }).catch(() => {
+            ElMessage({
+              type: 'info',
+              message: '取消成功',
+            })
+          })
+    }else{
+      trunOffEdit()
+      store.commit('addStructInit',deepClear(resumeMoudle1.value[index].inputList[0]))
+      setTimeout(() => {
+        store.commit('chosenOne',index)
+        store.commit('switchAdd',true)
+        }, 100);
+      }
   }
 
   const deepClear =  (target)=> {

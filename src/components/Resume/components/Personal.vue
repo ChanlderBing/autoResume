@@ -10,7 +10,7 @@
       </div>
     </div>
     <div class="avatar" @mouseleave="isShow = false;"  @mouseenter="isShow = true" >
-      <img :src='personalMoudle.avatar ? `http://10.9.45.73:3000/upload_img/${personalMoudle.avatar}` : imgSrc' alt="Ikun!" blue class="aa">
+      <img :src='personalMoudle.avatar ? `http://121.41.1.191:80/upload_img/${personalMoudle.avatar}` : imgSrc' alt="Ikun!" blue class="aa">
       <div class="mask" v-show="isShow">
         <span @click="upload">更换<svg t="1667906788133" class="icon" viewBox="0 0 1066 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3896" width="20" height="20"><path d="M852.650667 256H210.901333a21.333333 21.333333 0 0 0 0 42.666667h66.858667v442.624A113.493333 113.493333 0 0 0 390.954667 854.613333h284.8a113.450667 113.450667 0 0 0 113.28-113.322666V620.416a21.333333 21.333333 0 1 0-42.666667 0v120.874667c0 38.954667-31.658667 70.656-70.613333 70.656H390.954667a70.741333 70.741333 0 0 1-70.613334-70.656V298.666667h426.069334v190.208a21.333333 21.333333 0 0 0 42.666666 0V298.666667h63.573334a21.333333 21.333333 0 0 0 0-42.666667" p-id="3897"></path><path d="M442.88 213.333333h187.818667a21.333333 21.333333 0 1 0 0-42.666666H442.88a21.333333 21.333333 0 0 0 0 42.666666M426.922667 405.333333v298.666667a21.333333 21.333333 0 0 0 42.666666 0v-298.666667a21.333333 21.333333 0 0 0-42.666666 0M597.589333 405.333333v298.666667a21.333333 21.333333 0 0 0 42.666667 0v-298.666667a21.333333 21.333333 0 0 0-42.666667 0" p-id="3898"></path></svg></span>
       </div>
@@ -22,7 +22,7 @@
 
 <script lang="ts" setup>
 import { inject, nextTick, ref } from "vue";
-import { ElMessage } from 'element-plus';
+import { ElMessage, ElMessageBox } from 'element-plus';
 import store from "@/store";
 import axios from "@/api/https";
 
@@ -30,17 +30,37 @@ import axios from "@/api/https";
 let personalMoudle = inject('personalMoudle') as any
 const isShow = ref(false)
 
-const editInformation = ()=>
-  {
-    if (store.state.isEdit || store.state.isAdd || store.state.editPersonal ) {
-      store.commit('switch',false)
-      store.commit('switchEditPersonal',false)
-      store.commit('switchAdd',false)
+const editInformation = ()=>{ 
+  if (store.state.isEdit || store.state.isAdd || store.state.editPersonal) {
+      ElMessageBox.confirm(
+        '要退出当前编辑吗?',
+        'Warning',
+        {
+          confirmButtonText: '是的',
+          cancelButtonText: '取消',
+          type: 'warning',
+        }
+      ).then(() => { 
+        trunOffEdit()
+      }).catch(() => {
+          ElMessage({
+            type: 'info',
+            message: '取消成功',
+          })
+        })
+    }else{
+      trunOffEdit()
     }
+}
+const trunOffEdit =()=>{
+  store.commit('switch',false)
+    store.commit('switchEditPersonal',false)
+    store.commit('switchAdd',false)
+    //未登录时顺序错乱
     nextTick(()=>{
-      store.commit('switchEditPersonal',true)
-    })
-  }
+    store.commit('switchEditPersonal',true)
+  })
+}
   
 //头像更换
 const inputFile = ref(null)
@@ -53,17 +73,19 @@ const updateFile =(e)=>{
   let arr = file.name.split('.')
   let name = arr[1]
   if (name.toLowerCase()== 'jpge'||'png' || 'jpg') {
-    axios.post('posts/updatePic',data).then((res)=>{
+    if (store.state.token && store.state.currentResumeId !== store.state.modelResumeId) {
+      axios.post('posts/updatePic',data).then((res)=>{
       ElMessage.success("上传成功")
       personalMoudle.value.avatar = null
-      let img = new FileReader()
+    }).catch(err=>{
+      ElMessage.error("上传文件失败")
+    }) 
+    }
+    let img = new FileReader()
       img.readAsDataURL(e.target.files[0])
       img.onload = ({target})=>{
         imgSrc.value = target.result as string
       }
-    }).catch(err=>{
-      ElMessage.error("上传文件失败")
-    }) 
   } else
   {
     ElMessage.error("文件格式错误")

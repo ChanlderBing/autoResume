@@ -56,57 +56,57 @@
   const emit =  defineEmits(['updateResume'])
     const onSubmit = () => {
       axios.post(`posts/setUserResume`,{...flatten(personalMoudle.value)}).then((res)=>{
-      ElMessage.success('修改成功')
+      ElMessage.success('创建成功')
       emit('updateResume',res.data.data.insertId)
       back()
     })
     }
-    const back = ()=>{
-      store.commit('switchEditPersonal',false)
-      store.commit('switchAdd',false)
-      store.commit('switch',false)
-      store.commit('switchAddPersonal',false)
-    }
-   const flatten = (myObj)=> {
-      const flatObj = {}
-      let flag = null
-      function formatKey(obj, keyName) {
-          for (let key in obj) {
-              if (typeof obj[key] === 'object' && obj[key] !== null) { //值为对象
-                  if (!keyName) {
-                      formatKey(obj[key], key)
-                  } else {
-                      if (Array.isArray(obj)) {
-                          formatKey(obj[key], `${key}`)
-                      } else {
-                          formatKey(obj[key], `${key}`)
-                      }
-                  }
-              } else { //值不为对象或者值为null
-                  if (!keyName) {
-                      flatObj[key] = obj[key]
-                  } else {
-                      if (Array.isArray(obj)) {
-                          flatObj[`${keyName}[${key}]`] = obj[key]
-                      } else {
-                          flatObj[`${key}`] = obj[key]
-                      }
-                  }
-              }
-          }
-      }
-      formatKey(myObj, flag)
-      return flatObj
+  const back = ()=>{
+    store.commit('switchEditPersonal',false)
+    store.commit('switchAdd',false)
+    store.commit('switch',false)
+    store.commit('switchAddPersonal',false)
   }
+  const flatten = (myObj)=> {
+    const flatObj = {}
+    let flag = null
+    function formatKey(obj, keyName) {
+        for (let key in obj) {
+            if (typeof obj[key] === 'object' && obj[key] !== null) { //值为对象
+                if (!keyName) {
+                    formatKey(obj[key], key)
+                } else {
+                    if (Array.isArray(obj)) {
+                        formatKey(obj[key], `${key}`)
+                    } else {
+                        formatKey(obj[key], `${key}`)
+                    }
+                }
+            } else { //值不为对象或者值为null
+                if (!keyName) {
+                    flatObj[key] = obj[key]
+                } else {
+                    if (Array.isArray(obj)) {
+                        flatObj[`${keyName}[${key}]`] = obj[key]
+                    } else {
+                        flatObj[`${key}`] = obj[key]
+                    }
+                }
+            }
+        }
+    }
+    formatKey(myObj, flag)
+    return flatObj
+}
 
-    const realationshipMap = {
-        'phoneNumber':'手机',
-        'email':'邮件',
-        'degree':'专业',
-        'cityYoulived':'城市',
-        'cityItent': '意向城市',
-        'currentStatus':'就职状态',
-        'postIntent':'投递意向'
+   const realationshipMap = {
+      'phoneNumber':'手机',
+      'email':'邮件',
+      'degree':'专业',
+      'cityYoulived':'城市',
+      'cityItent': '意向城市',
+      'currentStatus':'就职状态',
+      'postIntent':'投递意向'
     }
     
   </script>

@@ -27,7 +27,7 @@ const validatePhone = (rule,value,callback)=>{
         message: '请输入你的专业',
         trigger: 'blur',
       },
-      { min: 2, max: 7, message: '长度应该在2-7个字符', trigger: 'blur' },
+      { min: 2, max: 8, message: '长度应该在2-7个字符', trigger: 'blur' },
     ],
     "inputList[0].email": [
       {

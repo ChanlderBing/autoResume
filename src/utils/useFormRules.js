@@ -65,7 +65,7 @@ const validatePhone = (rule,value,callback)=>{
         message: '请输入就职状态',
         trigger: 'blur',
       },
-      { min: 2, max: 7, message: '长度应该在2-7个字符', trigger: 'blur' },
+      { min: 2, max: 18, message: '长度应该在2-18个字符', trigger: 'blur' },
     ],
     "inputList[1].postIntent": [
       {
@@ -73,7 +73,7 @@ const validatePhone = (rule,value,callback)=>{
         message: '请输入投递意向',
         trigger: 'blur',
       },
-      { min: 2, max: 7, message: '长度应该在2-7个字符', trigger: 'blur' },
+      { min: 2, max: 18, message: '长度应该在2-18个字符', trigger: 'blur' },
     ],
     userName: [
       { required: true, message: '请输入人名', trigger: 'blur' },

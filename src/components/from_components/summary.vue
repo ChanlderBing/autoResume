@@ -21,6 +21,7 @@ import { onUpdated, reactive, ref, toRefs } from 'vue';
     justify-content: space-between;
     align-items: center;
     font-size: 14px;
+    margin-top: 4px;
     .title-left{
       font-weight: bold;
       width: 300px;
@@ -37,7 +38,13 @@ import { onUpdated, reactive, ref, toRefs } from 'vue';
   }
   .sec-title{
     .title-left{
-      height: 24px;       
+      height: 24px;
+      line-height: 24px;        
     }
+  }
+  ::v-deep ul{
+    margin: 0;
+    padding: 0;
+    margin-left: 16px;
   }
 </style>

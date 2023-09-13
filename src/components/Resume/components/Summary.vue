@@ -19,7 +19,7 @@
             <el-scrollbar max-height="270px">
               <el-card shadow="hover" class="resume" :body-style="{ padding: '2px' }" v-for="(item,index) in arr.resumeList">
                   <div class="content" @click="resumeChange(item.resumeId)">
-                    <div class="pic"><img :src="item.avatar?`http://10.9.45.73:3000/upload_img/${item.avatar}`:imgSrc"/> </div>
+                    <div class="pic"><img :src="item.avatar?`http://121.41.1.191:80/upload_img/${item.avatar}`:imgSrc"/> </div>
                       <div class="resumeDetail">
                         <div class="top">
                             <span  class="resumeName" @click.stop="test(item.resumeId)" v-if="item.editActive === 0">{{item.resumeName ? item.resumeName:'未命名简历'}}   <svg class="editicon" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" width="13" height="13" data-v-ea893728=""><path d="m199.04 672.64 193.984 112 224-387.968-193.92-112-224 388.032zm-23.872 60.16 32.896 148.288 144.896-45.696L175.168 732.8zM455.04 229.248l193.92 112 56.704-98.112-193.984-112-56.64 98.112zM104.32 708.8l384-665.024 304.768 175.936L409.152 884.8h.064l-248.448 78.336L104.32 708.8zm384 254.272v-64h448v64h-448z" fill="currentColor"></path></svg></span>

@@ -32,22 +32,28 @@
     .title-right{
       width: 200px;
       text-align: end;
-      font-size: 12px;
+      font-size: 13px;
     }
   }
   .textH5{
-    word-wrap:break-word; 
- 
+    word-wrap:break-word;
   }
+  ::v-deep p{
+    padding: 2px 0;
+  } 
   .sec-title{
     .title-left{
       height: 24px;
-      line-height: 24px;       
+      line-height: 24px; 
+      font-size: 13px;      
     }
   }
   ::v-deep ul{
     margin: 0;
     padding: 0;
     margin-left: 16px;
+  }
+  ::v-deep li{
+      padding: 1px 0;
   }
 </style>

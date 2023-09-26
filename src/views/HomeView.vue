@@ -6,7 +6,8 @@
     mode="horizontal"
     :ellipsis="false"
   >
-    <el-menu-item index="0">LOGO</el-menu-item>
+    <img src="../assets/logo.png" style="width: 38px;height:38px;margin: 8px 10px 0px 20px;">
+    <h3> I-Resume</h3>
     <div class="flex-grow" />
       <div class="moon1" >
         <transition name ="svg">
@@ -26,10 +27,11 @@
         </transition>
       </div>
 
-  <el-menu-item index="1"
-    @click="goToLogin()">登录</el-menu-item>
-    <el-menu-item index="2"
-    @click="print">打印</el-menu-item>
+      <el-menu-item index="1" @click="userKnow">关于</el-menu-item>
+  <el-menu-item index="2" @click="goToLogin()">{{  store.state.token?'退 出':'登 录' }}</el-menu-item>
+    <el-menu-item index="3" @click="print">
+      打印
+    </el-menu-item>
   </el-menu>
   </div> 
   <div class="home">
@@ -65,6 +67,7 @@
       </div>
     </div>
   </div>
+ 
 </div>
   <el-dialog
     v-model="dialogVisible"
@@ -104,6 +107,7 @@ import PersonEditForm from '@/components/Resume/components/PersonEditForm.vue';
 import PersonAddForm from '@/components/Resume/components/PersonAddForm.vue';
 import {  useRouter } from 'vue-router';
 import  axios  from '../api/http';
+import { ElMessage, ElMessageBox, ElNotification } from 'element-plus';
 
 const formLabelAlign =  ref({
   Name:'',
@@ -116,7 +120,26 @@ const loginToGet = ()=>{
 
 const router = useRouter()
 const goToLogin = ()=>{
-  router.push({name:"login"})
+  if (store.state.token) {
+    ElMessageBox.confirm(
+        '要退出登录吗?',
+        'Warning',
+        {
+          confirmButtonText: '是的',
+          cancelButtonText: '取消',
+          type: 'warning',
+        }
+      ).then(() => {
+        store.commit('removeToken')
+        router.push({name:"login"})
+        }).catch(() => {
+          ElMessage({
+            type: 'info',
+          })
+        })
+  }else{
+    router.push({name:"login"})
+  }
 }
 
 let resumeMoudle = ref(null)
@@ -220,6 +243,14 @@ const print =  () => {
     })
     }
    // style:"@media print{@page {size:portrait}};",
+  })
+}
+const userKnow = ()=>{
+  ElNotification({
+    title: 'Vue3.2 + Nest.js 项目',
+    message: "因没钱充别的网站的会员，博主自己写来写简历的，现在分享给群友，系统基本功能勉强可以使用，有空还会继续更新,有Bug直接邮箱我，源码实在没有什么学习价值，谢谢。",
+    position: 'bottom-right',
+    duration:0
   })
 }
 

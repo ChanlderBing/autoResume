@@ -12,8 +12,7 @@
             <el-input type="password" placeholder="输入密码" class="input" v-model="signUpData.password"   />
           </el-form-item>
         </el-form>
-            <button class="btn" @click="signUp()">登 录</button>
-
+            <el-button class="elbtn" type="primary" size="large" @click="signUp()" round>登 录</el-button>
             <div class="visitor" @click="signUpWithoutPass()" style="font-size: 13px;padding-top: 16px;">游客登录</div>
       </div>
     </div>
@@ -33,7 +32,7 @@
             <el-input type="password" placeholder="密码确认" class="input" v-model="signInData.repassword"   />
           </el-form-item>
         </el-form>
-        <button class="btn" @click="signIn()">注 册</button>
+        <el-button class="elbtn" type="primary" size="large" @click="signIn()" round>注 册</el-button>
       </div>
     </div>
 
@@ -41,10 +40,12 @@
       <div class="container__overlay">
         <div class="overlay">
           <div class="overlay__panel overlay--left">
-            <button class="btn" id="signIn" @click="signInClick()">注 册</button>
+            <el-button  class="elbtn" type="primary" size="large" @click="signInClick()" round>注 册</el-button>
+            <!-- <button class="btn" id="signIn" >注 册</button> -->
           </div>
           <div class="overlay__panel overlay--right">
-            <button class="btn" id="signUp" @click="signUpClick()">登 录</button>
+            <el-button  class="elbtn" type="primary" size="large" @click="signUpClick()" round>登 录</el-button>
+            <!-- <button class="btn" id="signUp" >登 录</button> -->
           </div>
         </div>
       </div>
@@ -164,7 +165,7 @@ const signIn = ()=>{
       text-decoration: none;
     }
     .container {
-      background-color: $white;
+      background-color: #fff;
       border-radius: 0.7rem;
       box-shadow: 0 0.9rem 1.7rem rgba(0, 0, 0, 0.25),
         0 0.7rem 0.7rem rgba(0, 0, 0, 0.22);
@@ -224,7 +225,7 @@ const signIn = ()=>{
 
     .overlay {
       background-color: $light-blue;
-      background: url("https://cdn.pixabay.com/photo/2018/08/14/13/23/ocean-3605547_1280.jpg");
+      background: url("../assets/img/1.png");
       background-attachment: fixed;
       background-position: center;
       background-repeat: no-repeat;
@@ -272,6 +273,14 @@ const signIn = ()=>{
       transform: translateX(20%);
     }
 
+    .elbtn{
+      width: 150px;
+      height: 46px;
+      cursor: pointer;
+    }
+    .elbtn:active {
+      transform: scale(0.95);
+    }
     .btn {
       background-color: $blue;
       background-image: linear-gradient(90deg, $blue 0%, $light-blue 74%);
@@ -300,7 +309,7 @@ const signIn = ()=>{
     }
 
     .form {
-      background-color: $white;
+      background-color: #fff;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -334,6 +343,6 @@ const signIn = ()=>{
     display: block !important;
   }
   .visitor:hover{
-    color: cadetblue;
+    color: rgb(16, 161, 245);
   }
 </style>

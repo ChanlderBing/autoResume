@@ -26,7 +26,6 @@ import { ElMessage, ElMessageBox } from 'element-plus';
 import store from "@/store";
 import axios from "@/api/https";
 
-
 let personalMoudle = inject('personalMoudle') as any
 const isShow = ref(false)
 

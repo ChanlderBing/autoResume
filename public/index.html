@@ -4,10 +4,23 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <link rel="icon" href="<%= BASE_URL %>favicon.ico">
+    <link rel="icon" href="<%= BASE_URL %>logo.ico">
+    <!-- <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script> -->
+    <!-- <link rel="stylesheet" href="//unpkg.com/element-plus/dist/index.css" /> -->
+    <!-- Import Vue 3
+    <script src="https://unpkg.com/vue@3.2.36/dist/vue.global.prod.js"></script>
+    <!-- Import component library -->
+    <!-- <script src="https://cdn.bootcdn.net/ajax/libs/element-plus/2.3.12/index.full.min.js"></script> -->
+    <% for (var i in htmlWebpackPlugin.options.cdn&&htmlWebpackPlugin.options.cdn.css) { %>
+      <link href="<%= htmlWebpackPlugin.options.cdn.css[i] %>" rel="preload" as="style" />
+      <link href="<%= htmlWebpackPlugin.options.cdn.css[i] %>" rel="stylesheet" />
+    <% } %>
     <title>简单简历</title>
   </head>
   <body>
+    <% for (let i in htmlWebpackPlugin.options.cdn && htmlWebpackPlugin.options.cdn.js) { %>
+      <script src="<%= htmlWebpackPlugin.options.cdn.js[i] %>"></script>
+    <% } %>
     <noscript>
       <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
     </noscript>

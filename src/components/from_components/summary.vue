@@ -22,29 +22,17 @@ import { onUpdated, reactive, ref, toRefs } from 'vue';
     align-items: center;
     font-size: 14px;
     margin-top: 4px;
-    .title-left{
-      font-weight: bold;
-      width: 300px;
-      text-align: left;
-    }
-    .title-right{
-      width: 200px;
-      text-align: end;
-      font-size: 12px;
-    }
   }
   .textH5{
+    font-size: 13px;
     word-wrap:break-word; 
-  }
-  .sec-title{
-    .title-left{
-      height: 24px;
-      line-height: 24px;        
-    }
   }
   ::v-deep ul{
     margin: 0;
     padding: 0;
     margin-left: 16px;
+  }
+  ::v-deep li{
+      padding: 1px 0;
   }
 </style>

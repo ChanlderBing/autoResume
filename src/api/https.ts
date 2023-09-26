@@ -34,7 +34,7 @@ import { ElMessage } from 'element-plus';
         }}
 
 // 创建axios实例
-var aioxs = axios.create({  timeout: 1000 * 12,baseURL:process.env.VUE_APP_BASE_URL});
+var aioxs = axios.create({  timeout: 1000 * 12,baseURL:'http://121.41.1.191:8080'});
 // 设置post请求头
 aioxs.defaults.headers.post['Content-Type'] = 'multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW';
 /** 

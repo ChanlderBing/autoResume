@@ -19,7 +19,7 @@ const validatePhone = (rule,value,callback)=>{
   const rules = reactive({
     "inputList[0].cityYoulived": [
       { required: true, message: '请输入城市名', trigger: 'blur' },
-      { min: 2, max: 7, message: '长度应该在2-7个字符', trigger: 'blur' },
+      { min: 2, max: 18, message: '长度应该在2-18个字符', trigger: 'blur' },
     ],
     "inputList[0].degree": [
       {
@@ -27,7 +27,7 @@ const validatePhone = (rule,value,callback)=>{
         message: '请输入你的专业',
         trigger: 'blur',
       },
-      { min: 2, max: 8, message: '长度应该在2-7个字符', trigger: 'blur' },
+      { min: 2, max: 18, message: '长度应该在2-18个字符', trigger: 'blur' },
     ],
     "inputList[0].email": [
       {
@@ -56,7 +56,7 @@ const validatePhone = (rule,value,callback)=>{
         message: '请输入你意向城市',
         trigger: 'blur',
       },
-      { min: 2, max: 7, message: '长度应该在2-7个字符', trigger: 'blur' },
+      { min: 2, max: 18, message: '长度应该在2-18个字符', trigger: 'blur' },
     ],
     "inputList[1].currentStatus": [
       {

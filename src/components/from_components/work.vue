@@ -42,6 +42,7 @@ import { reactive } from 'vue';
   }
   .sec-title{
     .title-left{
+      font-size: 13px;
       height: 24px;
       line-height: 24px;        
     }
@@ -50,5 +51,8 @@ import { reactive } from 'vue';
     margin: 0;
     padding: 0;
     margin-left: 16px;
+  }
+  ::v-deep li{
+      padding: 2px 0;
   }
 </style>

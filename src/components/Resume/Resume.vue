@@ -165,6 +165,7 @@ const moduleDetailSwitchDown = (obj)=>{
     justify-content:flex-start;
     align-items: center;
     .colorPick{
+      margin: 0 3px 0 6px;
       ::v-deep .el-select .el-input__inner{
       width: 30px;
       }
@@ -174,8 +175,11 @@ const moduleDetailSwitchDown = (obj)=>{
       }
     }
     .modelAdd{
+      margin: 0 6px 0 3px;
       ::v-deep .el-select .el-input__inner{
       width: 80px;
+      @include left-background();
+        @include border-background();
       }
     }
 }

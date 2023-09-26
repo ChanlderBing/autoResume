@@ -298,6 +298,10 @@ import { ElMessage, ElMessageBox } from "element-plus";
     min-height: 24px;
     .text{
       font-size: 16px;
+      .textH5{
+        padding: 1px 0;
+  
+      }
     }
   .control{
     position: absolute;

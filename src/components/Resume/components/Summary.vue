@@ -178,7 +178,7 @@ const vEllipsis ={
   },
 }
 
-const inputRef = ref(null)
+const inputRef = ref({})
 const createResumeName = ref('')
 const test = (id)=>{
   arr.resumeList.forEach(item=> {
@@ -191,7 +191,10 @@ const test = (id)=>{
   createResumeName.value = arr.resumeList[index].resumeName
   arr.resumeList[index].editActive = 1
   setTimeout(()=>{
-    inputRef.value[0].focus()
+    console.log(inputRef.value);
+    console.log(inputRef);
+    console.log(inputRef.value[0]);
+    inputRef.value.focus()
   },0)
 }
 const loading = ref(true)
@@ -284,7 +287,7 @@ const getModelResume = ()=>{
   })
 }
 const getResume = async ()=>{
-  const {data:res} = await axios.get('posts/getUserResumeOne').finally(()=>{
+  const {data:res} = await axios.get(`posts/getUserResumeOne?resumeId=${store.state.modelResumeId}`).finally(()=>{
     loading.value = false
   })
   arr.modelResume = res.data.data
@@ -380,7 +383,7 @@ onMounted:{
                 display: flex;
                 justify-content: space-between;
                 .resumeName{
-                  font-size: 4px;
+                  font-size: 14px;
                   .editicon{
                     width: 12px;
                     height: 12px;

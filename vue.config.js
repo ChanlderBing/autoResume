@@ -9,13 +9,13 @@ const CompressionPlugin = require('compression-webpack-plugin');
 
 const CDN = {
   css: [
-    'https://cdn.bootcdn.net/ajax/libs/normalize/8.0.1/normalize.min.css',
-    'https://cdn.bootcdn.net/ajax/libs/element-plus/2.2.16/index.min.css'
+   'https://cdn.bootcdn.net/ajax/libs/normalize/8.0.1/normalize.min.css',
+   'https://cdn.bootcdn.net/ajax/libs/element-plus/2.2.16/index.min.css'
   ],
   js: [
-    'https://cdn.bootcdn.net/ajax/libs/vue/3.2.13/vue.global.prod.js',
-    'https://cdn.bootcdn.net/ajax/libs/vuex/4.0.2/vuex.global.js',
-    'https://cdn.bootcdn.net/ajax/libs/element-plus/2.2.16/index.full.js',
+   'https://cdn.bootcdn.net/ajax/libs/vue/3.2.13/vue.global.js',
+   'https://cdn.bootcdn.net/ajax/libs/vuex/4.0.2/vuex.global.js',
+   'https://cdn.bootcdn.net/ajax/libs/element-plus/2.2.16/index.full.js',
   ]
 };
 
@@ -35,15 +35,6 @@ module.exports = defineConfig({
       extract: IS_PROD,
       sourceMap:false,
       requireModuleExtension: false,// 去掉文件名中的 .module
-      loaderOptions: {
-              // 给 less-loader 传递 Less.js 相关选项
-              less: {
-                  // `globalVars` 定义全局对象，可加入全局变量
-                  globalVars: {
-                      
-                  }
-                }
-      }
   },
   pwa: {
     iconPaths: {

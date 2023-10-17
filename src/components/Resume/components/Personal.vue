@@ -72,28 +72,48 @@ const updateFile =(e)=>{
   let arr = file.name.split('.')
   let name = arr[1]
   if (name.toLowerCase()== 'jpge'||'png' || 'jpg') {
-    if (store.state.token && store.state.currentResumeId !== store.state.modelResumeId) {
-      axios.post('posts/updatePic',data).then((res)=>{
-      ElMessage.success("上传成功")
-      personalMoudle.value.avatar = null
-    }).catch(err=>{
-      ElMessage.error("上传文件失败")
-    }) 
-    }
-    let img = new FileReader()
+    if (verificationPicFile(file)) {
+      if (store.state.token && store.state.currentResumeId !== store.state.modelResumeId) {
+        axios.post('posts/updatePic',data).then((res)=>{
+        ElMessage.success("上传成功")
+        personalMoudle.value.avatar = null
+      }).catch(err=>{
+        ElMessage.error("上传文件失败")
+      }) 
+      }
+      let img = new FileReader()
       img.readAsDataURL(e.target.files[0])
       img.onload = ({target})=>{
-        imgSrc.value = target.result as string
+          imgSrc.value = target.result as string
       }
-  } else
-  {
-    ElMessage.error("文件格式错误")
+    } 
+    } else
+    {
+      ElMessage.error("文件格式错误")
+    }
   }
-}
 const upload = ()=>{
    const a = inputFile.value.click()
 }
 
+const verificationPicFile =  (file)=> {
+    let fileSize = 0;
+    let fileMaxSize = 124;//1M
+    if(file){
+        fileSize = file.size;
+        let size = fileSize / 1024;
+        if (size > fileMaxSize) {
+          ElMessage.error("文件大小不能大于124k！")
+          return false;
+        }else if (size <= 0) {
+          ElMessage.error("文件不能为空！")
+          return false;
+        }
+        return true;
+    }else{
+        return false;
+    }
+}
 </script>
 
 <style scoped lang="scss">
@@ -111,16 +131,17 @@ const upload = ()=>{
     }
   }
   .avatar{
+    height:128px;
     width: 100px;
     position: relative;
     margin: 15px;
     img{
-      height: 110px;
+      height: 128px;
       width: 100px;
       //-webkit-mask: linear-gradient(90deg, transparent, #fff);
     }
     .mask{
-      height: 110px;
+      height:128px;
       width: 100px;
       position: absolute;
       right: 0px;

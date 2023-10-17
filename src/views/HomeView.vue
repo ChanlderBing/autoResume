@@ -193,7 +193,7 @@ const changeModelResume = async ()=>{
 }
 //调用接口获取简历 未登录
 const getResumeInit = async ()=>{
-  const {data:res} = await axios.get(`posts/getResumeInit`)
+  const {data:res} = await axios.get(`posts/getResumeInit?resumeId=${store.state.modelResumeId}`)
   store.commit('changeCurrentResumeId',res.data.resumeId)
   resumeMoudle.value = res.data.resumeMoudle
   personalMoudle.value = res.data.personalMoudle
@@ -202,14 +202,14 @@ const getResumeInit = async ()=>{
 }
 //调用接口获取不显示
 const getResumeInitWithoutPath = async ()=>{
-  const {data:res} = await axios.get(`posts/getResumeInit`)
+  const {data:res} = await axios.get(`posts/getResumeInit?resumeId=${store.state.modelResumeId}`)
   localStorage.setItem('resumeMoudle', JSON.stringify(res.data.resumeMoudle))
   localStorage.setItem('personalMoudle',JSON.stringify(res.data.personalMoudle))
 }
 //调用接口获取简历 登录
 const resumeInitByJWT = async ()=>{
   const {data:res} = await axios.get(`posts/ResumeInitByJWT`).catch(async (err)=>{
-    return  await axios.get(`posts/getResumeInit`)
+    return  await axios.get(`posts/getResumeInit?resumeId=${resumeId}`)
   })
   store.commit('changeCurrentResumeId',res.data.resumeId)
   resumeMoudle.value = res.data.resumeMoudle
@@ -222,7 +222,7 @@ const getResumeName = async (resumeId)=>{
     if (res.data[0].resumeName === '') {
       document.title = '未命名简历'
     }else{
-    document.title =  res.data[0].resumeName
+    document.title = res.data[0].resumeName
     }
   } else {
     document.title = JSON.parse(localStorage.getItem('modelResume'))[0].resumeName
@@ -248,7 +248,7 @@ const print =  () => {
 const userKnow = ()=>{
   ElNotification({
     title: 'Vue3.2 + Nest.js 项目',
-    message: "因没钱充别的网站的会员，博主自己写来写简历的，现在分享给群友，系统基本功能勉强可以使用，有空还会继续更新,有Bug直接邮箱我，源码实在没有什么学习价值，谢谢。",
+    message: "因没钱充别的网站的会员，博主自己写来写简历的，系统基本功能勉强可以使用，有空还会继续更新,有Bug直接邮箱我，谢谢。",
     position: 'bottom-right',
     duration:0
   })

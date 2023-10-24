@@ -50,7 +50,7 @@
     }
   }
   const addClick = ()=>{
-    emit("add") 
+    emit("add",{moduleId:props.moduleId}) 
   }
 </script>
 

@@ -15,7 +15,7 @@ import { onUpdated, reactive, ref, toRefs } from 'vue';
 
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .menu-title{
     display: flex;
     justify-content: space-between;

@@ -13,7 +13,7 @@ const CDN = {
    'https://cdn.bootcdn.net/ajax/libs/element-plus/2.2.16/index.min.css'
   ],
   js: [
-   'https://cdn.bootcdn.net/ajax/libs/vue/3.2.13/vue.global.js',
+   'https://cdn.bootcdn.net/ajax/libs/vue/3.2.13/vue.global.prod.js',
    'https://cdn.bootcdn.net/ajax/libs/vuex/4.0.2/vuex.global.js',
    'https://cdn.bootcdn.net/ajax/libs/element-plus/2.2.16/index.full.js',
   ]
@@ -53,6 +53,7 @@ module.exports = defineConfig({
         additionalData: `@import "@/assets/style/theme/index.scss";`
       }
     }
+   // @import "@/assets/style/theme/dark.scss";
   },
   chainWebpack: config => {
   	// 配置，将当前页定义的cdn值传到主页面（index.html）

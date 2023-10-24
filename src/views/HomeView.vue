@@ -316,7 +316,8 @@ onMounted:{
     display: flex;
     flex-direction: row;
     justify-content: center;
-    height: 1206px;
+    overflow: scroll;
+    min-height: 1206px;
     @include home-background();
     @include home-color();
     padding-top: 20px;

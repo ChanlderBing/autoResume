@@ -21,7 +21,7 @@
               </Contrl>
           </div>
         </div>      
-        <div class="inputList" v-for="(list,index1) in resumeMoudle3(item.inputList)"  :key="list.sortIndex"  @click="editInformation(item.moduleId,index1,item.expand)" @mouseover="focusDetailMoudel(index1)" @mouseleave="blurDetailMoudel()"> 
+        <div class="inputList" v-for="(list,index1) in resumeMoudle3(item.inputList)"  :key="list.sortIndex"  @click="editInformation(item.moduleId,list.sortIndex,item.expand)" @mouseover="focusDetailMoudel(index1)" @mouseleave="blurDetailMoudel()"> 
           <component :is='dyamicCom[item.moduleId]' :list="list">
               </component>
             <div class="control" v-if ="focusIndex == index && focusDetailIndex == index1 && item.moduleId !==3" @click.stop>
@@ -171,10 +171,10 @@ import { ElMessage, ElMessageBox } from "element-plus";
   const blurDetailMoudel = ()=>{
     focusDetailIndex.value = null
   }
-  const editInformation = (moduleId:any,index1:any,isExpand:boolean)=>
+  const editInformation = (moduleId:any,sortIndex:any,isExpand:boolean)=>
   {
-    let index = focusIndex.value
-    let detailIndex = focusDetailIndex.value
+    let index = moduleId
+    let detailIndex = sortIndex
     if (store.state.isEdit || store.state.isAdd || store.state.editPersonal) {
       ElMessageBox.confirm(
         '要退出当前编辑吗?',
@@ -208,8 +208,11 @@ import { ElMessage, ElMessageBox } from "element-plus";
       })
     }
   }
-  const addInformation = ()=>{
-    let index = focusIndex.value
+  
+  const addInformation = (obj)=>{
+    let index  =  resumeMoudle.value.findIndex((item)=>{
+          return item.moduleId === obj.moduleId
+        })
     if (store.state.isEdit || store.state.isAdd || store.state.editPersonal) {
       ElMessageBox.confirm(
         '要退出当前编辑吗?',
@@ -221,9 +224,9 @@ import { ElMessage, ElMessageBox } from "element-plus";
         }
       ).then(() => {
         trunOffEdit()
-        store.commit('addStructInit',deepClear(resumeMoudle1.value[index].inputList[0]))
+        store.commit('addStructInit',deepClear(resumeMoudle.value[index].inputList[0]))
         setTimeout(() => {
-        store.commit('chosenOne',index)
+        store.commit('chosenOne',obj.moduleId)
         store.commit('switchAdd',true)
         }, 100);
           }).catch(() => {
@@ -236,7 +239,7 @@ import { ElMessage, ElMessageBox } from "element-plus";
       trunOffEdit()
       store.commit('addStructInit',deepClear(resumeMoudle1.value[index].inputList[0]))
       setTimeout(() => {
-        store.commit('chosenOne',index)
+        store.commit('chosenOne',obj.moduleId)
         store.commit('switchAdd',true)
         }, 100);
       }

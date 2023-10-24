@@ -13,7 +13,6 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
 
-
   const {list}= defineProps({
     list: Object,
   })
@@ -21,7 +20,7 @@ import { ref } from 'vue';
 
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .menu-title{
     display: flex;
     justify-content: space-between;

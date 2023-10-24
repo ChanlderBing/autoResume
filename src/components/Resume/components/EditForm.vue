@@ -9,7 +9,7 @@
       <el-form :inline="true" :model="renderListDetailForm" ref="ruleForm" class="demo-form-inline">
         <template v-for="(value,key) in renderListDetailForm">
           <template  v-if="moduleCheck(key) === 'normal'">    
-            <el-form-item  :label="realationship[key]"  :prop="key" :rules="[{required: true, message: '请输入'+ realationship[key], trigger: 'blur'},{ min: 2, max: 18, message: '长度应该在2-18个字符', trigger: 'blur'}]">
+            <el-form-item  :label="realationship[key]"  :prop="key" :rules="[{required: true, message: '请输入'+ realationship[key], trigger: 'blur'},{ min: 2, max: 28, message: '长度应该在2-28个字符', trigger: 'blur'}]">
               <el-input v-model="renderListDetailForm[key]" />
             </el-form-item>
           </template>
@@ -59,13 +59,31 @@
 
   const emit = defineEmits(['updateResume'])
   let resumeMoudle = inject('resumeMoudle') as any
-  let renderList = ref(resumeMoudle.value[store.state.editChosen])
-  const renderListDetailForm = ref(JSON.parse(JSON.stringify(renderList.value.inputList[store.state.editChosenDetail])));
+  let renderList =computed(() => {
+    //访问异步数据，这里二次更新
+    return resumeMoudle.value?.find((res: any) => {
+      return res.moduleId === store.state.editChosen
+    })
+   }) 
+   //ref(resumeMoudle.value[store.state.editChosen])
+  // computed(() => {
+  //   //访问异步数据，这里二次更新
+  //   return resumeMoudle.value?.find((res: any) => {
+  //     return res.moduleId !== store.state.editChosen
+  //   })
+  // })
+  let index = resumeMoudle.value.findIndex((item)=>{
+          return item.moduleId === store.state.editChosen
+      }) 
+    let detailIndex =  resumeMoudle.value[index].inputList.findIndex((item)=>{
+      return item.sortIndex === store.state.editChosenDetail
+    })
+  const renderListDetailForm = ref(JSON.parse(JSON.stringify(renderList.value.inputList[detailIndex])));
   //将时间反格式显示
   const dateReInit = (date:string)=>{
     return date?.split('~')
   }
-  
+
   const checkList = ['Text','period','id','resumemodelId','sortIndex','title','isShow']
   const moduleCheck =(key)=>{
     if (checkList.find((item)=>{

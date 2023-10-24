@@ -95,7 +95,7 @@ const resumeMoudle = inject('resumeMoudle') as any
     resumeMoudle.value[index].isShow = resumeMoudle.value[index].isShow ? false:true
   }
   
-  //删除简历
+
 const clickToHide = (moduleId,status,id)=>{
   axios.post('posts/updateShowStatus',{moduleId:moduleId,status:status,id:id}).then(res=>{
     if (res?.data.code === 0) { 
@@ -143,7 +143,7 @@ const moduleDetailSwitchDown = (obj)=>{
 .main {
   width: 780px;
   height: 1106px;
-  font-size: $font-size;
+  font-size: 14px;
   .personal {
     margin-bottom: 10px;
   }

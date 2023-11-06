@@ -80,8 +80,9 @@ const signUp = ()=>{
       if (res?.data?.data.code === 200) {
         store.commit('updateToken',res.data.data.data.token)
         router.push({path:"/HomeView"})
+      }else{
+        ElMessage.error("账号或密码不正确")
       }
-     
     }).catch(error=>{
       console.log(error);
   })
@@ -106,18 +107,18 @@ const valiRepassword = (rule: any, value: any, callback: any) => {
       }
   }
 const rules = reactive({
-    userName: [
-            { required: true, message: "请输入昵称", trigger: 'blur'},
-            { message: '请输入昵称', trigger: 'change' }
-          ],
-    password: [       
-            { required: true, message: "请输入密码", trigger: "blur" },
-            { min: 6, max: 12, message: '长度在 6 到 12 个字符', trigger: 'change' }
-          ],
-    repassword:[
-            { required: true, message: "确认密码", trigger: "blur" },
-            { validator: valiRepassword, message: '两次密码不对应', trigger: 'change' }
-          ]
+  userName: [
+          { required: true, message: "请输入昵称", trigger: 'blur'},
+          { message: '请输入昵称', trigger: 'change' }
+        ],
+  password: [       
+          { required: true, message: "请输入密码", trigger: "blur" },
+          { min: 6, max: 12, message: '长度在 6 到 12 个字符', trigger: 'change' }
+        ],
+  repassword:[
+          { required: true, message: "确认密码", trigger: "blur" },
+          { validator: valiRepassword, message: '两次密码不对应', trigger: 'change' }
+        ]
 })
 
 const signInData = reactive({

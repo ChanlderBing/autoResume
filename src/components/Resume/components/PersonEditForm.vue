@@ -65,8 +65,6 @@ const emit = defineEmits(['updateResume'])
     store.commit('switchAddPersonal',false)
   }
 
-  
-
   // 对象扁平化
  const flatten = (myObj)=> {
     const flatObj = {}

@@ -75,7 +75,7 @@
             <el-divider />
             <div class="action">
               <div class="time">
-              最后编辑于12-08</div>
+                {{item.period}}</div>
               <el-button type="primary" class="elbtn" @click="clickToShow(0,true,item.id)" :disabled="item.isShow?true:false">{{ item.isShow ? '已使用':'使用' }}</el-button>
             </div>
           </div>
@@ -89,7 +89,7 @@
             <el-divider />
           <div class="action">
             <div class="time">
-              最后编辑于12-08</div>
+              {{item.period}}</div>
               <el-button type="primary" class="elbtn" @click="clickToShow(1,true,item.id)" :disabled="item.isShow?true:false">{{ item.isShow ? '已使用':'使用' }}</el-button>
           </div>
         </div>
@@ -104,7 +104,7 @@
             <el-divider />
           <div class="action">
             <div class="time">
-              最后编辑于12-08</div>
+              {{item.period}}</div>
               <el-button type="primary" class="elbtn" @click="clickToShow(2,true,item.id)" :disabled="item.isShow?true:false">{{ item.isShow ? '已使用':'使用' }}</el-button>
           </div>
         </div>
@@ -116,7 +116,7 @@
           <el-divider />
           <div class="action">
             <div class="time">
-              最后编辑于12-08</div>
+              {{item.period}}</div>
               <el-button type="primary" class="elbtn" @click="clickToShow(3,true,item.id)" :disabled="item.isShow?true:false">{{ item.isShow ? '已使用':'使用' }}</el-button>
           </div>
           </div>
@@ -178,7 +178,7 @@ const vEllipsis ={
   },
 }
 
-const inputRef = ref(null)
+const inputRef = ref({})
 const createResumeName = ref('')
 const test = (id)=>{
   arr.resumeList.forEach(item=> {
@@ -191,7 +191,7 @@ const test = (id)=>{
   createResumeName.value = arr.resumeList[index].resumeName
   arr.resumeList[index].editActive = 1
   setTimeout(()=>{
-    inputRef.value[0].focus()
+    inputRef.value.focus()
   },0)
 }
 const loading = ref(true)
@@ -382,7 +382,7 @@ onMounted:{
                 display: flex;
                 justify-content: space-between;
                 .resumeName{
-                  font-size: 4px;
+                  font-size: 14px;
                   .editicon{
                     width: 12px;
                     height: 12px;

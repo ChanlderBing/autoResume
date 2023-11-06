@@ -17,7 +17,7 @@
 
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .menu-title{
     display: flex;
     justify-content: space-between;

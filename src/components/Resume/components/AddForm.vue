@@ -30,7 +30,6 @@
           style="border-bottom: 1px solid #ccc"
           :editor="editorRef"
           :defaultConfig="toolbarConfig"
-          mode="simple"
           />
           <Editor
             style="height: 500px; overflow-y: hidden;"
@@ -50,17 +49,25 @@
   <script setup lang="ts">
   import store from '@/store';
   import '@wangeditor/editor/dist/css/style.css'
-  import { onBeforeUnmount,unref, ref, shallowRef, onMounted, inject } from 'vue'
+  import { onBeforeUnmount,unref, ref, shallowRef, onMounted, inject, computed } from 'vue'
   import { Editor, Toolbar } from '@wangeditor/editor-for-vue'
   import { ElMessage } from 'element-plus';
   import  realationship  from "@/utils/realationshipMap.js";
   import  axios  from '@/api/http';
-
   
   let resumeMoudle = inject('resumeMoudle') as any
-  let renderList = ref(resumeMoudle.value[store.state.editChosen])
+  //let renderList = ref(resumeMoudle.value[index])
   let renderListDetail = ref(store.state.addStruct) as any
 
+  let renderList =computed(() => {
+    //访问异步数据，这里二次更新
+    return resumeMoudle.value?.find((res: any) => {
+      return res.moduleId === store.state.editChosen
+    })
+   }) 
+  let index  =  resumeMoudle.value.findIndex((item)=>{
+    return item.moduleId === store.state.editChosen
+  })
   const checkList = ['Text','period','id','resumemodelId','sortIndex','title','isShow']
   const moduleCheck =(key)=>{
     if (checkList.find((item)=>{
@@ -106,7 +113,7 @@
           renderListDetail.value.id = Number('100000'+renderList.value.inputList.length)
           renderListDetail.value.isShow = 1
           renderList.value.inputList.push(unref(renderListDetail))
-          resumeMoudle[store.state.editChosen] = unref(renderList)
+          resumeMoudle[index] = unref(renderList)
           localStorage.setItem('resumeMoudle',JSON.stringify(resumeMoudle.value))
           ElMessage.success('修改成功')
           back()

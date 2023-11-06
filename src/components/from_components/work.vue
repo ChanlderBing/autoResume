@@ -19,7 +19,7 @@ import { reactive } from 'vue';
  //响应式 list 为渲染对象，只有list的值发生变化才会触发响应式，改变props.list不会触发响应式
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .menu-title{
     display: flex;
     justify-content: space-between;
@@ -34,7 +34,7 @@ import { reactive } from 'vue';
     .title-right{
       width: 200px;
       text-align: end;
-      font-size: 12px;
+      font-size: 13px;
     }
   }
   .textH5{

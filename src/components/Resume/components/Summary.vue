@@ -204,6 +204,8 @@ const createResume = ()=>{
   }
 }
 
+//store modelResumeId 格式化
+let modelResumeId = store.state.modelResumeId
 //切换简历
 const emit = defineEmits(['changeResume','currentResumeNameChange','changeModelResume'])
 const resumeChange = (resumeId1:number)=>{
@@ -284,7 +286,7 @@ const getModelResume = ()=>{
   })
 }
 const getResume = async ()=>{
-  const {data:res} = await axios.get('posts/getUserResumeOne').finally(()=>{
+  const {data:res} = await axios.get(`posts/getUserResumeOne?resumeId=${store.state.modelResumeId}`).finally(()=>{
     loading.value = false
   })
   arr.modelResume = res.data.data

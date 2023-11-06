@@ -146,9 +146,10 @@ let resumeMoudle = ref(null)
 let personalMoudle = ref(null)
 let currentResumeName = ref(null)
 let printResumeName = ref(null)
+let modelResumeId = store.state.modelResumeId
 
 watch(() => store.state.editPersonal,() => {
-    if (store.state.currentResumeId === store.state.modelResumeId &&!store.state.editPersonal) {
+    if (store.state.currentResumeId === modelResumeId &&!store.state.editPersonal) {
       personalMoudle.value = JSON.parse(localStorage.getItem('personalMoudle'))
     }
     },{
@@ -156,7 +157,7 @@ watch(() => store.state.editPersonal,() => {
     })
 
 watch(() => store.state.isEdit,() => {
-if (store.state.currentResumeId === store.state.modelResumeId &&!store.state.isEdit) {
+if (store.state.currentResumeId === modelResumeId &&!store.state.isEdit) {
   resumeMoudle.value = JSON.parse(localStorage.getItem('resumeMoudle'))
 }
 },{
@@ -164,7 +165,7 @@ if (store.state.currentResumeId === store.state.modelResumeId &&!store.state.isE
 })
 
 watch(() => store.state.isAdd,() => {
-if (store.state.currentResumeId === store.state.modelResumeId &&!store.state.isAdd) {
+if (store.state.currentResumeId === modelResumeId &&!store.state.isAdd) {
   resumeMoudle.value = JSON.parse(localStorage.getItem('resumeMoudle'))
 }
 },{
@@ -180,20 +181,20 @@ provide('personalMoudle',personalMoudle)
 
 //调用切换接口获取简历
 const changeResume = async (resumeId)=>{
-  const {data:res} = await axios.get(`posts/getUserResume?resumeId=${resumeId}`)
+  const {data:res} = await axios.get(`posts/getUserResume?resumeId=${modelResumeId}`)
   store.commit('changeCurrentResumeId',resumeId)
   resumeMoudle.value = res.data.resumeMoudle
   personalMoudle.value = res.data.personalMoudle
 }
 //切换模板简历简历
 const changeModelResume = async ()=>{
-  store.commit('changeCurrentResumeId',store.state.modelResumeId)
+  store.commit('changeCurrentResumeId',modelResumeId)
   resumeMoudle.value = JSON.parse(localStorage.getItem('resumeMoudle'))
   personalMoudle.value = JSON.parse(localStorage.getItem('personalMoudle'))
 }
 //调用接口获取简历 未登录
 const getResumeInit = async ()=>{
-  const {data:res} = await axios.get(`posts/getResumeInit`)
+  const {data:res} = await axios.get(`posts/getResumeInit?resumeId=${modelResumeId}`)
   store.commit('changeCurrentResumeId',res.data.resumeId)
   resumeMoudle.value = res.data.resumeMoudle
   personalMoudle.value = res.data.personalMoudle
@@ -209,7 +210,7 @@ const getResumeInitWithoutPath = async ()=>{
 //调用接口获取简历 登录
 const resumeInitByJWT = async ()=>{
   const {data:res} = await axios.get(`posts/ResumeInitByJWT`).catch(async (err)=>{
-    return  await axios.get(`posts/getResumeInit`)
+    return  await axios.get(`posts/getResumeInit?resumeId=${modelResumeId}`)
   })
   store.commit('changeCurrentResumeId',res.data.resumeId)
   resumeMoudle.value = res.data.resumeMoudle

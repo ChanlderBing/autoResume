@@ -40,7 +40,6 @@ module.exports = defineConfig({
               less: {
                   // `globalVars` 定义全局对象，可加入全局变量
                   globalVars: {
-                      
                   }
                 }
       }

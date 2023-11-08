@@ -181,7 +181,7 @@ provide('personalMoudle',personalMoudle)
 
 //调用切换接口获取简历
 const changeResume = async (resumeId)=>{
-  const {data:res} = await axios.get(`posts/getUserResume?resumeId=${modelResumeId}`)
+  const {data:res} = await axios.get(`posts/getUserResume?resumeId=${resumeId}`)
   store.commit('changeCurrentResumeId',resumeId)
   resumeMoudle.value = res.data.resumeMoudle
   personalMoudle.value = res.data.personalMoudle
@@ -349,7 +349,10 @@ onMounted:{
       flex-direction: column;
     }
   }
-
+  
+  .home::-webkit-scrollbar{
+    display: none;
+  }
 
   .fade-leave-to {
       opacity: 0;

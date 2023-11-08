@@ -27,7 +27,7 @@
           </el-form-item>
           
           <template v-if="key.toString() === 'richText'" >
-            <div>具体描述</div>
+            <div style="font-size: 14px;">具体描述</div>
               <Toolbar
               style="border-bottom: 1px solid #ccc"
               :editor="editorRef"
@@ -175,7 +175,20 @@
   }
   //richText
   const editorRef = shallowRef()
-  const toolbarConfig = {}
+  const toolbarConfig = {
+    toolbarKeys: [ 
+    "bold",
+    "italic",
+    "underline",
+    "color",
+    "indent",
+    "delIndent",
+    "insertLink",
+    "undo",
+    "bulletedList",
+    "numberedList",
+    ],
+  }
   const editorConfig = { placeholder: '请输入内容...' }
 
   // 组件销毁时，也及时销毁编辑器

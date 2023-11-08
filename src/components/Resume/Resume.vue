@@ -1,5 +1,5 @@
 <template>
-  <el-card style="width:780px;height:50px;margin-bottom:20px;" class="card">
+  <el-card style="width:780px;margin-bottom:20px;" class="card">
      <div class="features">
         <div class="colorPick">
           <el-select v-model="value" class="m-2" :placeholder="options[0].label">
@@ -30,7 +30,7 @@
         </div>
       </div>
   </el-card>
-  <el-card style="width:780px;">
+  <el-card style="" class="card2">
     <div class="main" id="printC">
       <div class="personal">
         <Personal></Personal>
@@ -81,7 +81,6 @@ const resumeMoudle = inject('resumeMoudle') as any
       color: '#E6A23C',
     }
   ]
-
 
   const changeTheme = (theme:string)=>{
       window.document.getElementById('app')?.setAttribute('data-theme', theme)
@@ -140,10 +139,20 @@ const moduleDetailSwitchDown = (obj)=>{
 </script>
 
 <style scoped lang="scss">
+.card2{
+  width:780px;
+  height:calc(100vh - 30px);
+  overflow:none;
+  overflow-y:auto;
+  // overflow: auto;
+  scrollbar-width:none;
+}
 .main {
   width: 780px;
-  height: 1106px;
+ // height: 1106px;
+  min-height: 1114px;
   font-size: 14px;
+
   .personal {
     margin-bottom: 10px;
   }
@@ -152,13 +161,15 @@ const moduleDetailSwitchDown = (obj)=>{
     opacity: 0.4;
   }
 }
+.main::-webkit-scrollbar{
+  display: none;
+}
 .card{
   @include left-background();
   @include border-background();
   @include home-color();
 }
 .features{
-  
     height: 50px;
     width: 100%;
     display:flex;

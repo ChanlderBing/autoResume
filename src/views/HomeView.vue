@@ -55,6 +55,8 @@
       </Transition>
     </div>
     <div class="right">
+      <!-- <div class="divider"></div> -->
+      <el-divider border-style="dashed" style="position: fixed;">一页分界线</el-divider>
       <div class="resumeContent">
         <Transition name="resume" mode="out-in">
         <div v-if="store.state.isEdit ||store.state.isAdd || store.state.editPersonal|| store.state.addPersonal" >
@@ -322,6 +324,7 @@ onMounted:{
     @include home-background();
     @include home-color();
     padding-top: 20px;
+    padding-bottom: 30px;
     .left {
       .edit{
       width: 700px;

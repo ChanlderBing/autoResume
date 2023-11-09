@@ -1,6 +1,5 @@
 <template>
     <el-date-picker
-       
         type="date"
         placeholder="开始时间"
         format="YYYY/MM/DD"

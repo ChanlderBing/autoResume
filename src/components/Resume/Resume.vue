@@ -31,6 +31,11 @@
       </div>
   </el-card>
   <el-card style="" class="card2">
+    <!-- <el-divider class="divider" border-style="dashed" border-color="red">一页分界线</el-divider> -->
+    <div class="divider">
+      <span class="titleName">一页分界线</span>
+      <div class="line"></div>
+    </div>
     <div class="main" id="printC">
       <div class="personal">
         <Personal></Personal>
@@ -57,7 +62,7 @@ const emit = defineEmits(['updateResume'])
 const resumeMoudle = inject('resumeMoudle') as any
   const value = ref(store.state.color_theme)
   const options = [
-    {
+    { 
       value: 'red-theme',
       label: '红色',
       color: '#F56C6C',
@@ -141,18 +146,43 @@ const moduleDetailSwitchDown = (obj)=>{
 <style scoped lang="scss">
 .card2{
   width:780px;
-  height:calc(100vh - 30px);
+  height:calc(100vh - 183px);
   overflow:none;
   overflow-y:auto;
-  // overflow: auto;
   scrollbar-width:none;
+  position: relative;
+  .divider{
+    height: 24px;
+    width: 100%;
+    position: absolute;
+    top: 1093px;
+    z-index: 9;
+    background-color: hsla(0,0%,100%,.7);
+    .titleName{
+      position: relative;
+      top: 1px;
+      left: 349px;
+      font-size: 14px;
+      font-weight: bold;
+      z-index: 19;
+      @include base-color();
+      padding: 0 14px;
+      background-color: hsla(0, 0%, 100%, 0.527);
+    }
+    .line{
+      position: relative;
+      top: -8px;
+      flex-grow: 1;
+      border: 1px dashed red;
+    //  @include base-background();
+    }
+  }
 }
 .main {
   width: 780px;
- // height: 1106px;
   min-height: 1114px;
   font-size: 14px;
-
+  margin-bottom: 18px;
   .personal {
     margin-bottom: 10px;
   }
@@ -190,7 +220,7 @@ const moduleDetailSwitchDown = (obj)=>{
       ::v-deep .el-select .el-input__inner{
       width: 80px;
       @include left-background();
-        @include border-background();
+      @include border-background();
       }
     }
 }

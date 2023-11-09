@@ -1,13 +1,19 @@
 <template>
   <div class="personal"  v-if="personalMoudle">
     <div class="information" @click="editInformation()">
-      <p><h2>{{  personalMoudle.userName}}</h2></p>
-      <div>
-        <span v-for="(list1,key,index1) in personalMoudle.inputList[0]">{{ list1 }}<span v-if="Object.keys(personalMoudle.inputList[0]).length - 1 > index1"> | </span></span>
+      <p><h2>{{ personalMoudle.userName}}</h2></p>
+      <div v-for="(list1,key,index1) in personalMoudle.inputList[0]">
+        <span><img :src=changeSvg[key]()>  </span>
+        <span>{{ list1 }}</span>
       </div>
-      <div>
-        <span v-for="(list,key,index) in personalMoudle.inputList[1]">{{ list }}<span v-if="Object.keys(personalMoudle.inputList[1]).length - 1 > index"> | </span></span>
+      <div v-for="(list,key,index) in personalMoudle.inputList[1]">
+        <span><img :src=changeSvg[key]()>  </span>
+        <span>{{ list }}</span>
       </div>
+      <!-- <div class="normal">
+        <span class="icon"></span>
+        <span class="content" ></span>
+      </div> -->
     </div>
     <div class="avatar" @mouseleave="isShow = false;"  @mouseenter="isShow = true" >
       <img :src='personalMoudle.avatar ? baseUrl : imgSrc' alt="Ikun!" blue class="aa">
@@ -30,6 +36,22 @@ let personalMoudle = inject('personalMoudle') as any
 const isShow = ref(false)
 const IS_PROD = ['production', 'prod'].includes(process.env.NODE_ENV);
 const baseUrl = process.env.NODE_ENV === 'development' ? `http://127.0.0.1:8080/upload_img/${personalMoudle.avatar}` : `http://121.41.1.191:80/upload_img/${personalMoudle.avatar}`
+const changeSvg =
+  {
+    'phoneNumber': ()=>{
+      return require('../../../assets/phone.png') 
+    },
+    'email': ()=>{
+      return require('../../../assets/phone.png') 
+    },
+    'degree': ()=>{
+      return require('../../../assets/phone.png') 
+    },
+    'cityYoulived': ()=>{
+      return require('../../../assets/phone.png') 
+    },
+
+  }
 
 const editInformation = ()=>{ 
   if (store.state.isEdit || store.state.isAdd || store.state.editPersonal) {

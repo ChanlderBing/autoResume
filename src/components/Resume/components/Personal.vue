@@ -2,18 +2,18 @@
   <div class="personal"  v-if="personalMoudle">
     <div class="information" @click="editInformation()">
       <p><h2>{{ personalMoudle.userName}}</h2></p>
-      <div v-for="(list1,key,index1) in personalMoudle.inputList[0]">
-        <span><img :src=changeSvg[key]()>  </span>
-        <span>{{ list1 }}</span>
+      <div class="normal">
+        <div  class="boxdiv" v-for="(list1,key,index1) in personalMoudle.inputList[0]">
+          <span class="icon"><img :src=changeSvg[key]()>  </span>
+          <span ass="content">{{ list1 }}</span>
+        </div>
       </div>
-      <div v-for="(list,key,index) in personalMoudle.inputList[1]">
-        <span><img :src=changeSvg[key]()>  </span>
-        <span>{{ list }}</span>
+      <div class="status">
+        <div class="boxdiv" v-for="(list,key,index) in personalMoudle.inputList[1]">
+          <span class="icon"><img :src=changeSvg[key]()>  </span>
+          <span class="content" >{{ list }}</span>
+        </div>
       </div>
-      <!-- <div class="normal">
-        <span class="icon"></span>
-        <span class="content" ></span>
-      </div> -->
     </div>
     <div class="avatar" @mouseleave="isShow = false;"  @mouseenter="isShow = true" >
       <img :src='personalMoudle.avatar ? baseUrl : imgSrc' alt="Ikun!" blue class="aa">
@@ -50,7 +50,15 @@ const changeSvg =
     'cityYoulived': ()=>{
       return require('../../../assets/phone.png') 
     },
-
+    'cityItent': ()=>{
+      return require('../../../assets/phone.png') 
+    },
+    'currentStatus': ()=>{
+      return require('../../../assets/phone.png') 
+    },
+    'postIntent': ()=>{
+      return require('../../../assets/phone.png') 
+    },
   }
 
 const editInformation = ()=>{ 
@@ -152,6 +160,27 @@ const verificationPicFile =  (file)=> {
     .spanGap{
       padding-right:4px;
       padding-left:4px;
+    }
+    .normal{
+      display: flex;
+      flex-wrap: wrap;
+    }
+    .status{
+      display: flex;
+      flex-wrap: wrap;
+      padding-right:4px;
+    }
+    .boxdiv{
+      display: flex;
+      align-items:flex-start;
+      padding-right: 14px;
+      .icon{
+        padding-right: 3px;
+      img{
+        width: 16px;
+        height: 16px;
+      }
+    }
     }
   }
   .avatar{

@@ -30,13 +30,9 @@
         </div>
       </div>
   </el-card>
-  <el-card style="" class="card2">
-    <!-- <el-divider class="divider" border-style="dashed" border-color="red">一页分界线</el-divider> -->
-    <div class="divider">
-      <span class="titleName">一页分界线</span>
-      <div class="line"></div>
-    </div>
-    <div class="main" id="printC">
+  <el-card class="card2">
+    
+    <div class="main" id="printC" ref="printRef">
       <div class="personal">
         <Personal></Personal>
       </div>
@@ -48,6 +44,10 @@
       @moduleDetailSwitchUp="moduleDetailSwitchUp"
       @moduleDetailSwitchDown="moduleDetailSwitchDown" ></ShowList>
     </div>
+    <div class="divider" v-if="printHeight > 1116">
+      <span class="titleName">一页分界线</span>
+      <div class="line"></div>
+    </div>
   </el-card>
 </template>
 <script lang="ts" setup>
@@ -55,37 +55,14 @@ import Personal from '@/components/Resume/components/Personal.vue'
 import store from '@/store';
 import  axios  from '@/api/http';
 import { ElMessage } from 'element-plus';
-import {  ref,inject } from 'vue'
+import {  ref,inject, onMounted, computed, nextTick } from 'vue'
 import ShowList from './components/ShowList.vue';
 
 const emit = defineEmits(['updateResume'])
 const resumeMoudle = inject('resumeMoudle') as any
-  const value = ref(store.state.color_theme)
-  const options = [
-    { 
-      value: 'red-theme',
-      label: '红色',
-      color: '#F56C6C',
-    }
-    ,
-    {
-      value: 'green-theme',
-      label: '绿色',
-      color: '#67C23A',
-    }
-    ,
-    {
-      value: 'blue-theme',
-      label: '蓝色',
-      color: '#409EFF',
-    }
-    ,
-    {
-      value: 'org-theme',
-      label: '橙色',
-      color: '#E6A23C',
-    }
-  ]
+const value = ref(store.state.color_theme)
+let printRef = ref(null)
+let printHeight = ref(0)
 
   const changeTheme = (theme:string)=>{
       window.document.getElementById('app')?.setAttribute('data-theme', theme)
@@ -99,7 +76,6 @@ const resumeMoudle = inject('resumeMoudle') as any
     resumeMoudle.value[index].isShow = resumeMoudle.value[index].isShow ? false:true
   }
   
-
 const clickToHide = (moduleId,status,id)=>{
   axios.post('posts/updateShowStatus',{moduleId:moduleId,status:status,id:id}).then(res=>{
     if (res?.data.code === 0) { 
@@ -141,13 +117,42 @@ const moduleDetailSwitchDown = (obj)=>{
     }
   })
 }
+
+onMounted(() => {
+  printHeight.value = printRef.value.clientHeight;
+})
+const options = [
+    { 
+      value: 'red-theme',
+      label: '红色',
+      color: '#F56C6C',
+    }
+    ,
+    {
+      value: 'green-theme',
+      label: '绿色',
+      color: '#67C23A',
+    }
+    ,
+    {
+      value: 'blue-theme',
+      label: '蓝色',
+      color: '#409EFF',
+    }
+    ,
+    {
+      value: 'org-theme',
+      label: '橙色',
+      color: '#E6A23C',
+    }
+  ]
 </script>
 
 <style scoped lang="scss">
 .card2{
   width:780px;
-  height:calc(100vh - 183px);
-  overflow:none;
+  height:calc(100vh - 193px);
+  overflow:none; 
   overflow-y:auto;
   scrollbar-width:none;
   position: relative;
@@ -155,7 +160,7 @@ const moduleDetailSwitchDown = (obj)=>{
     height: 24px;
     width: 100%;
     position: absolute;
-    top: 1093px;
+    top: 1097px;
     z-index: 9;
     background-color: hsla(0,0%,100%,.7);
     .titleName{
@@ -167,14 +172,13 @@ const moduleDetailSwitchDown = (obj)=>{
       z-index: 19;
       @include base-color();
       padding: 0 14px;
-      background-color: hsla(0, 0%, 100%, 0.527);
+      background-color: white;
     }
     .line{
       position: relative;
       top: -8px;
       flex-grow: 1;
       border: 1px dashed red;
-    //  @include base-background();
     }
   }
 }
@@ -182,7 +186,6 @@ const moduleDetailSwitchDown = (obj)=>{
   width: 780px;
   min-height: 1114px;
   font-size: 14px;
-  margin-bottom: 18px;
   .personal {
     margin-bottom: 10px;
   }

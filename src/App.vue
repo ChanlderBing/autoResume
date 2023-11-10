@@ -19,9 +19,14 @@
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
 }
-html,body,p,ol{
+html,body,p{
   padding: 0;
   margin: 0;
+}
+ol{
+  padding: 0;
+  margin: 0;
+  margin-left: 16px;
 }
 
 .routeChange-leave-to {

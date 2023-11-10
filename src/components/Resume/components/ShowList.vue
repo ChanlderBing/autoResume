@@ -344,6 +344,9 @@ import { ElMessage, ElMessageBox } from "element-plus";
     }
     .piece{
       margin: 0 16px;
+      li{
+        page-break-inside: avoid;
+      }
       .title{
         height: 30px;
         display: flex;

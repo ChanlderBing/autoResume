@@ -23,11 +23,10 @@ const validatePhone = (rule,value,callback)=>{
     ],
     "inputList[0].degree": [
       {
-        required: true,
-        message: '请输入你的专业',
+        message: '请输入你的github',
         trigger: 'blur',
       },
-      { min: 2, max: 18, message: '长度应该在2-18个字符', trigger: 'blur' },
+      { min: 2, max: 48, message: '长度应该在2-8个字符', trigger: 'blur' },
     ],
     "inputList[0].email": [
       {

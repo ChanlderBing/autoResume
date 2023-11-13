@@ -65,6 +65,13 @@ $themes: (
   }
 }
 
+@mixin borderColor() {
+  @each $theme-name, $theme in $themes {
+    [data-theme = '#{$theme-name}'] & {
+      border-color: map-get($map: $theme, $key: base-color);
+    }
+  }
+}
 //背景色
 @mixin base-background() {
   @each $theme-name, $theme in $themes {

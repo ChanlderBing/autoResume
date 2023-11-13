@@ -74,9 +74,11 @@
             </div>
             <el-divider />
             <div class="action">
-              <div class="time">
-                {{item.period}}</div>
-              <el-button type="primary" class="elbtn" @click="clickToShow(0,true,item.id)" :disabled="item.isShow?true:false">{{ item.isShow ? '已使用':'使用' }}</el-button>
+              <div class="time">{{item.period}}</div>
+              <div class="contrlBtn">
+                <el-button type="primary" class="elbtn" @click="moduleDetailDel(0,item.id)">删除</el-button>
+                <el-button type="primary" class="elbtn" @click="clickToShow(0,true,item.id)" :disabled="item.isShow?true:false">{{ item.isShow ? '已使用':'使用' }}</el-button>
+              </div> 
             </div>
           </div>
       </el-collapse-item>
@@ -88,9 +90,11 @@
             <div class="summary" v-html="item.richText" v-ellipsis="3"></div>
             <el-divider />
           <div class="action">
-            <div class="time">
-              {{item.period}}</div>
+            <div class="time">{{item.period}}</div>
+            <div class="contrlBtn">
+              <el-button type="danger" class="elbtn" @click="moduleDetailDel(1,item.id)" :disabled="item.isShow?true:false">删除</el-button>
               <el-button type="primary" class="elbtn" @click="clickToShow(1,true,item.id)" :disabled="item.isShow?true:false">{{ item.isShow ? '已使用':'使用' }}</el-button>
+            </div>
           </div>
         </div>
           </div>
@@ -103,9 +107,11 @@
             <div class="summary" v-html="item.richText" v-ellipsis="3"></div>
             <el-divider />
           <div class="action">
-            <div class="time">
-              {{item.period}}</div>
+            <div class="time">{{item.period}}</div>
+            <div class="contrlBtn">
+              <el-button type="danger" class="elbtn" @click="moduleDetailDel(2,item.id)" :disabled="item.isShow?true:false">删除</el-button>
               <el-button type="primary" class="elbtn" @click="clickToShow(2,true,item.id)" :disabled="item.isShow?true:false">{{ item.isShow ? '已使用':'使用' }}</el-button>
+            </div>
           </div>
         </div>
           </div>
@@ -115,21 +121,21 @@
           <div class="summary" v-html="item.richText" v-ellipsis="3"></div>
           <el-divider />
           <div class="action">
-            <div class="time">
-              {{item.period}}</div>
+            <div class="time">{{item.period}}</div>
+            <div class="contrlBtn">
               <el-button type="primary" class="elbtn" @click="clickToShow(3,true,item.id)" :disabled="item.isShow?true:false">{{ item.isShow ? '已使用':'使用' }}</el-button>
+            </div> 
           </div>
           </div>
       </el-collapse-item>
     </el-collapse>
   </el-card>
-  </template>
-
+</template>
 
 <script lang="ts" setup>
 import  axios  from '../../../api/http';
 import { defineEmits, ref, reactive,computed, onMounted, nextTick, getCurrentInstance, inject } from 'vue';
-import { ElMessage } from 'element-plus';
+import { ElMessage, ElMessageBox } from 'element-plus';
 import store from '@/store';
 import router from '@/router';
 //未登录，获取固定模板。登录后获取个人简历列表显示第一份简历
@@ -212,7 +218,7 @@ const resumeChange = (resumeId1:number)=>{
   if (resumeId1 === store.state.currentResumeId) {
     ElMessage.warning('正在浏览该简历')
   }else if(!localStorage.getItem("token")) {
-      ElMessage.error('请先登录！')
+    ElMessage.error('请先登录！')
   } else if (resumeId1 === store.state.modelResumeId ) {
     emit('changeModelResume')
   }else{
@@ -301,6 +307,39 @@ const noTokenToGet = ()=>{
     getResume()
   }
 }
+const moduleDetailDel = (moduleId,id)=>{
+  ElMessageBox.confirm(
+    '你确定要删除吗？删除后无法恢复',
+    'Warning',
+    {
+      confirmButtonText: '是的',
+      cancelButtonText: '取消',
+      type: 'warning',
+    }
+  ).then(() => {
+    if (store.state.currentResumeId !=store.state.modelResumeId && store.state.token) {
+      axios.post('posts/moduleDetailDel',{moduleId:moduleId,id:id}).then(res=>{
+        if (res?.data.code === 0) { 
+          ElMessage.success('删除成功')
+        }
+      })
+    } else {
+      const index = resumeMoudle.value.findIndex((item)=>{
+        return item.moduleId === moduleId
+      })
+      const indexMoudel = resumeMoudle.value[index].inputList.findIndex((item)=>{
+        return item.id === id
+      })
+      resumeMoudle.value[index].inputList.splice(indexMoudel,1) 
+      localStorage.setItem("resumeMoudle",JSON.stringify(resumeMoudle.value))
+    }
+    }).catch(() => {
+      ElMessage({
+        type: 'info',
+        message: '取消成功',
+      })
+    })
+  }
 
 //经历库加入简历
 const clickToShow = (moduleId,status,id)=>{

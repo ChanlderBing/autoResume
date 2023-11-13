@@ -16,7 +16,7 @@
       </div>
     </div>
     <div class="avatar" @mouseleave="isShow = false;"  @mouseenter="isShow = true" >
-      <img :src='personalMoudle.avatar ? baseUrl : imgSrc' alt="Ikun!" blue class="aa">
+      <img :src='personalMoudle.avatar ? `http://121.41.1.191:80/upload_img/${personalMoudle.avatar}` : imgSrc' alt="Ikun!" blue class="aa">
       <div class="mask" v-show="isShow">
         <span @click="upload">更换<svg t="1667906788133" class="icon" viewBox="0 0 1066 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3896" width="20" height="20"><path d="M852.650667 256H210.901333a21.333333 21.333333 0 0 0 0 42.666667h66.858667v442.624A113.493333 113.493333 0 0 0 390.954667 854.613333h284.8a113.450667 113.450667 0 0 0 113.28-113.322666V620.416a21.333333 21.333333 0 1 0-42.666667 0v120.874667c0 38.954667-31.658667 70.656-70.613333 70.656H390.954667a70.741333 70.741333 0 0 1-70.613334-70.656V298.666667h426.069334v190.208a21.333333 21.333333 0 0 0 42.666666 0V298.666667h63.573334a21.333333 21.333333 0 0 0 0-42.666667" p-id="3897"></path><path d="M442.88 213.333333h187.818667a21.333333 21.333333 0 1 0 0-42.666666H442.88a21.333333 21.333333 0 0 0 0 42.666666M426.922667 405.333333v298.666667a21.333333 21.333333 0 0 0 42.666666 0v-298.666667a21.333333 21.333333 0 0 0-42.666666 0M597.589333 405.333333v298.666667a21.333333 21.333333 0 0 0 42.666667 0v-298.666667a21.333333 21.333333 0 0 0-42.666667 0" p-id="3898"></path></svg></span>
       </div>
@@ -35,33 +35,33 @@ import axios from "@/api/https";
 let personalMoudle = inject('personalMoudle') as any
 const isShow = ref(false)
 const IS_PROD = ['production', 'prod'].includes(process.env.NODE_ENV);
-const baseUrl = process.env.NODE_ENV === 'development' ? `http://127.0.0.1:8080/upload_img/${personalMoudle.avatar}` : `http://121.41.1.191:80/upload_img/${personalMoudle.avatar}`
+//let baseUrl = process.env.NODE_ENV === 'development' ? `http://127.0.0.1:8080/upload_img/${personalMoudle.avatar}` : `http://121.41.1.191:80/upload_img/${personalMoudle.avatar}`
 const changeSvg =
   {
     'phoneNumber': ()=>{
       return require('../../../assets/phone.png') 
     },
     'email': ()=>{
-      return require('../../../assets/phone.png') 
+      return require('../../../assets/email.png') 
     },
     'degree': ()=>{
-      return require('../../../assets/phone.png') 
+      return require('../../../assets/github.png') 
     },
     'cityYoulived': ()=>{
-      return require('../../../assets/phone.png') 
+      return require('../../../assets/cityYoulived.png') 
     },
     'cityItent': ()=>{
-      return require('../../../assets/phone.png') 
+      return require('../../../assets/cityYoulived.png') 
     },
     'currentStatus': ()=>{
-      return require('../../../assets/phone.png') 
+      return require('../../../assets/currentStatus.png') 
     },
     'postIntent': ()=>{
-      return require('../../../assets/phone.png') 
+      return require('../../../assets/postIntent.png') 
     },
   }
 
-const editInformation = ()=>{ 
+const editInformation = ()=>{
   if (store.state.isEdit || store.state.isAdd || store.state.editPersonal) {
       ElMessageBox.confirm(
         '要退出当前编辑吗?',
@@ -174,6 +174,7 @@ const verificationPicFile =  (file)=> {
       display: flex;
       align-items:flex-start;
       padding-right: 14px;
+      line-height: 14px;
       .icon{
         padding-right: 3px;
       img{

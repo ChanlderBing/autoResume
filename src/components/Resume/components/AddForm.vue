@@ -1,50 +1,50 @@
 <template>
   <el-card class="box-card">
-  <div class="topTab">
-      <div @click="back"><svg style="width: 1em; height: 1em;font-size: 22px;" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" data-v-029747aa=""><path fill="currentColor" d="M609.408 149.376 277.76 489.6a32 32 0 0 0 0 44.672l331.648 340.352a29.12 29.12 0 0 0 41.728 0 30.592 30.592 0 0 0 0-42.752L339.264 511.936l311.872-319.872a30.592 30.592 0 0 0 0-42.688 29.12 29.12 0 0 0-41.728 0z"></path></svg></div>
-      <span class="text-large font-600 mr-3"> {{renderList.title}} </span>
-      <el-button type="primary" class="ml-2" @click="onSubmit">完成</el-button>
-  </div>
+    <div class="topTab">
+        <div @click="back"><svg style="width: 1em; height: 1em;font-size: 22px;" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" data-v-029747aa=""><path fill="currentColor" d="M609.408 149.376 277.76 489.6a32 32 0 0 0 0 44.672l331.648 340.352a29.12 29.12 0 0 0 41.728 0 30.592 30.592 0 0 0 0-42.752L339.264 511.936l311.872-319.872a30.592 30.592 0 0 0 0-42.688 29.12 29.12 0 0 0-41.728 0z"></path></svg></div>
+        <span class="text-large font-600 mr-3"> {{renderList.title}} </span>
+        <el-button type="primary" class="ml-2" @click="onSubmit">完成</el-button>
+    </div>
     <div class="skill">
       <el-form :inline="true" :model="renderListDetail" class="demo-form-inline" ref="ruleForm">
         <template v-for="(value,key,index) in renderListDetail" :key="index">
-          <el-form-item :label="realationship[key]" v-if="moduleCheck(key) === 'normal'" :prop="key" :rules="[{required: true, message: '请输入'+ realationship[key], trigger: 'blur'},{ min: 2, max: 18, message: '长度应该在2-18个字符', trigger: 'blur'}]">
-            <el-input v-model="renderListDetail[key]" />
+          <template  v-if="moduleCheck(key) === 'normal'">   
+            <el-form-item :label="realationship[key]" :prop="key" :rules="[{required: true, message: '请输入'+ realationship[key], trigger: 'blur'},{ min: 2, max: 18, message: '长度应该在2-18个字符', trigger: 'blur'}]">
+              <el-input v-model="renderListDetail[key]" />
+            </el-form-item>
+          </template>
+          <el-form-item label="时间" v-if="moduleCheck(key) === 'period'" :prop="key"  :rules="[{required: true, message: '请输入时间', trigger: 'change'}]">
+              <el-date-picker
+              v-model="renderListDetail.period"
+              type="daterange"
+              range-separator="至"
+              start-placeholder="开始时间"
+              end-placeholder="结束时间"
+              :shortcuts="shortcuts"
+              format="YYYY/MM/DD"
+              value-format="YYYY.MM.DD"
+            />
           </el-form-item>
-      <el-form-item label="时间" v-if="moduleCheck(key) === 'period'" :prop="key"  :rules="[{required: true, message: '请输入时间', trigger: 'change'}]">
-          <el-date-picker
-          v-model="renderListDetail.period"
-          type="daterange"
-          range-separator="至"
-          start-placeholder="开始时间"
-          end-placeholder="结束时间"
-          :shortcuts="shortcuts"
-          format="YYYY/MM/DD"
-          value-format="YYYY.MM.DD"
-        />
-      </el-form-item>
-      <el-form-item v-if="key.toString() === 'richText'">
-        <div>具体描述</div>
-        <div style="border: 1px solid #ccc">
-          <Toolbar
-          style="border-bottom: 1px solid #ccc"
-          :editor="editorRef"
-          :defaultConfig="toolbarConfig"
-          />
-          <Editor
-            style="height: 500px; overflow-y: hidden;"
-            v-model="renderListDetail.richText"
-            :defaultConfig="editorConfig"
-            mode="simple"
-            @onCreated="handleCreated"
-          />
-        </div>
-      </el-form-item>
-      </template>
+          <template v-if="key.toString() === 'richText'" >
+            <div style="font-size: 14px;">具体描述</div>
+              <Toolbar
+              style="border-bottom: 1px solid #ccc"
+              :editor="editorRef"
+              :defaultConfig="toolbarConfig"
+              />
+              <Editor
+                style="height: 500px; overflow-y: hidden;"
+                v-model="renderListDetail.richText"
+                :defaultConfig="editorConfig"
+                @onCreated="handleCreated"
+                mode="simple"
+              />
+          </template>
+       </template>
       </el-form>
     </div>
   </el-card>
-  </template>
+</template>
   
   <script setup lang="ts">
   import store from '@/store';
@@ -153,8 +153,20 @@
   }
   //richText
   const editorRef = shallowRef()
-
-  const toolbarConfig = {}
+  const toolbarConfig = {
+    toolbarKeys: [ 
+    "bold",
+    "italic",
+    "underline",
+    "color",
+    "indent",
+    "delIndent",
+    "insertLink",
+    "undo",
+    "bulletedList",
+    "numberedList",
+    ],
+  }
   const editorConfig = { placeholder: '请输入内容...' }
 
   // 组件销毁时，也及时销毁编辑器
@@ -176,6 +188,5 @@
       display: flex;
       justify-content: space-between;
     }
-
    
   </style>

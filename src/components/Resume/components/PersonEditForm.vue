@@ -18,8 +18,19 @@
         </template>
           <div class="skillTitle"> 就职意向 </div>
           <template v-for="(value,key) in personalMoudle.inputList[1]">
-            <el-form-item :label="realationshipMap[key]"  :prop="`inputList[1].${key}`">
+            <el-form-item v-if="key.toString() !== 'currentStatus'" :label="realationshipMap[key]"  :prop="`inputList[1].${key}`" > 
               <el-input v-model="personalMoudle.inputList[1][key]" />
+            </el-form-item>
+
+            <el-form-item v-else :label="realationshipMap[key]"  :prop="`inputList[1].${key}`" > 
+              <el-select v-model="personalMoudle.inputList[1][key]" class="m-2" placeholder="Select">
+                <el-option
+                  v-for="item in options"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                />
+              </el-select>
             </el-form-item>
           </template>
         </el-form>
@@ -28,15 +39,15 @@
 </template>
   
 <script setup lang="ts">
-import store from '@/store';
-import '@wangeditor/editor/dist/css/style.css' // 引入 css
-import { unref, ref,inject} from 'vue'
-import { ElMessage } from 'element-plus';
-import axios from '@/api/http';
-import  rules  from "@/utils/useFormRules.js";
-const emit = defineEmits(['updateResume'])
+  import store from '@/store';
+  import '@wangeditor/editor/dist/css/style.css' // 引入 css
+  import { unref, ref,inject} from 'vue'
+  import { ElMessage } from 'element-plus';
+  import axios from '@/api/http';
+  import  rules  from "@/utils/useFormRules.js";
+  import  { realationshipMap ,options  }  from "@/utils/optionMap.js";
 
-
+  const emit = defineEmits(['updateResume'])
   let personalMoudle1 = inject('personalMoudle') as any
   const personalMoudle = ref(JSON.parse(JSON.stringify(personalMoudle1.value)));
   const ruleForm = ref(null);
@@ -64,7 +75,6 @@ const emit = defineEmits(['updateResume'])
     store.commit('switch',false)
     store.commit('switchAddPersonal',false)
   }
-
   // 对象扁平化
  const flatten = (myObj)=> {
     const flatObj = {}
@@ -96,19 +106,7 @@ const emit = defineEmits(['updateResume'])
     }
     formatKey(myObj, flag)
     return flatObj
-}
-
-
-  const realationshipMap = {
-      'phoneNumber':'手机',
-      'email':'邮件',
-      'degree':'专业',
-      'cityYoulived':'城市',
-      'cityItent': '意向城市',
-      'currentStatus':'就职状态',
-      'postIntent':'投递意向'
   }
-  
 </script>
 
 <style scoped lang="scss">

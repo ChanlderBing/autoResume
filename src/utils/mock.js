@@ -68,4 +68,4 @@
 }
 ]
 
-export default resumeMoudleMock
+    export default resumeMoudleMock

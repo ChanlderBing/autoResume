@@ -55,8 +55,9 @@ import Personal from '@/components/Resume/components/Personal.vue'
 import store from '@/store';
 import  axios  from '@/api/http';
 import { ElMessage } from 'element-plus';
-import {  ref,inject, onMounted, computed, nextTick } from 'vue'
+import {  ref,inject, onMounted, computed, nextTick, onUpdated } from 'vue'
 import ShowList from './components/ShowList.vue';
+import {useResizeObserver} from "@vueuse/core";
 
 const emit = defineEmits(['updateResume'])
 const resumeMoudle = inject('resumeMoudle') as any
@@ -64,17 +65,17 @@ const value = ref(store.state.color_theme)
 let printRef = ref(null)
 let printHeight = ref(0)
 
-  const changeTheme = (theme:string)=>{
-      window.document.getElementById('app')?.setAttribute('data-theme', theme)
-      store.commit('switchThemeColor',theme)
-  }
+const changeTheme = (theme:string)=>{
+    window.document.getElementById('app')?.setAttribute('data-theme', theme)
+    store.commit('switchThemeColor',theme)
+}
  
-  const resumeMoudleChange = (moduleId)=>{
-    const index =  resumeMoudle.value.findIndex((item)=>{
-     return  item.moduleId=== moduleId
-    })
-    resumeMoudle.value[index].isShow = resumeMoudle.value[index].isShow ? false:true
-  }
+const resumeMoudleChange = (moduleId)=>{
+  const index =  resumeMoudle.value.findIndex((item)=>{
+    return  item.moduleId=== moduleId
+  })
+  resumeMoudle.value[index].isShow = resumeMoudle.value[index].isShow ? false:true
+}
   
 const clickToHide = (moduleId,status,id)=>{
   axios.post('posts/updateShowStatus',{moduleId:moduleId,status:status,id:id}).then(res=>{
@@ -119,8 +120,13 @@ const moduleDetailSwitchDown = (obj)=>{
 }
 
 onMounted(() => {
-  printHeight.value = printRef.value.clientHeight;
+useResizeObserver(printRef , (entries) => {
+  const entry = entries[0]
+  const { height } = entry.contentRect
+  printHeight.value = height
 })
+})
+
 const options = [
     { 
       value: 'red-theme',
@@ -178,13 +184,13 @@ const options = [
       position: relative;
       top: -8px;
       flex-grow: 1;
-      border: 1px dashed red;
+      border: 1px dashed;
+      @include borderColor();
     }
   }
 }
 .main {
   width: 780px;
-  min-height: 1114px;
   font-size: 14px;
   .personal {
     margin-bottom: 10px;

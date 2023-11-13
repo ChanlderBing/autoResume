@@ -229,7 +229,7 @@ import { ElMessage, ElMessageBox } from "element-plus";
         store.commit('chosenOne',obj.moduleId)
         store.commit('switchAdd',true)
         }, 100);
-          }).catch(() => {
+        }).catch(() => {
             ElMessage({
               type: 'info',
               message: '取消成功',

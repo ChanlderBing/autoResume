@@ -76,7 +76,7 @@
             <div class="action">
               <div class="time">{{item.period}}</div>
               <div class="contrlBtn">
-                <el-button type="primary" class="elbtn" @click="moduleDetailDel(0,item.id)">删除</el-button>
+                <el-button type="primary" class="elbtn" @click="moduleDetailDel(0,item.id)" :disabled="sortModule(0).length === 1">删除</el-button>
                 <el-button type="primary" class="elbtn" @click="clickToShow(0,true,item.id)" :disabled="item.isShow?true:false">{{ item.isShow ? '已使用':'使用' }}</el-button>
               </div> 
             </div>
@@ -92,7 +92,7 @@
           <div class="action">
             <div class="time">{{item.period}}</div>
             <div class="contrlBtn">
-              <el-button type="danger" class="elbtn" @click="moduleDetailDel(1,item.id)" :disabled="item.isShow?true:false">删除</el-button>
+              <el-button type="primary" class="elbtn" @click="moduleDetailDel(1,item.id)" :disabled="sortModule(1).length === 1">删除</el-button>
               <el-button type="primary" class="elbtn" @click="clickToShow(1,true,item.id)" :disabled="item.isShow?true:false">{{ item.isShow ? '已使用':'使用' }}</el-button>
             </div>
           </div>
@@ -109,7 +109,7 @@
           <div class="action">
             <div class="time">{{item.period}}</div>
             <div class="contrlBtn">
-              <el-button type="danger" class="elbtn" @click="moduleDetailDel(2,item.id)" :disabled="item.isShow?true:false">删除</el-button>
+              <el-button type="primary" class="elbtn" @click="moduleDetailDel(2,item.id)" :disabled="sortModule(2).length == 1">删除</el-button>
               <el-button type="primary" class="elbtn" @click="clickToShow(2,true,item.id)" :disabled="item.isShow?true:false">{{ item.isShow ? '已使用':'使用' }}</el-button>
             </div>
           </div>
@@ -184,21 +184,21 @@ const vEllipsis ={
   },
 }
 
+
 const inputRef = ref({})
 const createResumeName = ref('')
 const test = (id)=>{
   arr.resumeList.forEach(item=> {
     item.editActive = 0
   })
-  
   const index = arr.resumeList.findIndex((item)=>{
     return item.resumeId === id
   })
   createResumeName.value = arr.resumeList[index].resumeName
   arr.resumeList[index].editActive = 1
-  setTimeout(()=>{
-    inputRef.value.focus()
-  },0)
+  nextTick(()=>{
+    inputRef.value[0].focus();
+  })
 }
 const loading = ref(true)
 //新建简历
@@ -237,7 +237,6 @@ const arr = reactive({
 })
 let resumeMoudle = inject('resumeMoudle') as any
 const sortModule = (moduleId)=>{
-  
   return  resumeMoudle.value.find((item)=>{
     return item.moduleId === moduleId
   }).inputList
@@ -321,6 +320,7 @@ const moduleDetailDel = (moduleId,id)=>{
       axios.post('posts/moduleDetailDel',{moduleId:moduleId,id:id}).then(res=>{
         if (res?.data.code === 0) { 
           ElMessage.success('删除成功')
+          emit('changeResume',store.state.currentResumeId)
         }
       })
     } else {

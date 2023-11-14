@@ -84,6 +84,7 @@
       return 'normal'
     } 
   }
+
   const dateInit = (date:Array<string>)=>{
     return date[0]+ ' ~ '+ date[1]
   }

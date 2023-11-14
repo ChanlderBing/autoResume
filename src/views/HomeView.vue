@@ -108,6 +108,7 @@ import PersonAddForm from '@/components/Resume/components/PersonAddForm.vue';
 import {  useRouter } from 'vue-router';
 import  axios  from '../api/http';
 import { ElMessage, ElMessageBox, ElNotification } from 'element-plus';
+import { da } from 'element-plus/es/locale';
 
 const formLabelAlign =  ref({
   Name:'',
@@ -135,6 +136,7 @@ const goToLogin = ()=>{
         }).catch(() => {
           ElMessage({
             type: 'info',
+            message: '取消成功',
           })
         })
   }else{
@@ -209,12 +211,22 @@ const getResumeInitWithoutPath = async ()=>{
 }
 //调用接口获取简历 登录
 const resumeInitByJWT = async ()=>{
-  const {data:res} = await axios.get(`posts/ResumeInitByJWT`).catch(async (err)=>{
-    return  await axios.get(`posts/getResumeInit?resumeId=${modelResumeId}`)
-  })
-  store.commit('changeCurrentResumeId',res.data.resumeId)
-  resumeMoudle.value = res.data.resumeMoudle
-  personalMoudle.value = res.data.personalMoudle
+  let res
+   axios.get(`posts/ResumeInitByJWT`).then((data1)=>{
+      if (data1.data.data.length === 0) {
+         axios.get(`posts/getResumeInit?resumeId=${modelResumeId}`).then((data2)=>{
+          res = data2.data.data
+          store.commit('changeCurrentResumeId',res.resumeId)
+          resumeMoudle.value = res.resumeMoudle
+          personalMoudle.value = res.personalMoudle
+        })
+      }else{
+          res = data1.data.data
+          store.commit('changeCurrentResumeId',res.resumeId)
+          resumeMoudle.value = res.resumeMoudle
+          personalMoudle.value = res.personalMoudle
+      } 
+   })
 }
 
 const getResumeName = async (resumeId)=>{

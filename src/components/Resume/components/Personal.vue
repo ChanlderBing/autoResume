@@ -3,10 +3,12 @@
     <div class="information" @click="editInformation()">
       <p><h2>{{ personalMoudle.userName}}</h2></p>
       <div class="normal">
-        <div  class="boxdiv" v-for="(list1,key,index1) in personalMoudle.inputList[0]">
-          <span class="icon"><img :src=changeSvg[key]()>  </span>
-          <span ass="content">{{ list1 }}</span>
-        </div>
+        <template   v-for="(list1,key,index1) in personalMoudle.inputList[0]">
+          <div  class="boxdiv" v-if="list1">
+            <span class="icon"><img :src=changeSvg[key]()>  </span>
+            <span ass="content">{{ list1 }}</span>
+          </div>
+        </template>
       </div>
       <div class="status">
         <div class="boxdiv" v-for="(list,key,index) in personalMoudle.inputList[1]">

@@ -23,6 +23,9 @@ html,body,p{
   padding: 0;
   margin: 0;
 }
+html{
+  overflow: -moz-hidden-unscrollable;
+}
 ol{
   padding: 0;
   margin: 0;

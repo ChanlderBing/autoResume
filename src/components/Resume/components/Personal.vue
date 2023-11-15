@@ -1,7 +1,7 @@
 <template>
   <div class="personal"  v-if="personalMoudle">
     <div class="information" @click="editInformation()">
-      <p><h2>{{ personalMoudle.userName}}</h2></p>
+      <div class="name"><p>{{ personalMoudle.userName}}</p></div>
       <div class="normal">
         <template   v-for="(list1,key,index1) in personalMoudle.inputList[0]">
           <div  class="boxdiv" v-if="list1">
@@ -156,6 +156,11 @@ const verificationPicFile =  (file)=> {
   .information{
     width: 60%;
     margin: 0 89px 0 36px;
+    .name{
+      font-size: 24px;
+      font-weight: bold;
+      margin: 16px 0;
+    }
     p{
       text-align: start;
     }
@@ -175,14 +180,14 @@ const verificationPicFile =  (file)=> {
     .boxdiv{
       display: flex;
       align-items:flex-start;
-      padding-right: 14px;
+      padding: 0 14px 4px 0;
       line-height: 14px;
       .icon{
         padding-right: 3px;
-      img{
-        width: 16px;
-        height: 16px;
-      }
+        img{
+          width: 16px;
+          height: 16px;
+        }
     }
     }
   }

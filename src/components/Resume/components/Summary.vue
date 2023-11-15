@@ -18,27 +18,27 @@
             </el-empty>
             <el-scrollbar max-height="270px">
               <el-card shadow="hover" class="resume" :body-style="{ padding: '2px' }" v-for="(item,index) in arr.resumeList">
-                  <div class="content" @click="resumeChange(item.resumeId)">
+                  <div class="content" @click="resumeChange(item.resumeId)" >
                     <div class="pic"><img :src="item.avatar?`http://121.41.1.191:80/upload_img/${item.avatar}`:imgSrc"/> </div>
-                      <div class="resumeDetail">
+                      <div class="resumeDetail" @mouseover="focusDel = item.resumeId" @mouseleave="focusDel = null">
                         <div class="top">
                             <span  class="resumeName" @click.stop="test(item.resumeId)" v-if="item.editActive === 0">{{item.resumeName ? item.resumeName:'未命名简历'}}   <svg class="editicon" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" width="13" height="13" data-v-ea893728=""><path d="m199.04 672.64 193.984 112 224-387.968-193.92-112-224 388.032zm-23.872 60.16 32.896 148.288 144.896-45.696L175.168 732.8zM455.04 229.248l193.92 112 56.704-98.112-193.984-112-56.64 98.112zM104.32 708.8l384-665.024 304.768 175.936L409.152 884.8h.064l-248.448 78.336L104.32 708.8zm384 254.272v-64h448v64h-448z" fill="currentColor"></path></svg></span>
                             <span v-else-if="item.editActive === 1">
                               <el-input 
-                              ref="inputRef"
-                              v-model="item.resumeName"
-                              @click.stop
-                              @blur="emptyCheck(item.resumeId,item.resumeName)"
+                                ref="inputRef"
+                                v-model="item.resumeName"
+                                @click.stop
+                                @blur="emptyCheck(item.resumeId,item.resumeName)"
                                 />
                             </span>
-                          <span  class="editBtn"><img src="../../../assets/more.png" style="width: 32px;height: 32px;position: absolute;left: -40px;top: -5px;"></span>
+                          <span class="editBtn" @click.stop="delResume(item.resumeId)" v-show="focusDel == item.resumeId&& focusDel != store.state.modelResumeId"><img  src="../../../assets/more.png" style="width: 18px;height: 18px;position: absolute;left: -20px;top: -5px;"></span>
                         </div>
                         <div class="editTime" v-if="item.resumeId===store.state.currentResumeId"> 
                           <el-tooltip
-                          class="box-item"
-                          effect="dark"
-                          content="正在查看此简历"
-                          placement="top-start"
+                            class="box-item"
+                            effect="dark"
+                            content="正在查看此简历"
+                            placement="top-start"
                           ><svg t="1688526287308" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="15443" width="25" height="25"><path d="M459.8 305.8c11 0 20 9 20 20v15c0 11-9 20-20 20H294.2c-11 0-20-9-20-20v-15c0-11 9-20 20-20h165.6zM347.5 458.6c11 0 20 9 20 20v15c0 11-9 20-20 20h-53.2c-11 0-20-9-20-20v-15c0-11 9-20 20-20h53.2zM347.5 617.7c11 0 20 9 20 20v15c0 11-9 20-20 20h-53.2c-11 0-20-9-20-20v-15c0-11 9-20 20-20h53.2z" fill="#2680F0" p-id="15444"></path><path d="M579.1 345c-116.9 0-211.6 94.7-211.6 211.6 0 116.9 94.7 211.6 211.6 211.6 116.9 0 211.6-94.7 211.6-211.6C790.8 439.7 696 345 579.1 345z m0 369.6c-87.3 0-158-70.8-158-158 0-87.3 70.8-158 158-158s158 70.8 158 158c0.1 87.3-70.7 158-158 158z" fill="#2680F0" p-id="15445"></path><path d="M913.7 875.7c7.8 7.8 7.8 20.5 0 28.3l-10.1 10.1c-7.8 7.8-20.5 7.8-28.3 0L697.7 736.6c-7.8-7.8-7.8-20.5 0-28.3l10.1-10.1c7.8-7.8 20.5-7.8 28.3 0l177.6 177.5z" fill="#2680F0" p-id="15446"></path><path d="M750.7 827.3c-7.8-7.8-14.1-5.1-14.1 5.9V858c0 11-9 20-20 20l-475.8-0.5c-11 0-20-9-20-20V171.9c0-11 9-20 20-20h369.1c11 0 20 9 20 20v68.5c0 11 9 20 20 20h66.7c11 0 20 9 20 20v88.3c0 11 5.6 27.1 12.4 35.7l32 52.3c4.7 10 8.5 9.1 8.5-1.9l0.1-204.7c0-11-6.3-26.4-14.1-34.2L673 113.1c-7.8-7.8-23.1-14.2-34.1-14.2H190.1c-11 0-20 9-20 20v789.4c0 11 9 20 20 20h579.1c11 0 20-9 20-20v-22.5c0-11-6.4-26.4-14.1-34.1l-24.4-24.4z" fill="#2680F0" p-id="15447"></path></svg>
                           </el-tooltip>
                         </div>    
@@ -184,7 +184,7 @@ const vEllipsis ={
   },
 }
 
-
+let focusDel = ref()
 const inputRef = ref({})
 const createResumeName = ref('')
 const test = (id)=>{
@@ -197,7 +197,7 @@ const test = (id)=>{
   createResumeName.value = arr.resumeList[index].resumeName
   arr.resumeList[index].editActive = 1
   nextTick(()=>{
-    inputRef.value[0].focus();
+    inputRef.value.focus();
   })
 }
 const loading = ref(true)
@@ -277,6 +277,7 @@ const emptyCheck = (resumeId,resumeName)=>{
   arr.resumeList[index].editActive = 0
  }
 
+//  获取所有简历
 const getModelResume = ()=>{
   axios.get('posts/getUserResumeAll').then(res=>{
       if (res?.data?.data?.code === 200) { 
@@ -290,7 +291,8 @@ const getModelResume = ()=>{
     loading.value = false
   })
 }
-const getResume = async ()=>{
+// 获取模板简历
+const getResume = async ()=>{ 
   const {data:res} = await axios.get(`posts/getUserResumeOne?resumeId=${store.state.modelResumeId}`).finally(()=>{
     loading.value = false
   })
@@ -298,6 +300,7 @@ const getResume = async ()=>{
   localStorage.setItem('modelResume',JSON.stringify(arr.modelResume))
 }
 
+// 判断是否从本地内存读取
 const noTokenToGet = ()=>{
   if(localStorage.getItem("modelResume")){
     arr.modelResume= JSON.parse(localStorage.getItem("modelResume"))
@@ -306,6 +309,7 @@ const noTokenToGet = ()=>{
     getResume()
   }
 }
+  //删除简历细节模块
 const moduleDetailDel = (moduleId,id)=>{
   ElMessageBox.confirm(
     '你确定要删除吗？删除后无法恢复',
@@ -341,6 +345,34 @@ const moduleDetailDel = (moduleId,id)=>{
     })
   }
 
+  //删除简历
+ const delResume = (resumeId)=>{
+  ElMessageBox.confirm(
+    '你确定要删除吗？删除后无法恢复',
+    'Warning',
+    {
+      confirmButtonText: '是的',
+      cancelButtonText: '取消',
+      type: 'warning',
+    }
+  ).then(() => {
+      axios.post('posts/resumeDel',{resumeId:resumeId}).then(res=>{
+        if (res?.data.code === 0) {
+          if (store.state.currentResumeId == resumeId ) {
+            store.commit('changeCurrentResumeId',store.state.modelResumeId)
+            emit('changeResume',store.state.modelResumeId)
+          }
+          getModelResume()
+          ElMessage.success('删除成功')
+        }
+      })
+    }).catch(() => {
+      ElMessage({
+        type: 'info',
+        message: '取消成功',
+      })
+    })
+ } 
 //经历库加入简历
 const clickToShow = (moduleId,status,id)=>{
   if (store.state.currentResumeId !=store.state.modelResumeId && store.state.token) {
@@ -446,8 +478,6 @@ onMounted:{
             }
           }
             .pic{
-              // width: 60px;
-              // height: 80px;
               margin-right: 8px;
               img{
                 width: 55px;

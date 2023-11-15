@@ -23,7 +23,7 @@
             </el-form-item>
 
             <el-form-item v-else :label="realationshipMap[key]"  :prop="`inputList[1].${key}`" > 
-              <el-select v-model="personalMoudle.inputList[1][key]" class="m-2" placeholder="Select">
+              <el-select v-model="personalMoudle.inputList[1][key]" class="m-2" :placeholder="options[0].value">
                 <el-option
                   v-for="item in options"
                   :key="item.value"

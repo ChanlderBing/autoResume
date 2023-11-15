@@ -149,10 +149,12 @@ let personalMoudle = ref(null)
 let currentResumeName = ref(null)
 let printResumeName = ref(null)
 let modelResumeId = store.state.modelResumeId
+let localResumeMoudle = localStorage.getItem('resumeMoudle')
+let localPersonMoudle = localStorage.getItem('personalMoudle')
 
 watch(() => store.state.editPersonal,() => {
     if (store.state.currentResumeId === modelResumeId &&!store.state.editPersonal) {
-      personalMoudle.value = JSON.parse(localStorage.getItem('personalMoudle'))
+      personalMoudle.value = JSON.parse(localPersonMoudle)
     }
     },{
       deep:true,
@@ -160,7 +162,7 @@ watch(() => store.state.editPersonal,() => {
 
 watch(() => store.state.isEdit,() => {
 if (store.state.currentResumeId === modelResumeId &&!store.state.isEdit) {
-  resumeMoudle.value = JSON.parse(localStorage.getItem('resumeMoudle'))
+  resumeMoudle.value = JSON.parse(localResumeMoudle)
 }
 },{
   deep:true,
@@ -168,7 +170,7 @@ if (store.state.currentResumeId === modelResumeId &&!store.state.isEdit) {
 
 watch(() => store.state.isAdd,() => {
 if (store.state.currentResumeId === modelResumeId &&!store.state.isAdd) {
-  resumeMoudle.value = JSON.parse(localStorage.getItem('resumeMoudle'))
+  resumeMoudle.value = JSON.parse(localResumeMoudle)
 }
 },{
   deep:true,
@@ -191,13 +193,12 @@ const changeResume = async (resumeId)=>{
 //切换模板简历简历
 const changeModelResume = async ()=>{
   store.commit('changeCurrentResumeId',modelResumeId)
-  resumeMoudle.value = JSON.parse(localStorage.getItem('resumeMoudle'))
-  personalMoudle.value = JSON.parse(localStorage.getItem('personalMoudle'))
+  resumeMoudle.value = JSON.parse(localResumeMoudle)
+  personalMoudle.value = JSON.parse(localPersonMoudle)
 }
 //调用接口获取简历 未登录
 const getResumeInit = async ()=>{
   const {data:res} = await axios.get(`posts/getResumeInit?resumeId=${modelResumeId}`)
-  store.commit('changeCurrentResumeId',res.data.resumeId)
   resumeMoudle.value = res.data.resumeMoudle
   personalMoudle.value = res.data.personalMoudle
   localStorage.setItem('resumeMoudle', JSON.stringify(res.data.resumeMoudle))
@@ -205,7 +206,7 @@ const getResumeInit = async ()=>{
 }
 //调用接口获取不显示
 const getResumeInitWithoutPath = async ()=>{
-  const {data:res} = await axios.get(`posts/getResumeInit?resumeId=${store.state.modelResumeId}`)
+  const {data:res} = await axios.get(`posts/getResumeInit?resumeId=${modelResumeId}`)
   localStorage.setItem('resumeMoudle', JSON.stringify(res.data.resumeMoudle))
   localStorage.setItem('personalMoudle',JSON.stringify(res.data.personalMoudle))
 }
@@ -213,22 +214,27 @@ const getResumeInitWithoutPath = async ()=>{
 const resumeInitByJWT = async ()=>{
   let res
    axios.get(`posts/ResumeInitByJWT`).then((data1)=>{
-      if (data1.data.data.length === 0) {
-         axios.get(`posts/getResumeInit?resumeId=${modelResumeId}`).then((data2)=>{
-          res = data2.data.data
-          store.commit('changeCurrentResumeId',res.resumeId)
-          resumeMoudle.value = res.resumeMoudle
-          personalMoudle.value = res.personalMoudle
-        })
+      if (data1.data.data.length !== 0) {
+        res = data1.data.data
+        store.commit('changeCurrentResumeId',res.resumeId)
+        resumeMoudle.value = res.resumeMoudle
+        personalMoudle.value = res.personalMoudle
+        getResumeInitWithoutPath()
       }else{
-          res = data1.data.data
-          store.commit('changeCurrentResumeId',res.resumeId)
-          resumeMoudle.value = res.resumeMoudle
-          personalMoudle.value = res.personalMoudle
-      } 
+        getlocalResumeInit()
+      }
    })
 }
 
+const getlocalResumeInit = ()=>{
+  if (!localResumeMoudle) {
+      getResumeInit()
+    } else {
+      resumeMoudle.value = JSON.parse(localResumeMoudle)
+      personalMoudle.value = JSON.parse(localPersonMoudle)
+    }
+  store.commit('changeCurrentResumeId',modelResumeId)
+}
 const getResumeName = async (resumeId)=>{
   if (store.state.token && store.state.currentResumeId !==store.state.modelResumeId) {
     const {data:res} = await axios.get(`posts/getUserResumeName?resumeId=${resumeId}`)
@@ -249,6 +255,7 @@ const print =  () => {
     printable: 'printC',
     type: 'html',
     targetStyles: ['*'],
+    //style:'@media print{body{-webkit-print-color-adjust:exact; -moz-print-color-adjust:exact;-ms-print-color-adjust:exact;print-color-adjust:exact;}}',
     onPrintDialogClose:()=>{
       nextTick(()=>{
       clearInterval(focuser)
@@ -276,20 +283,10 @@ const changeTheme = (value)=>{
 onMounted:{
   if (store.state.token) {
     resumeInitByJWT()
-    if(localStorage.getItem("resumeMoudle")){
-      resumeMoudle.value = JSON.parse(localStorage.getItem('resumeMoudle'))
-      personalMoudle.value = JSON.parse(localStorage.getItem('personalMoudle'))
-    }else{
-      getResumeInitWithoutPath()
-    }
-  }else{
-      if(localStorage.getItem("resumeMoudle")){
-        resumeMoudle.value = JSON.parse(localStorage.getItem('resumeMoudle'))
-        personalMoudle.value = JSON.parse(localStorage.getItem('personalMoudle'))
-      }else{
-        getResumeInit()
-      }
-    }
+  }else
+  {
+    getlocalResumeInit()
+  }
   }
 </script>
 
@@ -366,7 +363,6 @@ onMounted:{
   .home::-webkit-scrollbar{
     display: none;
   }
-
   .fade-leave-to {
       opacity: 0;
       transform: translateY(8%);

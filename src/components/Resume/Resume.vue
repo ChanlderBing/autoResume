@@ -37,12 +37,12 @@
         <Personal></Personal>
       </div>
       <ShowList  
-      @clickChild="resumeMoudleChange" 
-      @clickToHide="clickToHide" 
-      @moduleSwitchUp="moduleSwitchUp" 
-      @moduleSwitchDown="moduleSwitchDown"
-      @moduleDetailSwitchUp="moduleDetailSwitchUp"
-      @moduleDetailSwitchDown="moduleDetailSwitchDown" ></ShowList>
+        @clickChild="resumeMoudleChange" 
+        @clickToHide="clickToHide" 
+        @moduleSwitchUp="moduleSwitchUp" 
+        @moduleSwitchDown="moduleSwitchDown"
+        @moduleDetailSwitchUp="moduleDetailSwitchUp"
+        @moduleDetailSwitchDown="moduleDetailSwitchDown" ></ShowList>
     </div>
     <div class="divider" v-if="printHeight > 1116">
       <span class="titleName">一页分界线</span>
@@ -158,9 +158,13 @@ const options = [
 .card2{
   width:780px;
   height:calc(100vh - 193px);
+  height: -webkit-calc(100vh - 193px);
+  height: -moz-calc(100vh - 193px);
   overflow:none; 
   overflow-y:auto;
   scrollbar-width:none;
+  -ms-overflow-style: none; /* IE 10+ */
+  -ms-overflow-style: none;
   position: relative;
   .divider{
     height: 24px;
@@ -203,6 +207,12 @@ const options = [
 .main::-webkit-scrollbar{
   display: none;
 }
+// .main {
+//   scrollbar-width: none; /* firefox */
+//   -ms-overflow-style: none; /* IE 10+ */
+//   overflow-x: hidden;
+//   overflow-y: auto;
+//   }
 .card{
   @include left-background();
   @include border-background();

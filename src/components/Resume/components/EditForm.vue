@@ -72,10 +72,11 @@
   //     return res.moduleId !== store.state.editChosen
   //   })
   // })
+
   let index = resumeMoudle.value.findIndex((item)=>{
           return item.moduleId === store.state.editChosen
       }) 
-    let detailIndex =  resumeMoudle.value[index].inputList.findIndex((item)=>{
+  let detailIndex =  resumeMoudle.value[index].inputList.findIndex((item)=>{
       return item.sortIndex === store.state.editChosenDetail
     })
   const renderListDetailForm = ref(JSON.parse(JSON.stringify(renderList.value.inputList[detailIndex])));
@@ -106,11 +107,6 @@
     '2':'updateProject',
     '3':'updateSummary',
     '0':'updateSchool'
-  }
-  onMounted:{
-    if (renderListDetailForm.value.period) {
-      renderListDetailForm.value.period = dateReInit(renderListDetailForm.value.period)
-    }
   }
   const ruleForm = ref(null);
   const onSubmit = () => {  
@@ -202,6 +198,11 @@
     editorRef.value = editor // 记录 editor 实例，重要！
   }
 
+  onMounted:{
+  if (renderListDetailForm.value.period) {
+    renderListDetailForm.value.period = dateReInit(renderListDetailForm.value.period)
+  }
+}
 </script>
 
   <style scoped lang="scss">

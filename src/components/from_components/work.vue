@@ -24,9 +24,9 @@ import { reactive } from 'vue';
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-size: 14px;
     margin-top: 4px;
     .title-left{
+      font-size: 15px;
       font-weight: bold;
       width: 300px;
       text-align: left;

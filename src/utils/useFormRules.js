@@ -16,6 +16,15 @@ const validatePhone = (rule,value,callback)=>{
         callback()
       }
     }
+    const validateGithub = (rule,value,callback)=>{
+      const regExp =  /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/
+        if (!regExp.test(value)||''||null) {
+          callback(new Error('网站必须以http://或者https://开头'))
+        } else {
+          callback()
+        }
+      }
+  
   const rules = reactive({
     "inputList[0].cityYoulived": [
       { required: true, message: '请输入城市名', trigger: 'blur' },
@@ -26,7 +35,9 @@ const validatePhone = (rule,value,callback)=>{
         message: '请输入你的github',
         trigger: 'blur',
       },
-      { min: 2, max: 48, message: '长度应该在2-8个字符', trigger: 'blur' },
+      { 
+        max: 68, message: '长度应该在68个字符内'
+        ,trigger: 'blur' },
     ],
     "inputList[0].email": [
       {

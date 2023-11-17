@@ -20,7 +20,6 @@ import { onUpdated, reactive, ref, toRefs } from 'vue';
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-size: 14px;
     margin-top: 4px;
   }
   .textH5{

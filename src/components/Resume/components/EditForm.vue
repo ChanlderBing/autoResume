@@ -13,16 +13,15 @@
               <el-input v-model="renderListDetailForm[key]" />
             </el-form-item>
           </template>
-          <el-form-item label="时间" v-if="key.toString() === 'period'" :prop="key"  :rules="[{required: true, message: '请输入时间', trigger: 'change'}]">
+          <el-form-item label="始末时间" v-if="key.toString() === 'period'" :prop="key"  :rules="[{required: true, message: '请输入时间', trigger: 'change'}]">
             <el-date-picker
               v-model="renderListDetailForm.period"
               type="daterange"
               range-separator="至"
               start-placeholder="开始时间"
               end-placeholder="结束时间"
-              :shortcuts="shortcuts"
-              format="YYYY/MM/DD"
-              value-format="YYYY.MM.DD"
+              format="YYYY/MM"
+              value-format="YYYY.MM"
             />
           </el-form-item>
           
@@ -81,10 +80,13 @@
     })
   const renderListDetailForm = ref(JSON.parse(JSON.stringify(renderList.value.inputList[detailIndex])));
   //将时间反格式显示
-  const dateReInit = (date:string)=>{
+  const dateReInit = (date)=>{
     return date?.split('~')
   }
-
+  const dateInit = (date)=>{
+    return date[0]+ '~'+ date[1]
+  }
+ 
   const checkList = ['Text','period','id','resumemodelId','sortIndex','title','isShow']
   const moduleCheck =(key)=>{
     if (checkList.find((item)=>{
@@ -135,36 +137,10 @@
   }
   })
   }
-  const dateInit = (date:Array<string>)=>{
-    return date[0]+ ' ~ '+ date[1]
-  }
- 
+
   const back = ()=>{
     store.commit('switch',false)
   }
-  //datePicker
-  const shortcuts = [
-    {
-      text: 'Today',
-      value: new Date(),
-    },
-    {
-      text: 'Yesterday',
-      value: () => {
-        const date = new Date()
-        date.setTime(date.getTime() - 3600 * 1000 * 24)
-        return date
-      },
-    },
-    {
-      text: 'A week ago',
-      value: () => {
-        const date = new Date()
-        date.setTime(date.getTime() - 3600 * 1000 * 24 * 7)
-        return date
-      },
-    },
-  ]
 
   const disabledDate = (time: Date) => {
     return time.getTime() > Date.now()

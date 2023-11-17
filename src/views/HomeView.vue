@@ -108,7 +108,6 @@ import PersonAddForm from '@/components/Resume/components/PersonAddForm.vue';
 import {  useRouter } from 'vue-router';
 import  axios  from '../api/http';
 import { ElMessage, ElMessageBox, ElNotification } from 'element-plus';
-import { da } from 'element-plus/es/locale';
 
 const formLabelAlign =  ref({
   Name:'',
@@ -154,7 +153,7 @@ let localPersonMoudle = localStorage.getItem('personalMoudle')
 
 watch(() => store.state.editPersonal,() => {
     if (store.state.currentResumeId === modelResumeId &&!store.state.editPersonal) {
-      personalMoudle.value = JSON.parse(localPersonMoudle)
+      personalMoudle.value = JSON.parse(localStorage.getItem('personalMoudle'))
     }
     },{
       deep:true,
@@ -162,7 +161,7 @@ watch(() => store.state.editPersonal,() => {
 
 watch(() => store.state.isEdit,() => {
 if (store.state.currentResumeId === modelResumeId &&!store.state.isEdit) {
-  resumeMoudle.value = JSON.parse(localResumeMoudle)
+  resumeMoudle.value = JSON.parse(localStorage.getItem('resumeMoudle'))
 }
 },{
   deep:true,
@@ -170,21 +169,22 @@ if (store.state.currentResumeId === modelResumeId &&!store.state.isEdit) {
 
 watch(() => store.state.isAdd,() => {
 if (store.state.currentResumeId === modelResumeId &&!store.state.isAdd) {
-  resumeMoudle.value = JSON.parse(localResumeMoudle)
+  resumeMoudle.value = JSON.parse(localStorage.getItem('resumeMoudle'))
 }
 },{
   deep:true,
 }) 
 
-const currentResumeNameChange = (ResumeName)=>{
-  currentResumeName.value = ResumeName
-}
+// const currentResumeNameChange = (ResumeName)=>{
+//   currentResumeName.value = ResumeName
+// }
 
 provide('resumeMoudle',resumeMoudle)
 provide('personalMoudle',personalMoudle)
 
 //调用切换接口获取简历
 const changeResume = async (resumeId)=>{
+
   const {data:res} = await axios.get(`posts/getUserResume?resumeId=${resumeId}`)
   store.commit('changeCurrentResumeId',resumeId)
   resumeMoudle.value = res.data.resumeMoudle
@@ -223,6 +223,8 @@ const resumeInitByJWT = async ()=>{
       }else{
         getlocalResumeInit()
       }
+   }).catch((err)=>{
+        getlocalResumeInit()
    })
 }
 

@@ -164,7 +164,6 @@ const options = [
   overflow-y:auto;
   scrollbar-width:none;
   -ms-overflow-style: none; /* IE 10+ */
-  -ms-overflow-style: none;
   position: relative;
   .divider{
     height: 24px;
